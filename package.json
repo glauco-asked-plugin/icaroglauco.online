@@ -1,0 +1,22 @@
+{
+  "name": "icaroglauco.online",
+  "version": "1.0.0",
+  "description": "Portfolio pessoal em Vite com Firebase Hosting",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && npx firebase-tools deploy --project icaroglaucoonline-f1c88"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^12.11.0",
+    "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.11.0",
+    "vite": "^8.0.3"
+  }
+}
