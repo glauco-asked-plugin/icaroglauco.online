@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && npx firebase-tools deploy --project icaroglaucoonline-f1c88"
+    "deploy": "npm run build && npx firebase-tools deploy --project icaroglaucoonline"
   },
   "keywords": [],
   "author": "",

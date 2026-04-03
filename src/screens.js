@@ -1,73 +1,96 @@
 export const screens = [
   {
     id: "overview",
-    code: "01 / ORIGIN",
+    code: "01 / FUNDAMENTO",
     label: "Identidade",
-    kicker: "Main profile",
-    headline: "Porta de entrada entre estudo, pesquisa e linguagem de interface",
+    kicker: "Base profissional",
+    headline: "Design, frontend e leitura de produto apoiados por uma base técnica rara e consistente",
     blurb:
-      "A primeira camada funciona como porta de entrada: historia de pesquisador e estudante, website apresentado quase como white-paper, gosto por design e UX e a passagem disso tudo para software, produto e IA.",
+      "Esta abertura apresenta a origem do meu trabalho: anos de formação técnica, repertório visual e prática em interface convertidos em critério de produto, decisão e entrega.",
     details:
-      "Minha identidade vem de uma mistura antiga entre curiosidade tecnica, pesquisa, computacao grafica, estudo formal e pratica direta com web, apps e experiencia de interface. Este proprio site entra como artefato de entrada para contar isso em chave mais editorial.",
+      "Meu perfil foi sendo construído na continuidade entre eletrônica, webdesign, computação gráfica, programação e frontend. Hoje essa trajetória se traduz numa leitura que conecta linguagem visual, estrutura e é orientada à produto.",
     bullets: [
-      "Primeiro livro de eletronica, portas logicas e LED aos 9",
-      "Primeiro trabalho web em 2013, ainda no ensino medio",
-      "Frontend profissional a partir de 2022 e ChatGPT em 2024"
+      "Base técnica anterior ao mercado",
+      "Design e UX como filtros de decisão",
+      "Frontend com leitura de produto e implementação"
     ],
     kind: "identity",
-    contentTitle: "Origem, estudo e direcao",
+    contentTitle: "Por que essa base melhora a entrega",
     contentBody:
-      "Fui estudante de tecnico em informatica, li meu primeiro livro de eletronicos, portas logicas e LED aos 9 anos quando ia na UESB com meu pai, e cresci tratando web, interface e programacao como um campo continuo de descoberta. Por isso, minha porta de entrada hoje tambem e este proprio website: um conteudo apresentado quase como white-paper, mas filtrado pelo meu gosto por design, UX e leitura de sistema.",
+      "Quando entro num projeto, não olho apenas para a tela nem apenas para o código. Leio problema, interface, estrutura e narrativa de uso ao mesmo tempo. Essa base reduz improviso, qualifica a decisão e dá direção antes da execução ganhar volume.",
     contentNotes: [
-      "Base tecnica anterior ao mercado",
-      "CSS3 e computacao grafica como paixao inicial",
-      "ChatGPT como ampliacao de estudo e execucao"
+      "Interface pensada junto com estrutura",
+      "Decisão visual ligada à função real",
+      "Mais clareza de produto antes da implementação"
+    ],
+    deepDives: [
+      {
+        kicker: "Camada 1 / aplicação",
+        title: "Como essa origem vira vantagem de entrega",
+        body:
+          "Na prática, essa origem me faz começar pelo que realmente organiza o projeto: o problema que precisa ser resolvido, a forma como ele aparece para a pessoa usuária e a arquitetura que sustenta a experiência. Em vez de empilhar telas, procuro dar borda, ritmo e coerência ao sistema desde cedo.",
+        list: [
+          "Leitura simultânea de problema, interface e implementação",
+          "Traduzo intuição visual em decisão concreta",
+          "Procuro coerência entre UX, linguagem e entrega"
+        ]
+      },
+      {
+        kicker: "Camada 2 / evidencias",
+        title: "Evidências concretas dessa trajetória",
+        body:
+          "Essa trajetória aparece em marcos objetivos: primeiro trabalho web ainda no ensino médio, aprofundamento em CSS3 em 2014, base formal em Ciência da Computação a partir de 2015, aplicativo comercial em 2018 e consolidação profissional em frontend nos anos seguintes.",
+        list: [
+          "Webdesign e autoria visual antes do mercado",
+          "Fundamento técnico convivendo com sensibilidade de interface",
+          "Passagem consistente de curiosidade para ofício"
+        ]
+      }
     ],
     portraitImage: "/assets/foto-02.jpg",
-    portraitCaption: "Entrada pessoal / retrato editorial",
+    portraitCaption: "Retrato editorial / base profissional",
     identityLead:
-      "Antes de viver de frontend, eu ja vinha anos orbitando eletronica, webdesign, mods de jogos, computacao grafica e programacao aplicada. Minha entrada na area nao veio por tendencia: veio de um historico de pesquisador e estudante que foi transformando curiosidade tecnica em artefato, interface e produto.",
+      "Minha entrada na área não nasceu de uma tendência de mercado. Nasceu de uma formação técnica e visual que hoje me permite estruturar interfaces, produtos e experiências com mais clareza, critério e consistência.",
     identityHighlights: [
-      "Tecnico em informatica como base de formacao",
-      "Primeiros estudos de eletronica na infancia, na UESB",
-      "Este website como porta de entrada em formato white-paper",
-      "Design e UX como filtro editorial da apresentacao",
-      "CSS3 como ponto de paixao no fim de 2014",
-      "Ciencia da Computacao em 2015",
-      "Apps Android com SVG, pinch zoom e Firebase em 2018",
+      "Técnico em Informática como base de formação",
+      "Estudos de eletrônica e lógica desde cedo",
+      "Webdesign e computação gráfica antes da atuação profissional",
+      "CSS3 como eixo de linguagem visual desde 2014",
+      "Ciência da Computação ampliando repertório estrutural",
+      "Aplicativos Android com mapas, SVG e Firebase em 2018",
       "Frontend profissional a partir de 2022",
-      "ChatGPT como instrumento de estudo e software em 2024"
+      "IA integrada ao processo de estudo e desenvolvimento em 2024"
     ],
     identityMilestones: [
       {
         year: "09 anos",
-        title: "Portas logicas e LED antes da faculdade",
+        title: "Portas logicas, LED e curiosidade antes da faculdade",
         body:
-          "Meu primeiro fascinio tecnico veio cedo: livros de eletronica, componentes basicos, portas logicas e circuitos simples quando eu ainda acompanhava meu pai na UESB."
+          "Meu primeiro fascínio técnico veio cedo: livros de eletrônica, componentes básicos, portas lógicas e circuitos simples enquanto eu acompanhava meu pai na UESB."
       },
       {
         year: "2013",
-        title: "Primeiro trabalho web ainda no ensino medio",
+        title: "Primeiro trabalho web ainda no ensino médio",
         body:
-          "Ja estudando engenharia de design web havia mais de dois anos, fiz meu primeiro trabalho de implementacao de website num momento em que css3 e computacao grafica estavam mudando a sensacao de interatividade na web."
+          "Depois de mais de dois anos estudando design web, fiz meu primeiro trabalho de implementação de website num momento em que CSS3 e computação gráfica ampliavam a sensação de interatividade na web."
       },
       {
         year: "2014",
-        title: "CSS3 e WordPress como paixao de linguagem visual",
+        title: "CSS3 e WordPress como escola de linguagem visual",
         body:
-          "No fim de 2014 eu me apaixonei por CSS3 e fiz uma pagina em WordPress com transicoes animadas e efeitos sonoros por sessao. A pagina de integrantes era a minha favorita: cada retrato tinha uma claque que revelava o profile em hover."
+          "No fim de 2014 eu me aprofundei em CSS3 e montei uma página em WordPress com transições animadas e efeitos sonoros por sessão. Foi um exercício direto de atmosfera, interação e narrativa visual."
       },
       {
         year: "2015",
-        title: "Ciencia da Computacao e gosto por estrutura",
+        title: "Ciência da Computação e gosto por estrutura",
         body:
-          "Entrei em Ciencia da Computacao e passei com naturalidade por AP, programacao declarativa, linguagens formais e automatos, LP e outros fundamentos. List comprehensions me marcaram muito, e Java me ensinou a conviver com tipagem forte."
+          "Entrei em Ciência da Computação e ampliei repertório em programação, linguagens formais, autômatos, lógica e tipagem. Isso reforçou o lado estrutural que hoje sustenta minha leitura de interface."
       },
       {
         year: "2022-2024",
-        title: "Frontend como oficio e IA como aprofundamento",
+        title: "Frontend como oficio e IA como amplificador",
         body:
-          "Em 2022 encerrei o ciclo de estudos e comecei a viver de frontend, passando pelas primeiras instancias de React, Ember e Sass. Em 2024 o ChatGPT entrou como ferramenta diaria para aprofundar estudo, planejar melhor e desenvolver software."
+          "Em 2022 comecei a viver de frontend. Em 2024 a IA entrou no processo como ferramenta diária de estudo, iteração e desenvolvimento, sem substituir critério nem responsabilidade."
       }
     ],
     identityDeck: [
@@ -87,24 +110,24 @@ export const screens = [
         caption: "2018 / App de vendas em Android"
       }
     ],
-    identityPagerTitle: "2017-2018 / aplicativo de vendas e mapas",
+    identityPagerTitle: "2017-2018 / produto comercial e leitura de mapas",
     identityPagerIntro:
-      "O ciclo do app imobiliario foi onde tecnica, produto e usabilidade comecaram a se tocar de um jeito muito claro. O texto abaixo foi quebrado em paginas horizontais para manter a leitura densa sem esmagar a sessao.",
+      "No ciclo do app imobiliário, eu vi técnica, operação e usabilidade se encontrarem com clareza. Estes recortes mostram onde isso virou valor concreto.",
     identityPagerSlides: [
       {
-        title: "Ideia e dor real",
+        title: "Ideia ligada a uma dor real",
         body:
-          "Na metade de 2017 apresentei uma ideia que eu vinha estudando para um amigo corretor de imoveis que trabalhava com meu pai. A proposta atacava uma dor concreta: evitar corridas do campo ao escritorio para fechar venda e substituir mapas imprecisos dos loteamentos por uma representacao melhor."
+          "Na metade de 2017 apresentei uma ideia para um corretor que trabalhava com meu pai. A proposta atacava uma dor concreta: reduzir deslocamentos entre campo e escritório e substituir mapas imprecisos por uma leitura comercial mais útil do loteamento."
       },
       {
-        title: "Aplicativo e stack",
+        title: "Aplicativo, mapa e stack",
         body:
-          "Em 2018 eu fazia aplicativos Android para comunicacao de vendas. Nesse caso, trabalhei com manipulacao de SVG em fundo, pinch zoom, scroll views, Firebase Realtime Database e uma leitura de mapa mais util para o processo comercial no local."
+          "Em 2018 eu desenvolvia aplicativos Android para apoiar comunicação de vendas. Nesse caso trabalhei com manipulação de SVG, pinch zoom, scroll views e Firebase Realtime Database para sustentar a leitura do mapa no momento da operação."
       },
       {
-        title: "Impacto em Amargosa",
+        title: "Validacao em uso",
         body:
-          "O auge veio no final de 2018, em Amargosa. Fui elogiado pela equipe e pelos clientes que passavam pelo escritorio pela iniciativa do aplicativo de vendas e pela inovacao. Foi um momento forte de validacao pratica: tecnologia ajudando negocio real no ponto exato da decisao."
+          "O auge veio no final de 2018, em Amargosa. Houve elogios pela iniciativa e pela utilidade do aplicativo no processo comercial. Foi um caso claro de tecnologia entrando no ponto exato da decisão e qualificando a conversa com o cliente."
       }
     ],
     image: "/assets/foto-01.jpg",
@@ -121,26 +144,50 @@ export const screens = [
   },
   {
     id: "portfolio",
-    code: "02 / REQUIREMENTS",
+    code: "02 / REQUISITOS",
     label: "Requisitos",
-    kicker: "Semantic scope",
-    headline: "Requisitos, camadas semanticas e oportunidade de negocio",
+    kicker: "Leitura de problema",
+    headline: "Requisitos bem conduzidos transformam demanda difusa em direção clara de produto",
     blurb:
-      "A segunda etapa desloca o foco do portfolio como vitrine e o coloca no ponto onde um projeto realmente ganha forma: leitura de necessidade, estrutura semantica, entrevistas de dados e identificacao de oportunidade.",
+      "É aqui que eu tiro o projeto do campo da intuição vaga e dou forma útil a ele: contexto, atores, entidades, fluxo, restrições e critério de decisão.",
     details:
-      "Hoje esse trabalho pode ser acelerado por IA, mas a base continua sendo criterio. O que entra aqui e a capacidade de transformar ruido de contexto em recurso, requisito e direcao real de produto ou negocio.",
+      "Eu uso IA para acelerar descoberta e síntese, não para substituir leitura. O valor desta etapa está em transformar ruído em estrutura e estrutura em escolhas que sirvam ao negócio, à interface e à operação.",
     bullets: [
-      "Engenharia de requisitos antes da implementacao",
-      "Semantic layers para dar nome e forma ao sistema",
-      "IA como acelerador de descoberta e sintese"
+      "Entrevista e leitura antes da implementação",
+      "Contexto traduzido em entidade, fluxo e regra",
+      "IA como acelerador de síntese, não como atalho vazio"
     ],
-    contentTitle: "Engenharia de requisitos e leitura de negocio",
+    contentTitle: "Como eu organizo requisitos",
     contentBody:
-      "Meu foco aqui e a etapa em que um sistema ainda nao esta pronto, mas seus limites ja podem ser percebidos: requisitos, entrevistas, entidades, fluxos, contradicoes de contexto e oportunidades economicas. Hoje IA ajuda muito a acelerar essa leitura, mas o valor continua vindo da capacidade de separar sintoma de necessidade estrutural.",
+      "Não espero um briefing perfeito para começar bem. Procuro esclarecer onde o pedido ainda está confuso, qual dor é real, o que precisa virar regra ou fluxo e onde existe oportunidade escondida. Isso reduz desperdício, acelera alinhamento e melhora a qualidade da decisão.",
     contentNotes: [
-      "Requisito como recurso de projeto",
-      "Dados e linguagem organizados em camadas",
-      "Oportunidade de negocio lida junto com arquitetura"
+      "Sintoma separado de necessidade estrutural",
+      "Linguagem do cliente traduzida em modelo de trabalho",
+      "Negócio, interface e arquitetura lidos em conjunto"
+    ],
+    deepDives: [
+      {
+        kicker: "Camada 1 / resultado",
+        title: "O que uma boa leitura de requisitos destrava",
+        body:
+          "Quando essa etapa é bem conduzida, o projeto ganha borda. Fica mais claro o que entra e o que não entra, quais dados importam, como a interface deve responder e onde existe ganho operacional ou comercial relevante.",
+        list: [
+          "Escopo com menos ambiguidade",
+          "Interface mais aderente ao uso real",
+          "Conversas futuras menos caras e menos confusas"
+        ]
+      },
+      {
+        kicker: "Camada 2 / aprofundamento",
+        title: "Como eu aprofundo sem deixar a conversa vaga",
+        body:
+          "Costumo aprofundar em duas frentes: primeiro nomeio o que o sistema realmente é; depois testo o que ele precisa sustentar em cena de uso. Assim a conversa sai do discurso genérico e encosta em entrega, risco, valor e comportamento.",
+        list: [
+          "Perguntas que puxam contexto, ator, fluxo e restrição",
+          "Leitura de negócio junto com leitura de interface",
+          "IA entrando para acelerar síntese, não para inventar fundamento"
+        ]
+      }
     ],
     image: "/assets/foto-02.jpg",
     backgroundImage: "/ambient/sky-island.jpg",
@@ -156,54 +203,82 @@ export const screens = [
   },
   {
     id: "agent",
-    code: "03 / CONTACT-ME",
-    label: "Contate-me",
-    kicker: "Profile interview",
-    headline: "Entreviste meu perfil profissional por um agente e consolide um dossie retriavel",
+    code: "03 / CONTATO",
+    label: "Contato",
+    kicker: "Intake guiado",
+    headline: "Conversa guiada para transformar interesse em escopo, encaixe e próxima etapa",
     blurb:
-      "A terceira etapa vira uma janela de entrevista mediada por agente, pensada para aprofundar meu perfil profissional, organizar os eixos da minha trajetoria e consolidar um documento retriavel para consulta futura.",
+      "Eu uso esta etapa para tirar o contato do nível genérico e levar a conversa para objetivo, contexto, escopo e sinais concretos de encaixe.",
     details:
-      "O agente nao entra aqui para receber briefing de projeto. Ele entra para me entrevistar: aprofundar forma de pensar, trajetoria, IA, requisitos, design, pesquisa de linguagens e filosofia de trabalho, e transformar isso num dossie vivo.",
+      "Eu mantenho a exportação em markdown bloqueada enquanto essas bases não aparecem. O objetivo aqui é evitar documento bonito apoiado em informação fraca ou premissa mal entendida.",
     bullets: [
-      "Entrevista de perfil profissional com agente",
-      "Export automatico de dossie retriavel em markdown",
-      "Aprofundamento editorial sobre metodo, IA e autoria"
+      "Coleta guiada de objetivo, contexto e escopo",
+      "Cláusulas provisórias de aplicabilidade",
+      "Exportação liberada só com material suficiente"
     ],
-    contentTitle: "Entrevista guiada por agente",
+    contentTitle: "Como a triagem mede encaixe e aplicabilidade real",
     contentBody:
-      "Aqui a conversa deixa de ser institucional e vira entrevista. A ideia e usar um agente como interface de aprofundamento: ele parte do que ja esta consolidado sobre mim, faz perguntas melhores e organiza um documento retriavel do meu perfil profissional conforme a conversa avanca.",
+      "Aqui eu organizo o que a pessoa quer construir, por que isso importa agora, o que já dá para recortar como entrega e em que medida meu perfil faz sentido para o caso.",
     contentNotes: [
-      "Agente como entrevistador editorial",
-      "Dossie em tempo real abaixo do chat",
-      "Base viva para retrieval, portfolio e apresentacao"
+      "Não exporta com contexto insuficiente",
+      "Prioriza trabalhos com interface, requisitos, agentes e software autoral",
+      "Entrega uma prévia de proposta, não um contrato fechado"
+    ],
+    deepDives: [
+      {
+        kicker: "Camada 1 / base mínima",
+        title: "Quatro blocos para liberar uma prévia forte",
+        body:
+          "Para eu liberar a prévia, a conversa precisa sair do interesse genérico e chegar a quatro zonas: objetivo do trabalho, contexto ou dor real, recorte inicial de escopo e algum sinal de por que meu perfil faz sentido para o caso.",
+        list: [
+          "O que você quer colocar de pé",
+          "Qual problema, oportunidade ou operação está por trás",
+          "Quais entregáveis entram de verdade",
+          "Por que isso conversa com meu modo de trabalhar"
+        ]
+      },
+      {
+        kicker: "Camada 2 / condição da prévia",
+        title: "O que a exportação entrega e o que ela ainda não promete",
+        body:
+          "Quando eu libero a exportação, ela gera um diagnóstico preliminar de interesse e aplicabilidade. Eu uso esse material para organizar a conversa, explicitar condições iniciais e apontar próximos passos, sem fingir que contrato e escopo final já estão fechados.",
+        list: [
+          "Resume interesse declarado e sinais de encaixe",
+          "Lista cláusulas provisórias de aplicabilidade",
+          "Mostra o que ainda precisa ser validado antes de um acordo"
+        ]
+      }
     ],
     kind: "agent",
-    profilePath: "/llm/icaro-profile-retrieval.md",
+    profilePath: "/llm/icaro-workstyle.md",
+    profileLinkLabel: "Abrir base de trabalho (.md)",
     agentEndpoint: "/api/agent-chat",
-    agentStrategy: "local-interview",
+    agentStrategy: "remote-ai",
+    agentMode: "contact-intake",
     profileSummary:
-      "O agente funciona como entrevistador e editor de perfil. Ele conversa a partir do historico ja consolidado, identifica eixos importantes da minha trajetoria e organiza tudo num documento retriavel orientado a consulta.",
+      "Use esta conversa para sair do interesse difuso e chegar a um diagnóstico inicial de encaixe, limites e próximo passo de proposta.",
     profileHighlights: [
-      "Trajetoria, metodo e posicionamento organizados para retrieval",
-      "Perguntas pensadas para aprofundar o que ja se sabe",
-      "Base reutilizavel para portfolio, agente e apresentacao"
+      "Objetivo e resultado esperado",
+      "Contexto, dor real e sinais de negócio",
+      "Escopo, restrições e por que meu perfil faz sentido"
     ],
     quickPrompts: [
-      "Pode me entrevistar sobre minha trajetoria e transformar isso em dossie?",
-      "Quero aprofundar meu perfil em IA, agentes e responsabilidade.",
-      "Quero consolidar meu metodo, design, requisitos e software autoral."
+      "Quero entender se meu projeto combina com seu perfil.",
+      "Tenho uma necessidade em produto e interface e quero estruturar melhor o escopo.",
+      "Quero sair desta conversa com uma prévia inicial de proposta."
     ],
     agentGreeting:
-      "Vou te entrevistar para aprofundar seu perfil profissional. Ja parti do que esta consolidado sobre sua trajetoria, metodo, IA, design, requisitos e software autoral, e abaixo mantenho um dossie retriavel vivo.",
+      "Descreva o que você quer construir, em que contexto isso aparece e por que meu perfil entrou nessa conversa. Quando houver base suficiente, eu libero uma prévia em markdown.",
     agentPanelCopy:
-      "Uma entrevista guiada por agente para transformar historico, metodo e posicionamento em um documento retriavel de perfil profissional.",
-    agentFormLabel: "Responda a entrevista ou peça o proximo aprofundamento",
-    agentPlaceholder: "Ex.: pode aprofundar minha visao sobre agentes, polimento e responsabilidade? ou me faca a proxima pergunta.",
-    reportTitle: "Export / dossie retriavel",
-    reportHeading: "Documento vivo do perfil profissional",
-    reportFilename: "icaro-glauco-dossie-retrieval.md",
+      "Eu uso esta conversa guiada para transformar interesse, contexto e escopo em uma prévia realista de proposta e aplicabilidade.",
+    agentFormLabel: "Descreva seu interesse, contexto, escopo ou a próxima camada que devo aprofundar",
+    agentPlaceholder:
+      "Ex.: quero estruturar uma landing com camada editorial e intake guiado para um produto ainda difuso; preciso entender escopo, encaixe e próximos passos.",
+    reportTitle: "Prévia de proposta",
+    reportHeading: "Diagnóstico preliminar de interesse e aplicabilidade",
+    reportFilename: "previa-proposta-icaro-glauco.md",
     reportNotice:
-      "O documento abaixo parte do que ja foi consolidado neste processo e continua aberto para refinamentos de entrevista.",
+      "A exportação só libera quando a conversa trouxer base suficiente de objetivo, contexto, escopo e sinais de encaixe com meu perfil profissional.",
     image: "/assets/foto-07.jpg",
     backgroundImage: "/ambient/night-sentinel.jpg",
     backgroundPosition: "center center",
@@ -218,26 +293,50 @@ export const screens = [
   },
   {
     id: "ai-engineering",
-    code: "04 / IA ENGINEERING",
+    code: "04 / IA APLICADA",
     label: "Agentes",
-    kicker: "Polish era",
-    headline: "Agentes escrevem codigo, mas nao carregam responsabilidade no seu lugar",
+    kicker: "Método e governança",
+    headline: "IA amplia capacidade quando entra com método, critério e responsabilidade",
     blurb:
-      "Minha leitura da nova era de engenharia de IA e direta: agentes compreendem linguagem e escrevem codigo, mas isso nao substitui responsabilidade, percepcao, polimento nem criterio de entrega.",
+      "Minha leitura de engenharia com IA é pragmática: agentes aceleram pesquisa, síntese e iteração, mas não substituem critério, curadoria nem responsabilidade de entrega.",
     details:
-      "O trabalho continua quantitativo em percepcao. Polimento vira a metrica mestra, e hoje a exigencia de maestria e maior que antes. Quem sabe operar com agentes em alto nivel multiplica brutalmente a propria capacidade em comparacao com quem ainda trabalha sem essa camada.",
+      "Para mim, o ganho real aparece quando existe processo. Sem processo, IA só aumenta a velocidade do erro com boa aparência. Com processo, ela amplia ambição, profundidade e ritmo de execução.",
     bullets: [
-      "Agentes aceleram escrita, leitura e iteracao",
-      "Responsabilidade e criterio continuam humanos",
-      "Polimento e a metrica dominante da entrega"
+      "Acelera leitura, escrita e iteração",
+      "Exige validação e refinamento contínuo",
+      "Responsabilidade continua humana"
     ],
-    contentTitle: "Resolucao na era de engenharia de IA",
+    contentTitle: "Como IA entra no meu processo",
     contentBody:
-      "Agentes entendem linguagem, sintetizam contexto e escrevem codigo. Isso mudou o chao da engenharia, mas nao dissolveu o peso do trabalho real. A responsabilidade continua no operador: perceber falha, insistir em refinamento, sustentar qualidade e saber quando uma resposta so parece pronta. Hoje, mais do que nunca, maestria significa usar agentes sem terceirizar criterio.",
+      "Uso agentes para explorar caminhos, organizar raciocínio, comparar opções e acelerar implementação. Mas a última palavra sobre qualidade, risco e adequação continua comigo.",
     contentNotes: [
-      "Produtividade cresce quando existe metodo de operacao",
-      "Percepcao e polimento viram vantagem competitiva",
-      "Quem domina agentes trabalha em outra ordem de rendimento"
+      "Método antes de throughput",
+      "Resposta pronta ainda precisa de leitura forte",
+      "Polimento virou diferencial competitivo"
+    ],
+    deepDives: [
+      {
+        kicker: "Camada 1 / operação",
+        title: "Onde agentes realmente entram no fluxo de trabalho",
+        body:
+          "Eu coloco agentes para leitura de contexto, destravamento de implementação, comparação de caminhos, organização de requisitos e aceleração de refino. O ponto forte aqui não é pedir magia; é iterar com muito mais frequência mantendo intenção e controle.",
+        list: [
+          "Pesquisa e síntese com contexto suficiente",
+          "Iteração mais rápida entre ideia, escrita e verificação",
+          "Apoio forte em planejamento, arquitetura e acabamento"
+        ]
+      },
+      {
+        kicker: "Camada 2 / limite",
+        title: "O que eu não terceirizo para nenhum modelo",
+        body:
+          "Não terceirizo julgamento final, assinatura de qualidade, leitura de risco nem responsabilidade pelo que vai ao ar. Se uma resposta parece limpa, mas está errada, continua errada, e isso precisa ser assumido por quem opera.",
+        list: [
+          "Não terceirizo critério",
+          "Não trato velocidade como prova de qualidade",
+          "Não confundo assistência com autoria completa"
+        ]
+      }
     ],
     image: "/assets/foto-05.jpg",
     backgroundImage: "/ambient/dawn-boat.jpg",
@@ -253,28 +352,50 @@ export const screens = [
   },
   {
     id: "systems-explorer",
-    code: "05 / LANGUAGE R&D",
+    code: "05 / LINGUAGEM",
     label: "Linguagens",
-    kicker: "Monolith lab",
-    headline: "Pesquisa de linguagens, tooling autoral e software pessoal",
+    kicker: "Pesquisa aplicada",
+    headline: "Pesquisa de linguagem e tooling próprio para reduzir atrito entre ideia, interface e software",
     blurb:
-      "Ha tambem um lado de pesquisador de linguagens e ferramentas, onde semantica, runtime, interface e distribuicao local entram como parte da mesma busca, agora impulsionada por IA e por experimentos autorais.",
+      "Neste eixo, eu trato linguagem como mais do que sintaxe: para mim ela também é ergonomia, composição, runtime e autoria.",
     details:
-      "Nesse eixo entram o Glauco Ruby, um framework pet para criacao de aplicacoes desktop solo em Ruby, e o dsljs, meu proprio tooling de programacao orientada a macros em JavaScript. Ambos nascem da mesma inquietacao: reduzir atrito entre linguagem, interface, entrega e composicao de software.",
+      "Glauco Ruby e dsljs nasceram da mesma inquietação: investigar formas mais coesas de escrever, distribuir e operar software, especialmente em cenários autorais e de produto.",
     bullets: [
-      "Pesquisa de linguagens e camadas semanticas",
-      "Glauco Ruby como runtime e framework desktop solo",
-      "dsljs como tooling proprio orientado a macros",
-      "Pesquisa focada em local models delivering"
+      "Pesquisa de linguagem aplicada a produto e tooling",
+      "Glauco Ruby como experimento de runtime desktop solo",
+      "dsljs como ferramenta própria orientada a macros"
     ],
-    contentTitle: "Pesquisa de linguagens e Glauco Ruby",
+    contentTitle: "O que eu busco com essa pesquisa",
     contentBody:
-      "Meu lado de pesquisador aparece quando linguagem deixa de ser so sintaxe e vira arquitetura, runtime e experiencia de desenvolvimento. O Glauco Ruby nasce nesse campo como um framework pet para criacao de aplicacoes desktop solo em Ruby, explorando uma ponte mais direta entre backend e frontend, como uma especie de drop-in local para cenarios que hoje orbitam Electron e capacidades react-like. Em paralelo, o dsljs funciona como meu proprio tooling de programacao orientada a macros em JavaScript, pensado para experimentar linguagem como mecanismo de composicao, autoria e ergonomia de software, e nao apenas como API de uso.",
+      "Meu lado de pesquisador aparece quando linguagem deixa de ser só API e vira ambiente de construção. O que me interessa é reduzir atrito entre semântica, implementação, interface e entrega, principalmente em cenários autorais ou solo.",
     contentNotes: [
       "Runtime local como campo de pesquisa",
-      "Semantica aplicada a produto e tooling",
-      "Glauco Ruby e dsljs como laboratorio proprio",
-      "IA como impulso para prototipar e testar linguagem"
+      "Semântica aplicada à ergonomia de software",
+      "Tooling próprio como laboratório útil, não fetiche"
+    ],
+    deepDives: [
+      {
+        kicker: "Camada 1 / Glauco Ruby",
+        title: "O que esse framework busca investigar",
+        body:
+          "Com Glauco Ruby, eu exploro uma ponte mais direta entre backend, frontend e app desktop local. O objetivo é estudar um caminho mais coeso para software solo, menos inchado e mais controlável do que stacks onde tudo já nasce fragmentado.",
+        list: [
+          "Menos atrito entre camadas",
+          "Mais autoria sobre runtime e interface",
+          "Pesquisa feita para servir produto futuro"
+        ]
+      },
+      {
+        kicker: "Camada 2 / dsljs",
+        title: "Por que macros entram nessa linha de investigação",
+        body:
+          "Eu desenvolvi o dsljs para experimentar linguagem como mecanismo de composição e autoria. Em vez de aceitar JavaScript apenas como superfície de uso, eu testo como ele pode ser expandido para reduzir repetição e tornar certas formas de escrita mais expressivas.",
+        list: [
+          "Macro como ferramenta de composição",
+          "Pesquisa ligada à ergonomia real de desenvolvimento",
+          "IA ajudando a prototipar e tensionar possibilidades"
+        ]
+      }
     ],
     image: "/assets/foto-03.jpg",
     backgroundImage: "/ambient/sky-island.jpg",
@@ -290,26 +411,50 @@ export const screens = [
   },
   {
     id: "engineering",
-    code: "06 / ENGINEERING",
+    code: "06 / ENGENHARIA",
     label: "Engenharia",
-    kicker: "Technical line",
-    headline: "Arquitetura tecnica com intencao visual clara",
+    kicker: "Base técnica",
+    headline: "Arquitetura técnica para sustentar experiência, clareza de código e evolução de produto",
     blurb:
-      "A pilha tecnica entra como meio de construcao para suportar continuidade espacial, entidades reutilizaveis e cena viva.",
+      "Eu trato a pilha técnica como infraestrutura de comportamento: cena, navegação, componentes, estado e publicação trabalhando em conjunto.",
     details:
-      "A camera recua um pouco mais e encara a face por um angulo seco de inspecao. A sensacao desejada e de menu de customizacao, onde cada escolha mostra outro recorte do mesmo objeto.",
+      "Não me interessa stack como vitrine. Me interessa uma base capaz de sustentar assinatura visual, legibilidade de implementação e evolução real sem desmontar o projeto a cada iteração.",
     bullets: [
-      "three.js como espaco estrutural",
-      "Vite para iteracao rapida",
-      "Firebase como camada de publicacao"
+      "Three.js como espaço estrutural",
+      "Vite para iteração rápida",
+      "Firebase como camada pragmática de publicação"
     ],
-    contentTitle: "Linha de engenharia",
+    contentTitle: "Como eu penso a base técnica",
     contentBody:
-      "Vite, three.js e Firebase entram aqui como base operacional. O objetivo e suportar uma linguagem visual densa sem perder clareza de implementacao nem capacidade de evolucao.",
+      "Vite, three.js e Firebase entram aqui como base operacional. O objetivo é sustentar uma linguagem visual densa sem perder clareza de implementação nem capacidade de evolução. A escolha técnica precisa servir comportamento, não apenas caber no currículo.",
     contentNotes: [
       "Stack orientada a comportamento",
-      "Cena 3D como sistema",
-      "Infra pronta para crescer"
+      "Cena 3D como sistema, não enfeite",
+      "Infra pensada para crescer sem colapsar"
+    ],
+    deepDives: [
+      {
+        kicker: "Camada 1 / comportamento",
+        title: "O que a técnica precisa sustentar de verdade",
+        body:
+          "Eu preciso que a técnica sustente foco, navegação, continuidade espacial, modularidade e performance suficiente para que a experiência não pareça colagem de partes isoladas. Quero que o sistema se comporte como um corpo único.",
+        list: [
+          "Movimento coerente entre menu, cena e conteúdo",
+          "Componentes legíveis para iterar sem medo",
+          "Base pronta para receber novas camadas"
+        ]
+      },
+      {
+        kicker: "Camada 2 / manutenção",
+        title: "O que impede a arquitetura de virar peso morto",
+        body:
+          "Tento manter o código perto da intenção. Quando comportamento, estado e visual ficam compreensíveis, o projeto continua vivo. Quando tudo vira gambiarra invisível, qualquer evolução futura fica cara demais.",
+        list: [
+          "Separação clara entre dados, renderização e cena",
+          "Escolhas simples onde o problema pede simplicidade",
+          "Espaço para evolução sem refazer o projeto inteiro"
+        ]
+      }
     ],
     image: "/assets/foto-04.jpg",
     backgroundImage: "/assets/foto-05.jpg",
@@ -325,30 +470,65 @@ export const screens = [
   },
   {
     id: "experience",
-    code: "07 / EXPERIENCE",
-    label: "Experiencia",
-    kicker: "Driver profile",
-    headline: "Trajetoria pratica, impacto funcional e leitura direta",
+    code: "07 / EXPERIENCIAS",
+    label: "Experiencias",
+    kicker: "Mundo, operacao e pessoas",
+    headline: "Vivencias pessoais que ampliaram minha leitura de mundo, responsabilidade pratica e maturidade de trabalho",
     blurb:
-      "Experiencia aparece como maneira de operar: resolver, sintetizar, dar forma e sustentar um sistema inteiro.",
+      "Esta secao reune experiencias fora do eixo estrito de design e frontend, mas decisivas para meu modo de ler pessoas, operacao, cultura e responsabilidade concreta.",
     details:
-      "O enquadramento puxa mais lateralidade, como se a camera circulasse o hub para ler outra parte da mesma presenca. Isso aproxima a cena do comportamento de um carro em showcase.",
+      "Viagem internacional, administracao de pessoal em construcao rural e rotina de escritorio imobiliario me deram uma base menos teorica e mais viva sobre organizacao, conduta, prioridade, confianca e coordenacao no mundo real.",
     bullets: [
-      "Atuacao direta na resolucao de problemas",
-      "Sintese entre visao e execucao",
-      "Resultado legivel e funcional"
+      "Irlanda como ampliacao de mundo e referencia civilizatoria",
+      "Construcao rural com lideranca, compras e encarregamento geral",
+      "Escritorio imobiliario como leitura administrativa e comercial"
     ],
-    contentTitle: "Trajetoria e impacto",
+    contentTitle: "O que essas vivencias acrescentam ao meu trabalho",
     contentBody:
-      "Minha experiencia e menos sobre repetir padroes e mais sobre estruturar respostas. Resolver, organizar, posicionar e transformar intencao em sistema utilizavel fazem parte do mesmo fluxo.",
+      "Essas experiencias me ajudaram a ler trabalho para alem da interface. Vi de perto como cultura, organizacao, disciplina, diversidade, responsabilidade e ritmo operacional moldam ambientes, pessoas e resultados. Hoje isso volta para o meu trabalho como mais criterio, mais maturidade e mais nocao de realidade.",
     contentNotes: [
-      "Pratica como base",
-      "Direcao autoral",
-      "Impacto funcional"
+      "Leitura de mundo para alem da bolha tecnica",
+      "Experiencia real com coordenacao, responsabilidade e ritmo",
+      "Mais sensibilidade para cultura, estrutura e convivio humano"
     ],
-    image: "/assets/foto-05.jpg",
-    backgroundImage: "/assets/foto-07.jpg",
-    backgroundPosition: "center 38%",
+    deepDives: [
+      {
+        kicker: "Camada 1 / Irlanda",
+        title: "Oito meses de Irlanda como expansao de mundo e de perspectiva sobre vida e trabalho",
+        body:
+          "A passagem pela Irlanda ampliou minha visao sobre pessoas, convivio, trabalho e sociedade. Foi um contato direto com um lugar de heranca antiga, atualidade informatica e abertura cultural, onde diversidade, imigrantes e tribos urbanas coexistem com regras formais, infraestrutura confiavel e valores humanos praticados no cotidiano. Essa vivencia me fez observar com mais clareza as constantes que ajudam lugares a crescerem como primeiro mundo: respeito ao tempo, ao espaco comum, ao acordo formal, ao trabalho bem feito e a uma organizacao coletiva que nao depende apenas de improviso.",
+        list: [
+          "Ampliacao de perspectiva sobre cultura, convivencia e trabalho",
+          "Observacao pratica de valores humanos e formais funcionando juntos",
+          "Contato com diversidade real, imigracao e ambiente aberto sem perder estrutura"
+        ]
+      },
+      {
+        kicker: "Camada 2 / construcao rural",
+        title: "Responsabilidade de guiar frentes de trabalho em construcao e organizacao rural",
+        body:
+          "Na construcao rural, atuei com guiacao, responsabilidade e orientacao de grupos de trabalhadores em uma operacao que envolvia estrutura de condominio, construcao de casas, maquinas pesadas, compra de material e encarregamento geral. Essa experiencia me colocou numa posicao de coordenar pessoas, cobrar andamento, decidir prioridade, resolver entrave de obra e manter a operacao avancando com mais ordem e responsabilidade.",
+        list: [
+          "Orientacao de equipes de trabalho em campo",
+          "Leitura de prioridade entre obra, material, maquina e prazo",
+          "Encarregamento geral com foco em andamento e responsabilidade"
+        ]
+      },
+      {
+        kicker: "Camada 3 / escritorio imobiliario",
+        title: "Escritorio imobiliario como leitura administrativa, comercial e de relacionamento",
+        body:
+          "A experiencia em escritorio imobiliario reforcou minha leitura de rotina administrativa, articulacao entre campo e escritorio, acompanhamento de demandas, conversa com pessoas e organizacao pratica do trabalho. Esse tipo de ambiente mostra como informacao, confianca, documento, ritmo e atendimento se conectam na operacao diaria, e me ajudou a amadurecer a forma como leio responsabilidade e comunicacao.",
+        list: [
+          "Mais leitura administrativa e comercial do cotidiano",
+          "Contato com fluxo real entre operacao, escritorio e pessoas",
+          "Maturidade de comunicacao, organizacao e confiabilidade"
+        ]
+      }
+    ],
+    image: "/assets/foto-07.jpg",
+    backgroundImage: "/ambient/dawn-boat.jpg",
+    backgroundPosition: "center center",
     view: {
       distance: 4.95,
       side: -1.1,
@@ -360,26 +540,50 @@ export const screens = [
   },
   {
     id: "interactive",
-    code: "08 / SYSTEM",
+    code: "08 / SISTEMA",
     label: "Sistema",
-    kicker: "Upgrade path",
-    headline: "Base pronta para crescer como produto, ferramenta e cena viva",
+    kicker: "Escalabilidade editorial",
+    headline: "Uma base pronta para crescer como portfólio, ferramenta de descoberta e porta de entrada comercial",
     blurb:
-      "Som ambiente, particulas, IA contextual e outras camadas podem entrar sobre uma base que ja se comporta como objeto navegavel, mas agora com uma leitura mais clara de sistema e comunicacao informacional.",
+      "Com o menu atual, eu já provo um sistema navegável. A partir dele, o site pode evoluir para documento, intake, apresentação contextual e filtro de contato mais inteligente.",
     details:
-      "Aqui a camera sobe e fecha mais no topo da face, evocando menu de pecas e visualizacao superior de um objeto customizavel, mas sem perder a ideia de documento vivo.",
+      "Meu próximo passo não é adicionar ornamento. É transformar esta base em mecanismo mais forte de apresentação, triagem, proposta e aprofundamento, preservando assinatura visual e clareza de leitura.",
     bullets: [
-      "Espaco para IA contextual",
-      "Galeria como eixo central da cena",
-      "Transicoes futuras entre menu, documento e ferramenta"
+      "Espaço para IA contextual",
+      "Navegação por foco como eixo do sistema",
+      "Transição entre portfólio, intake e ferramenta"
     ],
-    contentTitle: "Sistema vivo e caminho de expansao",
+    contentTitle: "Onde este site pode crescer",
     contentBody:
-      "O menu atual ja funciona como prova de comportamento: hover realoca a camera, isola a face visivel e prepara o salto para uma navegacao mais profunda. O proximo passo natural e esse mesmo sistema operar como documento, interface de descoberta e ferramenta de trabalho.",
+      "Com o menu atual, eu já provo comportamento: hover realoca a câmera, isola a face visível e prepara o salto para uma navegação mais profunda. O próximo passo natural é fazer o mesmo sistema operar como documento útil, interface de descoberta e filtro de contato mais forte.",
     contentNotes: [
-      "Evolucao natural para cena expandida",
-      "Interacao guiada por foco",
-      "Escalavel sem perder identidade"
+      "Expansão sem perder assinatura",
+      "Navegação guiada por foco e prioridade",
+      "Camadas futuras entrando sobre base viva"
+    ],
+    deepDives: [
+      {
+        kicker: "Camada 1 / produto",
+        title: "O que pode entrar sem trair a estrutura",
+        body:
+          "Eu posso adicionar novas seções, cenas, trilhas de aprofundamento, sons, modos de leitura e mais automação de contato. O importante é tudo continuar parecendo parte do mesmo organismo, e não um acoplado improvisado.",
+        list: [
+          "Intake guiado melhor do que formulário seco",
+          "Apresentação que vira ferramenta de conversa",
+          "Camadas contextuais por tipo de visitante"
+        ]
+      },
+      {
+        kicker: "Camada 2 / critério",
+        title: "O que mantem a expansao no lugar certo",
+        body:
+          "Meu critério aqui é não trocar estrutura por barulho. Toda camada nova precisa aumentar utilidade, legibilidade ou força de assinatura. Se só chama atenção, mas não melhora a leitura, entra pesada demais.",
+        list: [
+          "Crescer com função clara",
+          "Sustentar navegação compreensível",
+          "Tratar estilo como parte do sistema, não maquiagem"
+        ]
+      }
     ],
     image: "/assets/foto-06.jpg",
     backgroundImage: "/assets/foto-06.jpg",
@@ -395,26 +599,50 @@ export const screens = [
   },
   {
     id: "contact",
-    code: "09 / CLOSING",
+    code: "09 / FECHAMENTO",
     label: "Fechamento",
-    kicker: "Work philosophy",
-    headline: "Buscar o melhor, entregar do melhor e nao ter medo de chegar la",
+    kicker: "Assinatura profissional",
+    headline: "Ambição com fundamento para construir interfaces, sistemas e portas de entrada com critério",
     blurb:
-      "O fechamento e a filosofia que amarra tudo isso: fundamentos como apoio, ambicao como motor e a vontade de construir com seriedade algo cada vez mais util, acessivel e interessante para o mundo ao redor.",
+      "Eu fecho este portfólio amarrando o que me move: fundamento técnico, leitura de produto e ambição de entregar algo útil, bonito e economicamente relevante.",
     details:
-      "Eu me resumo como um empreendedor solo que mistura afinidades de design, UX, engenharia e negocios para abranger um tipo de mercado cada vez mais acessivel e relevante. O que me move e buscar o melhor, entregar o melhor e nao recuar da altura do que quero construir, seja num website editorial, num framework pet em Ruby ou num tooling proprio como o dsljs.",
+      "Eu opero como construtor solo em design, UX, engenharia, requisitos e software autoral. O que me move é transformar essa combinação em trabalho sério, com assinatura, consistência e responsabilidade.",
     bullets: [
-      "Fundamentos como apoio, nao como limite",
-      "Design, UX, engenharia e negocios no mesmo corpo",
-      "Empreendedorismo solo com ambicao de excelencia"
+      "Fundamento como apoio, não como teto",
+      "Design, UX, engenharia e negócio no mesmo corpo",
+      "Ambição de excelência com leitura prática de mercado"
     ],
-    contentTitle: "Filosofia e fechamento",
+    contentTitle: "O que eu procuro sustentar em cada trabalho",
     contentBody:
-      "Minha filosofia de trabalho nasce de uma busca simples de dizer e dificil de sustentar: ser o cara que quis ser o melhor no que faz e entregar do melhor do que consegue construir. Nunca vi fundamento como teto; vejo como base para empurrar mais longe a forca do que quero me tornar, misturando design, UX, engenharia e negocios numa pratica de empreendedorismo solo. Este proprio site, apresentado como porta de entrada quase white-paper, o Glauco Ruby e o dsljs sao expressoes diferentes da mesma vontade: construir linguagem, produto e experiencia com assinatura propria.",
+      "Minha filosofia de trabalho nasce de uma vontade simples de dizer e difícil de sustentar: fazer melhor e responder a isso com entrega real. Nunca vi fundamento como limite; vejo como base para empurrar mais longe a qualidade do que construo.",
     contentNotes: [
-      "Ambicao sustentada por base tecnica",
+      "Ambição com base técnica",
       "Entrega com responsabilidade e assinatura",
-      "Mercado acessivel, util e interessante"
+      "Mercado acessível, útil e interessante"
+    ],
+    deepDives: [
+      {
+        kicker: "Camada 1 / compromisso",
+        title: "O que essa filosofia exige no dia a dia",
+        body:
+          "Essa filosofia me exige critério, insistência, desconforto com solução meia boca e disposição para lapidar. Também me exige dizer não quando algo ainda não tem base suficiente, mesmo que isso pareça menos sedutor no curto prazo.",
+        list: [
+          "Não empacotar vazio como se fosse proposta",
+          "Não fingir clareza quando o projeto ainda está nebuloso",
+          "Não abrir mão de assinatura para caber em fórmula pronta"
+        ]
+      },
+      {
+        kicker: "Camada 2 / afinidade",
+        title: "O tipo de trabalho que mais conversa com meu perfil",
+        body:
+          "Os trabalhos que mais combinam comigo costumam misturar leitura de problema, interface forte, estrutura semântica, critério de produto e vontade de construir algo memorável sem perder utilidade.",
+        list: [
+          "Portas de entrada editoriais ou experienciais",
+          "Produtos que ainda precisam encontrar sua forma certa",
+          "Projetos em que critério visual e estrutural precisam andar juntos"
+        ]
+      }
     ],
     image: "/assets/foto-04.jpg",
     backgroundImage: "/ambient/night-sentinel.jpg",

@@ -1,403 +1,565 @@
 import * as THREE from "three";
 
-function createAsphaltTexture() {
+function drawRoundedRect(ctx, x, y, width, height, radius) {
+  const r = Math.min(radius, width / 2, height / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + width - r, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+  ctx.lineTo(x + width, y + height - r);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+  ctx.lineTo(x + r, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function createGroundTexture() {
   const canvas = document.createElement("canvas");
   canvas.width = 1024;
   canvas.height = 1024;
   const ctx = canvas.getContext("2d");
 
-  ctx.fillStyle = "#15171b";
+  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  gradient.addColorStop(0, "#efe7db");
+  gradient.addColorStop(1, "#ddd1c2");
+  ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  for (let i = 0; i < 2400; i += 1) {
+  for (let i = 0; i < 1800; i += 1) {
     const x = Math.random() * canvas.width;
     const y = Math.random() * canvas.height;
-    const shade = 18 + Math.random() * 18;
-    ctx.fillStyle = `rgba(${shade}, ${shade + 1}, ${shade + 3}, ${0.16 + Math.random() * 0.2})`;
-    ctx.fillRect(x, y, Math.random() * 4 + 1, Math.random() * 4 + 1);
+    const size = Math.random() * 2.6 + 0.4;
+    const shade = 206 + Math.random() * 24;
+    ctx.fillStyle = `rgba(${shade}, ${shade - 6}, ${shade - 12}, ${0.08 + Math.random() * 0.09})`;
+    ctx.fillRect(x, y, size, size);
   }
 
-  ctx.strokeStyle = "rgba(255,255,255,0.06)";
-  ctx.lineWidth = 8;
-  ctx.beginPath();
-  ctx.moveTo(210, 90);
-  ctx.lineTo(210, 940);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(814, 90);
-  ctx.lineTo(814, 940);
-  ctx.stroke();
-
-  ctx.strokeStyle = "rgba(255,182,106,0.28)";
-  ctx.lineWidth = 4;
-  ctx.beginPath();
-  ctx.moveTo(512, 120);
-  ctx.lineTo(512, 900);
-  ctx.stroke();
-
-  for (let i = 0; i < 7; i += 1) {
-    const w = 80 + Math.random() * 140;
-    const h = 40 + Math.random() * 90;
-    const x = Math.random() * (canvas.width - w);
-    const y = Math.random() * (canvas.height - h);
-    const grad = ctx.createRadialGradient(x + w / 2, y + h / 2, 20, x + w / 2, y + h / 2, Math.max(w, h));
-    grad.addColorStop(0, "rgba(255,160,90,0.12)");
-    grad.addColorStop(1, "rgba(255,160,90,0)");
-    ctx.fillStyle = grad;
-    ctx.fillRect(x, y, w, h);
+  for (let i = 0; i < 26; i += 1) {
+    ctx.strokeStyle = `rgba(255,255,255,${0.025 + Math.random() * 0.03})`;
+    ctx.lineWidth = Math.random() * 3 + 1;
+    ctx.beginPath();
+    ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+    ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+    ctx.stroke();
   }
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(4.5, 4.5);
+  texture.repeat.set(5.5, 5.5);
   texture.anisotropy = 8;
   return texture;
 }
 
-function createWallTexture() {
+function createSkyTexture() {
   const canvas = document.createElement("canvas");
-  canvas.width = 1024;
-  canvas.height = 512;
+  canvas.width = 1400;
+  canvas.height = 900;
   const ctx = canvas.getContext("2d");
 
-  ctx.fillStyle = "#171411";
+  const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  skyGradient.addColorStop(0, "#a8d8ff");
+  skyGradient.addColorStop(0.5, "#d8efff");
+  skyGradient.addColorStop(1, "#fff2df");
+  ctx.fillStyle = skyGradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  for (let i = 0; i < 70; i += 1) {
-    const x = (canvas.width / 70) * i;
-    ctx.strokeStyle = i % 2 === 0 ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.15)";
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, canvas.height);
-    ctx.stroke();
+  const sunGlow = ctx.createRadialGradient(1090, 170, 30, 1090, 170, 320);
+  sunGlow.addColorStop(0, "rgba(255,245,198,0.95)");
+  sunGlow.addColorStop(0.38, "rgba(255,234,176,0.46)");
+  sunGlow.addColorStop(1, "rgba(255,234,176,0)");
+  ctx.fillStyle = sunGlow;
+  ctx.fillRect(720, 0, 640, 520);
+
+  for (let i = 0; i < 9; i += 1) {
+    const x = 120 + Math.random() * 1120;
+    const y = 120 + Math.random() * 380;
+    const width = 180 + Math.random() * 320;
+    const height = 48 + Math.random() * 88;
+    const cloud = ctx.createRadialGradient(x, y, 12, x, y, width);
+    cloud.addColorStop(0, "rgba(255,255,255,0.34)");
+    cloud.addColorStop(0.56, "rgba(255,255,255,0.14)");
+    cloud.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = cloud;
+    ctx.fillRect(x - width, y - height, width * 2, height * 2);
   }
 
-  ctx.strokeStyle = "rgba(255,122,24,0.16)";
-  ctx.lineWidth = 12;
-  ctx.beginPath();
-  ctx.moveTo(120, 320);
-  ctx.lineTo(280, 250);
-  ctx.lineTo(380, 310);
-  ctx.stroke();
+  const horizon = ctx.createLinearGradient(0, canvas.height * 0.68, 0, canvas.height);
+  horizon.addColorStop(0, "rgba(255,228,195,0)");
+  horizon.addColorStop(1, "rgba(255,228,195,0.42)");
+  ctx.fillStyle = horizon;
+  ctx.fillRect(0, canvas.height * 0.64, canvas.width, canvas.height * 0.36);
 
-  ctx.strokeStyle = "rgba(123, 207, 255, 0.14)";
-  ctx.lineWidth = 8;
-  ctx.beginPath();
-  ctx.moveTo(690, 180);
-  ctx.lineTo(850, 130);
-  ctx.lineTo(930, 190);
-  ctx.stroke();
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(2.6, 1.8);
-  return texture;
-}
-
-function createSmokeTexture() {
-  const canvas = document.createElement("canvas");
-  canvas.width = 256;
-  canvas.height = 256;
-  const ctx = canvas.getContext("2d");
-  const grad = ctx.createRadialGradient(128, 128, 10, 128, 128, 120);
-  grad.addColorStop(0, "rgba(255,255,255,0.75)");
-  grad.addColorStop(0.45, "rgba(200,200,200,0.35)");
-  grad.addColorStop(1, "rgba(255,255,255,0)");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, 256, 256);
   return new THREE.CanvasTexture(canvas);
 }
 
-function createLamp(color, position, targetPosition) {
-  const lampGroup = new THREE.Group();
-  lampGroup.position.copy(position);
+function createCloudTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 256;
+  const ctx = canvas.getContext("2d");
+  const cloud = ctx.createRadialGradient(256, 128, 24, 256, 128, 220);
+  cloud.addColorStop(0, "rgba(255,255,255,0.82)");
+  cloud.addColorStop(0.45, "rgba(255,255,255,0.36)");
+  cloud.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = cloud;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  return new THREE.CanvasTexture(canvas);
+}
 
-  const cap = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.5, 0.64, 0.18, 18),
-    new THREE.MeshStandardMaterial({
-      color: 0x11151b,
-      metalness: 0.9,
-      roughness: 0.26
-    })
-  );
-  lampGroup.add(cap);
+function createShadowTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext("2d");
 
-  const bulb = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.22, 0.26, 0.1, 12),
-    new THREE.MeshStandardMaterial({
-      color,
-      emissive: color,
-      emissiveIntensity: 2.8
-    })
-  );
-  bulb.position.y = -0.09;
-  lampGroup.add(bulb);
+  drawRoundedRect(ctx, 92, 112, 328, 288, 56);
+  const shadow = ctx.createRadialGradient(256, 256, 38, 256, 256, 220);
+  shadow.addColorStop(0, "rgba(33,29,25,0.38)");
+  shadow.addColorStop(0.52, "rgba(33,29,25,0.18)");
+  shadow.addColorStop(1, "rgba(33,29,25,0)");
+  ctx.fillStyle = shadow;
+  ctx.fill();
 
-  const light = new THREE.SpotLight(color, 55, 22, 0.44, 0.55, 1.3);
-  light.position.copy(position);
-  light.target.position.copy(targetPosition);
-  light.castShadow = true;
-  light.shadow.mapSize.width = 512;
-  light.shadow.mapSize.height = 512;
+  return new THREE.CanvasTexture(canvas);
+}
 
-  return { lampGroup, light };
+function createSweatDropTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 180;
+  canvas.height = 280;
+  const ctx = canvas.getContext("2d");
+
+  ctx.translate(canvas.width / 2, 20);
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.bezierCurveTo(42, 56, 56, 116, 0, 216);
+  ctx.bezierCurveTo(-56, 116, -42, 56, 0, 0);
+  ctx.closePath();
+
+  const fill = ctx.createLinearGradient(0, 0, 0, 216);
+  fill.addColorStop(0, "rgba(255,255,255,0.94)");
+  fill.addColorStop(0.32, "rgba(205,240,255,0.88)");
+  fill.addColorStop(1, "rgba(124,191,255,0.26)");
+  ctx.fillStyle = fill;
+  ctx.fill();
+
+  ctx.lineWidth = 10;
+  ctx.strokeStyle = "rgba(255,255,255,0.34)";
+  ctx.stroke();
+
+  const highlight = ctx.createRadialGradient(-18, 54, 8, -18, 54, 44);
+  highlight.addColorStop(0, "rgba(255,255,255,0.92)");
+  highlight.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = highlight;
+  ctx.beginPath();
+  ctx.ellipse(-14, 52, 18, 26, -0.28, 0, Math.PI * 2);
+  ctx.fill();
+
+  return new THREE.CanvasTexture(canvas);
+}
+
+function createVariantTexture(image, anisotropy, variant = "base") {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  const width = image.width;
+  const height = image.height;
+  canvas.width = width;
+  canvas.height = height;
+
+  let sourceX = 0;
+  let sourceY = 0;
+  let sourceWidth = width;
+  let sourceHeight = height;
+
+  if (variant === "linguagens-alt") {
+    sourceX = width * 0.08;
+    sourceWidth = width * 0.84;
+  } else if (variant === "fechamento-alt") {
+    sourceY = height * 0.04;
+    sourceHeight = height * 0.86;
+  } else if (variant === "requisitos-sweat") {
+    sourceX = width * 0.03;
+    sourceWidth = width * 0.94;
+    sourceY = height * 0.02;
+    sourceHeight = height * 0.94;
+  } else if (variant === "crop-left") {
+    sourceX = width * 0.02;
+    sourceWidth = width * 0.74;
+  } else if (variant === "crop-right") {
+    sourceX = width * 0.24;
+    sourceWidth = width * 0.74;
+  } else if (variant === "crop-top") {
+    sourceY = height * 0.02;
+    sourceHeight = height * 0.74;
+  } else if (variant === "crop-bottom") {
+    sourceY = height * 0.22;
+    sourceHeight = height * 0.74;
+  } else if (variant === "cool-tint") {
+    sourceX = width * 0.06;
+    sourceWidth = width * 0.88;
+  } else if (variant === "warm-tint") {
+    sourceY = height * 0.06;
+    sourceHeight = height * 0.88;
+  } else if (variant === "zoom-tight") {
+    sourceX = width * 0.14;
+    sourceY = height * 0.1;
+    sourceWidth = width * 0.72;
+    sourceHeight = height * 0.72;
+  }
+
+  context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, width, height);
+
+  if (variant === "linguagens-alt") {
+    context.fillStyle = "rgba(102, 173, 255, 0.16)";
+    context.fillRect(0, 0, width, height);
+    context.fillStyle = "rgba(8, 18, 38, 0.22)";
+    context.fillRect(0, height * 0.58, width, height * 0.42);
+  }
+
+  if (variant === "fechamento-alt") {
+    context.fillStyle = "rgba(245, 201, 132, 0.18)";
+    context.fillRect(0, 0, width, height);
+    context.fillStyle = "rgba(34, 16, 8, 0.12)";
+    context.fillRect(0, 0, width, height);
+  }
+
+  if (variant === "requisitos-sweat") {
+    context.fillStyle = "rgba(19, 28, 44, 0.08)";
+    context.fillRect(0, 0, width, height);
+  }
+
+  if (variant === "cool-tint") {
+    context.fillStyle = "rgba(88, 162, 255, 0.18)";
+    context.fillRect(0, 0, width, height);
+    context.fillStyle = "rgba(6, 20, 40, 0.14)";
+    context.fillRect(0, 0, width, height);
+  }
+
+  if (variant === "warm-tint") {
+    context.fillStyle = "rgba(255, 190, 112, 0.16)";
+    context.fillRect(0, 0, width, height);
+    context.fillStyle = "rgba(42, 20, 10, 0.1)";
+    context.fillRect(0, 0, width, height);
+  }
+
+  if (variant === "zoom-tight") {
+    context.fillStyle = "rgba(255, 255, 255, 0.06)";
+    context.fillRect(0, 0, width, height);
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = anisotropy;
+  return texture;
 }
 
 function buildEnvironment(scene) {
-  const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(42, 42),
+  scene.background = new THREE.Color(0xe8f4ff);
+  scene.fog = new THREE.Fog(0xe8f4ff, 13, 32);
+
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(64, 64),
     new THREE.MeshStandardMaterial({
-      map: createAsphaltTexture(),
-      color: 0x131519,
-      metalness: 0.58,
-      roughness: 0.82
+      map: createGroundTexture(),
+      color: 0xe5dbce,
+      metalness: 0.02,
+      roughness: 0.96
     })
   );
-  floor.rotation.x = -Math.PI / 2;
-  floor.receiveShadow = true;
-  scene.add(floor);
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -2.35;
+  ground.receiveShadow = true;
+  scene.add(ground);
 
-  const wallMaterial = new THREE.MeshStandardMaterial({
-    map: createWallTexture(),
-    color: 0x1b1815,
-    metalness: 0.5,
-    roughness: 0.84
-  });
-
-  const backWall = new THREE.Mesh(new THREE.PlaneGeometry(24, 8), wallMaterial);
-  backWall.position.set(0, 3.6, -8.6);
-  scene.add(backWall);
-
-  const sideWallLeft = new THREE.Mesh(new THREE.PlaneGeometry(11, 7.5), wallMaterial);
-  sideWallLeft.position.set(-8.4, 3.4, -4.6);
-  sideWallLeft.rotation.y = Math.PI / 2;
-  scene.add(sideWallLeft);
-
-  const roof = new THREE.Mesh(
-    new THREE.BoxGeometry(18, 0.24, 13),
-    new THREE.MeshStandardMaterial({
-      color: 0x0f1217,
-      metalness: 0.86,
-      roughness: 0.3
-    })
-  );
-  roof.position.set(-0.3, 6.05, -2.6);
-  roof.receiveShadow = true;
-  scene.add(roof);
-
-  for (let i = 0; i < 5; i += 1) {
-    const beam = new THREE.Mesh(
-      new THREE.BoxGeometry(18, 0.15, 0.2),
-      new THREE.MeshStandardMaterial({
-        color: 0x1a1d23,
-        metalness: 0.88,
-        roughness: 0.24
-      })
-    );
-    beam.position.set(-0.3, 5.72, -7.7 + i * 2.4);
-    scene.add(beam);
-  }
-
-  [
-    [-7.6, 2.75, -7.1],
-    [7.6, 2.75, -7.1],
-    [-7.6, 2.75, 1.5],
-    [7.6, 2.75, 1.5],
-    [-2.2, 2.75, -7.1],
-    [2.6, 2.75, -7.1]
-  ].forEach(([x, y, z]) => {
-    const column = new THREE.Mesh(
-      new THREE.BoxGeometry(0.34, 5.5, 0.34),
-      new THREE.MeshStandardMaterial({
-        color: 0x11151b,
-        metalness: 0.9,
-        roughness: 0.22
-      })
-    );
-    column.position.set(x, y, z);
-    column.castShadow = true;
-    column.receiveShadow = true;
-    scene.add(column);
-  });
-
-  const lamps = [
-    createLamp(0xffc07a, new THREE.Vector3(-4.6, 5.3, -4.4), new THREE.Vector3(-4.6, 0, -3.8)),
-    createLamp(0xffc07a, new THREE.Vector3(0.4, 5.3, -4.2), new THREE.Vector3(0.2, 0, -2.6)),
-    createLamp(0xffc07a, new THREE.Vector3(5.2, 5.3, -3.8), new THREE.Vector3(4.8, 0, -2.2))
-  ];
-  lamps.forEach(({ lampGroup, light }) => {
-    scene.add(lampGroup, light, light.target);
-  });
-
-  const cityGlow = new THREE.Mesh(
-    new THREE.PlaneGeometry(20, 10),
+  const skyPanel = new THREE.Mesh(
+    new THREE.PlaneGeometry(58, 28),
     new THREE.MeshBasicMaterial({
-      color: 0xff8c42,
-      transparent: true,
-      opacity: 0.12
+      map: createSkyTexture(),
+      toneMapped: false,
+      depthWrite: false
     })
   );
-  cityGlow.position.set(0, 3.8, 8.8);
-  cityGlow.rotation.y = Math.PI;
-  scene.add(cityGlow);
+  skyPanel.position.set(0, 7.3, -20);
+  scene.add(skyPanel);
 
-  const hazeTexture = createSmokeTexture();
-  const hazePositions = [
-    [-2.4, 0.55, 4.6, 5.2],
-    [3.2, 0.7, 3.8, 4.1],
-    [6.1, 0.65, -1.4, 3.6]
+  const sunDisc = new THREE.Mesh(
+    new THREE.CircleGeometry(2.7, 48),
+    new THREE.MeshBasicMaterial({
+      color: 0xfff4c8,
+      transparent: true,
+      opacity: 0.36,
+      toneMapped: false,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    })
+  );
+  sunDisc.position.set(10.6, 9.3, -19.4);
+  scene.add(sunDisc);
+
+  const atmosphericBand = new THREE.Mesh(
+    new THREE.PlaneGeometry(34, 7),
+    new THREE.MeshBasicMaterial({
+      color: 0xf9e3c2,
+      transparent: true,
+      opacity: 0.18,
+      toneMapped: false,
+      depthWrite: false
+    })
+  );
+  atmosphericBand.position.set(0, 0.65, -18.4);
+  scene.add(atmosphericBand);
+
+  const cloudTexture = createCloudTexture();
+  const cloudSpecs = [
+    { x: -8.8, y: 7.8, z: -17.2, scaleX: 7.8, scaleY: 3.2, opacity: 0.2, drift: 0.28, speed: 0.06, phase: 0.4 },
+    { x: -1.2, y: 9.2, z: -17.8, scaleX: 6.4, scaleY: 2.8, opacity: 0.15, drift: 0.22, speed: 0.05, phase: 1.7 },
+    { x: 7.4, y: 8.4, z: -17.1, scaleX: 8.4, scaleY: 3.6, opacity: 0.22, drift: 0.3, speed: 0.07, phase: 2.6 }
   ];
 
-  hazePositions.forEach(([x, y, z, scale]) => {
-    const sprite = new THREE.Sprite(
+  const cloudSprites = cloudSpecs.map((spec) => {
+    const cloud = new THREE.Sprite(
       new THREE.SpriteMaterial({
-        map: hazeTexture,
-        color: 0xd8d8d8,
-        opacity: 0.34,
+        map: cloudTexture,
+        color: 0xffffff,
         transparent: true,
+        opacity: spec.opacity,
         depthWrite: false
       })
     );
-    sprite.position.set(x, y, z);
-    sprite.scale.set(scale, scale * 0.65, 1);
-    scene.add(sprite);
+    cloud.position.set(spec.x, spec.y, spec.z);
+    cloud.scale.set(spec.scaleX, spec.scaleY, 1);
+    cloud.userData = {
+      baseX: spec.x,
+      baseY: spec.y,
+      baseOpacity: spec.opacity,
+      drift: spec.drift,
+      speed: spec.speed,
+      phase: spec.phase
+    };
+    scene.add(cloud);
+    return cloud;
   });
+
+  return { cloudSprites };
 }
 
 function buildFaceMetrics(textures) {
   const tallestImage = Math.max(...textures.map((texture) => texture.image.height));
-  const worldScale = 3 / tallestImage;
+  const worldScale = 2.55 / tallestImage;
 
   return textures.map((texture) => {
     const photoWidth = texture.image.width * worldScale;
     const photoHeight = texture.image.height * worldScale;
-    const frameWidth = photoWidth + 0.28;
-    const frameHeight = photoHeight + 0.28;
 
     return {
       photoWidth,
       photoHeight,
-      frameWidth,
-      frameHeight,
-      finDepth: Math.max(0.92, frameWidth * 0.42),
-      visorDepth: Math.max(0.74, frameWidth * 0.36)
+      frameWidth: photoWidth + 0.28,
+      frameHeight: photoHeight + 0.28
     };
   });
 }
 
-function createHub(faceMetrics) {
-  const screenCount = faceMetrics.length;
-  const hub = new THREE.Group();
-  const step = (Math.PI * 2) / screenCount;
+function isPhotoWallAsset(src) {
+  return typeof src === "string" && /\.(png|jpe?g|webp)$/i.test(src);
+}
+
+function buildPhotoEntries(screens) {
+  const entries = [];
+  const identityScreen = screens.find((screen) => screen.kind === "identity");
+  const screenById = new Map(screens.map((screen) => [screen.id, screen]));
+  const seen = new Set();
+
+  const primaryEntries = [
+    { screenId: "overview", src: "/assets/foto-02.jpg" },
+    { screenId: "portfolio", src: "/assets/foto-01.jpg", variant: "requisitos-sweat" },
+    { screenId: "agent", src: "/assets/foto-07.jpg" },
+    { screenId: "ai-engineering", src: "/assets/foto-05.jpg" },
+    { screenId: "systems-explorer", src: "/assets/foto-06.jpg", variant: "linguagens-alt" },
+    { screenId: "engineering", src: "/assets/foto-04.jpg" },
+    { screenId: "experience", src: "/assets/foto-07.jpg" },
+    { screenId: "interactive", src: "/assets/foto-06.jpg" },
+    { screenId: "contact", src: "/assets/foto-04.jpg", variant: "fechamento-alt" }
+  ];
+
+  function pushEntry(src, screen = null, options = {}) {
+    if (!isPhotoWallAsset(src)) return;
+
+    const key = [src, options.variant || "base", options.screenKey || screen?.id || "ambient"].join("::");
+    if (seen.has(key)) return;
+
+    seen.add(key);
+    entries.push({ src, screen, ...options });
+  }
+
+  primaryEntries.forEach((entry) => {
+    pushEntry(entry.src, screenById.get(entry.screenId) || null, {
+      variant: entry.variant || "base",
+      isPrimary: true
+    });
+  });
+
+  pushEntry(identityScreen?.portraitImage || null, null, {
+    variant: "base"
+  });
+
+  (identityScreen?.identityDeck || []).forEach((item) => {
+    pushEntry(item?.src || null, null, {
+      variant: "base"
+    });
+  });
+
+  screens.forEach((screen) => {
+    pushEntry(screen.backgroundImage, null, {
+      variant: "base"
+    });
+  });
+
+  const extraWallShots = [
+    { screenId: "overview", src: "/assets/foto-02.jpg", variant: "crop-left" },
+    { screenId: "overview", src: "/assets/foto-02.jpg", variant: "warm-tint" },
+    { screenId: "portfolio", src: "/assets/foto-01.jpg", variant: "crop-right" },
+    { screenId: "portfolio", src: "/assets/foto-01.jpg", variant: "zoom-tight" },
+    { screenId: "agent", src: "/assets/foto-07.jpg", variant: "cool-tint" },
+    { screenId: "ai-engineering", src: "/assets/foto-05.jpg", variant: "crop-top" },
+    { screenId: "systems-explorer", src: "/assets/foto-03.jpg", variant: "cool-tint" },
+    { screenId: "engineering", src: "/assets/foto-04.jpg", variant: "crop-bottom" },
+    { screenId: "experience", src: "/assets/foto-07.jpg", variant: "zoom-tight" },
+    { screenId: "interactive", src: "/assets/foto-06.jpg", variant: "crop-left" },
+    { screenId: "contact", src: "/assets/foto-04.jpg", variant: "warm-tint" },
+    { screenId: "contact", src: "/assets/foto-04.jpg", variant: "crop-right" },
+    { screenId: "identity-deck", src: "/identity/doce-flauta.png", variant: "crop-top" },
+    { screenId: "identity-deck", src: "/identity/caminho-parque.png", variant: "crop-right" },
+    { screenId: "identity-deck", src: "/identity/app-caminho-parque.png", variant: "zoom-tight" }
+  ];
+
+  extraWallShots.forEach((entry, index) => {
+    pushEntry(entry.src, screenById.get(entry.screenId) || null, {
+      variant: entry.variant,
+      screenKey: `${entry.screenId}-${index}`
+    });
+  });
+
+  return entries;
+}
+
+function buildWallLayout(faceMetrics) {
+  const count = faceMetrics.length;
   const maxFrameWidth = Math.max(...faceMetrics.map((metric) => metric.frameWidth));
   const maxFrameHeight = Math.max(...faceMetrics.map((metric) => metric.frameHeight));
-  const faceRadius = maxFrameWidth / (2 * Math.tan(Math.PI / screenCount)) + 0.62;
-  const faceHeight = maxFrameHeight + 0.6;
-  const outerRadius = faceRadius + 0.34;
-  const topRadius = faceRadius + 0.14;
+  const columns = count > 18 ? 5 : count > 9 ? 4 : Math.min(3, Math.max(2, Math.ceil(Math.sqrt(count))));
+  const rows = Math.ceil(count / columns);
+  const spacingX = maxFrameWidth * (count > 18 ? 1.18 : count > 9 ? 1.24 : 1.28);
+  const spacingY = maxFrameHeight * (count > 18 ? 1.08 : count > 9 ? 1.12 : 1.16);
 
-  const base = new THREE.Mesh(
-    new THREE.CylinderGeometry(outerRadius + 0.44, outerRadius + 0.7, 0.48, screenCount),
-    new THREE.MeshStandardMaterial({
-      color: 0x11161d,
-      metalness: 0.92,
-      roughness: 0.22
-    })
-  );
-  base.position.y = 0.22;
-  base.rotation.y = step / 2;
-  base.castShadow = true;
-  base.receiveShadow = true;
-  hub.add(base);
+  const offsetXPattern = [-0.22, 0.1, -0.12, 0.18, -0.16, 0.12, -0.08, 0.15, -0.14, 0.1, -0.1, 0.16, -0.18, 0.12, -0.08];
+  const offsetYPattern = [0.14, -0.1, 0.12, -0.16, 0.08, -0.1, 0.09, -0.08, -0.14, 0.11, -0.09, 0.13, -0.12, 0.08, -0.06];
+  const depthPattern = [0.22, -0.1, 0.14, -0.12, 0.26, -0.06, 0.1, -0.14, 0.18, -0.08, 0.12, -0.1, 0.2, -0.12, 0.14];
+  const rotationXPattern = [0.12, -0.08, 0.1, -0.12, 0.16, -0.06, 0.08, -0.1, 0.14, -0.05, 0.09, -0.12, 0.11, -0.07, 0.13];
+  const rotationYPattern = [-0.24, 0.14, -0.1, 0.18, -0.16, 0.12, -0.22, 0.1, -0.08, 0.17, -0.12, 0.15, -0.2, 0.11, -0.14];
+  const rotationZPattern = [-0.12, 0.08, -0.07, 0.11, -0.1, 0.07, -0.08, 0.1, -0.06, 0.09, -0.05, 0.08, -0.11, 0.06, -0.09];
+  const scalePattern = [1.02, 0.96, 1, 1.04, 0.95, 1.01, 0.97, 1.03, 0.94, 1.02, 0.98, 1.03, 0.95, 1, 0.97];
 
-  const lowerShell = new THREE.Mesh(
-    new THREE.CylinderGeometry(outerRadius, outerRadius + 0.08, faceHeight * 0.54, screenCount),
-    new THREE.MeshStandardMaterial({
-      color: 0x13161d,
-      metalness: 0.88,
-      roughness: 0.22,
-      emissive: 0x110804,
-      emissiveIntensity: 0.25
-    })
-  );
-  lowerShell.position.y = faceHeight * 0.27 + 0.34;
-  lowerShell.rotation.y = step / 2;
-  lowerShell.castShadow = true;
-  lowerShell.receiveShadow = true;
-  hub.add(lowerShell);
+  return faceMetrics.map((metric, index) => {
+    const row = Math.floor(index / columns);
+    const col = index % columns;
+    const itemsInRow = Math.min(columns, count - row * columns);
+    const rowBaseX = (col - (itemsInRow - 1) / 2) * spacingX;
+    const rowShift = row % 2 === 0 ? -spacingX * 0.12 : spacingX * 0.1;
+    const position = new THREE.Vector3(
+      rowBaseX + rowShift + offsetXPattern[index % offsetXPattern.length] * maxFrameWidth,
+      ((rows - 1) / 2 - row) * spacingY + offsetYPattern[index % offsetYPattern.length] * maxFrameHeight,
+      depthPattern[index % depthPattern.length]
+    );
 
-  const upperShell = new THREE.Mesh(
-    new THREE.CylinderGeometry(topRadius, outerRadius, faceHeight * 0.52, screenCount),
-    new THREE.MeshStandardMaterial({
-      color: 0x0f141b,
-      metalness: 0.9,
-      roughness: 0.2,
-      emissive: 0x130904,
-      emissiveIntensity: 0.18
-    })
-  );
-  upperShell.position.y = faceHeight * 0.76 + 0.34;
-  upperShell.rotation.y = step / 2;
-  upperShell.castShadow = true;
-  upperShell.receiveShadow = true;
-  hub.add(upperShell);
-
-  const topCap = new THREE.Mesh(
-    new THREE.CylinderGeometry(topRadius - 0.12, topRadius, 0.3, screenCount),
-    new THREE.MeshStandardMaterial({
-      color: 0x0f131a,
-      metalness: 0.92,
-      roughness: 0.18
-    })
-  );
-  topCap.position.y = faceHeight + 0.5;
-  topCap.rotation.y = step / 2;
-  hub.add(topCap);
-
-  const crown = new THREE.Mesh(
-    new THREE.CylinderGeometry(topRadius - 0.34, topRadius - 0.08, 0.18, screenCount),
-    new THREE.MeshStandardMaterial({
-      color: 0x1a1f27,
-      metalness: 0.96,
-      roughness: 0.14
-    })
-  );
-  crown.position.y = faceHeight + 0.72;
-  crown.rotation.y = step / 2;
-  hub.add(crown);
-
-  const neonRing = new THREE.Mesh(
-    new THREE.TorusGeometry(outerRadius + 0.58, 0.06, 16, 72),
-    new THREE.MeshStandardMaterial({
-      color: 0x252e38,
-      emissive: 0xff7a18,
-      emissiveIntensity: 0.34,
-      metalness: 0.95,
-      roughness: 0.16
-    })
-  );
-  neonRing.rotation.x = Math.PI / 2;
-  neonRing.position.y = 0.62;
-  hub.add(neonRing);
-
-  const edgeMaterial = new THREE.LineBasicMaterial({
-    color: 0xffa35a,
-    transparent: true,
-    opacity: 0.34
+    return {
+      position,
+      rotationX: rotationXPattern[index % rotationXPattern.length],
+      rotationY: rotationYPattern[index % rotationYPattern.length],
+      rotationZ: rotationZPattern[index % rotationZPattern.length],
+      scale: scalePattern[index % scalePattern.length]
+    };
   });
+}
 
-  [lowerShell, upperShell].forEach((mesh) => {
-    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry), edgeMaterial);
-    edges.position.copy(mesh.position);
-    edges.rotation.copy(mesh.rotation);
-    hub.add(edges);
-  });
+function createPhotoWall(faceMetrics) {
+  const root = new THREE.Group();
+  root.position.set(0.08, 1.05, -7.25);
 
-  return { hub, faceRadius, faceHeight, step, neonRing };
+  const layout = buildWallLayout(faceMetrics);
+  const bounds = layout.reduce(
+    (accumulator, item, index) => {
+      const metric = faceMetrics[index];
+      accumulator.minX = Math.min(accumulator.minX, item.position.x - metric.frameWidth / 2 - 0.4);
+      accumulator.maxX = Math.max(accumulator.maxX, item.position.x + metric.frameWidth / 2 + 0.4);
+      accumulator.minY = Math.min(accumulator.minY, item.position.y - metric.frameHeight / 2 - 0.4);
+      accumulator.maxY = Math.max(accumulator.maxY, item.position.y + metric.frameHeight / 2 + 0.4);
+      return accumulator;
+    },
+    { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity }
+  );
+
+  const centerX = (bounds.minX + bounds.maxX) / 2;
+  const centerY = (bounds.minY + bounds.maxY) / 2;
+  const width = bounds.maxX - bounds.minX;
+  const height = bounds.maxY - bounds.minY;
+
+  const aura = new THREE.Mesh(
+    new THREE.PlaneGeometry(width + 2.6, height + 2.2),
+    new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.16,
+      depthWrite: false,
+      toneMapped: false
+    })
+  );
+  aura.position.set(centerX, centerY + 0.12, -0.95);
+  root.add(aura);
+
+  const backing = new THREE.Mesh(
+    new THREE.PlaneGeometry(width + 1.1, height + 0.95),
+    new THREE.MeshStandardMaterial({
+      color: 0xf4efe7,
+      transparent: true,
+      opacity: 0.54,
+      roughness: 0.98,
+      metalness: 0.01
+    })
+  );
+  backing.position.set(centerX, centerY + 0.06, -0.88);
+  root.add(backing);
+
+  const ledge = new THREE.Mesh(
+    new THREE.BoxGeometry(width + 0.9, 0.16, 0.24),
+    new THREE.MeshStandardMaterial({
+      color: 0xe3d5c4,
+      roughness: 0.88,
+      metalness: 0.03
+    })
+  );
+  ledge.position.set(centerX, bounds.minY - 0.48, -0.82);
+  ledge.castShadow = true;
+  ledge.receiveShadow = true;
+  root.add(ledge);
+
+  const floorShadow = new THREE.Mesh(
+    new THREE.PlaneGeometry(width + 3.4, 4.2),
+    new THREE.MeshBasicMaterial({
+      map: createShadowTexture(),
+      transparent: true,
+      opacity: 0.14,
+      depthWrite: false
+    })
+  );
+  floorShadow.rotation.x = -Math.PI / 2;
+  floorShadow.position.set(centerX, -3.32, -6.6);
+  root.add(floorShadow);
+
+  return { root, layout };
 }
 
 async function loadTextures(renderer, screens) {
@@ -405,36 +567,79 @@ async function loadTextures(renderer, screens) {
   const anisotropy = renderer.capabilities.getMaxAnisotropy();
 
   return Promise.all(
-    screens.map(async (screen) => {
-      const texture = await loader.loadAsync(screen.image);
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.anisotropy = anisotropy;
-      return texture;
+    screens.map(async (entry) => {
+      if (!entry.variant || entry.variant === "base") {
+        const texture = await loader.loadAsync(entry.src);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.anisotropy = anisotropy;
+        return texture;
+      }
+
+      const image = await loader.loadAsync(entry.src);
+      return createVariantTexture(image.image, anisotropy, entry.variant);
     })
   );
 }
 
-function buildFaces({ hub, screens, textures, faceRadius, step, faceMetrics }) {
+function buildFaces({ wall, entries, textures, faceMetrics, layout }) {
   const faces = [];
+  const shadowTexture = createShadowTexture();
+  const sweatDropTexture = createSweatDropTexture();
 
   textures.forEach((texture, index) => {
     const metrics = faceMetrics[index];
-    const angle = step * index;
-    const normal = new THREE.Vector3(Math.sin(angle), 0, Math.cos(angle));
-    const tangent = new THREE.Vector3(normal.z, 0, -normal.x);
-    const center = new THREE.Vector3(normal.x * faceRadius, metrics.frameHeight / 2 + 0.48, normal.z * faceRadius);
-
+    const placement = layout[index];
+    const entry = entries[index];
     const faceGroup = new THREE.Group();
-    faceGroup.position.copy(center);
-    faceGroup.rotation.y = angle;
+    faceGroup.position.copy(placement.position);
+    faceGroup.rotation.x = placement.rotationX || 0;
+    faceGroup.rotation.y = placement.rotationY;
+    faceGroup.rotation.z = placement.rotationZ;
+    faceGroup.scale.setScalar(placement.scale || 1);
+
+    const shadow = new THREE.Mesh(
+      new THREE.PlaneGeometry(metrics.frameWidth + 0.85, metrics.frameHeight + 0.78),
+      new THREE.MeshBasicMaterial({
+        map: shadowTexture,
+        transparent: true,
+        opacity: 0.18,
+        depthWrite: false
+      })
+    );
+    shadow.position.set(0.08, -0.1, -0.22);
+    faceGroup.add(shadow);
 
     const frameMaterial = new THREE.MeshStandardMaterial({
-      color: 0x14181f,
-      metalness: 0.94,
-      roughness: 0.18,
-      emissive: 0x000000,
-      emissiveIntensity: 0
+      color: 0xf8f3eb,
+      roughness: 0.5,
+      metalness: 0.04,
+      emissive: 0xffefcc,
+      emissiveIntensity: 0.02
     });
+
+    const frame = new THREE.Mesh(
+      new THREE.BoxGeometry(metrics.frameWidth + 0.12, metrics.frameHeight + 0.12, 0.12),
+      frameMaterial
+    );
+    frame.position.z = -0.02;
+    frame.castShadow = true;
+    frame.receiveShadow = true;
+    faceGroup.add(frame);
+
+    const matMaterial = new THREE.MeshStandardMaterial({
+      color: 0xfffbf4,
+      roughness: 0.92,
+      metalness: 0,
+      emissive: 0xfff4e2,
+      emissiveIntensity: 0.01
+    });
+
+    const matBoard = new THREE.Mesh(
+      new THREE.PlaneGeometry(metrics.photoWidth + 0.28, metrics.photoHeight + 0.28),
+      matMaterial
+    );
+    matBoard.position.z = 0.05;
+    faceGroup.add(matBoard);
 
     const photoMaterial = new THREE.MeshBasicMaterial({
       map: texture,
@@ -443,91 +648,71 @@ function buildFaces({ hub, screens, textures, faceRadius, step, faceMetrics }) {
       toneMapped: false
     });
 
-    const borderThickness = 0.09;
-    const borderDepth = 0.13;
-
-    const topBorder = new THREE.Mesh(new THREE.BoxGeometry(metrics.frameWidth, borderThickness, borderDepth), frameMaterial);
-    topBorder.position.y = metrics.frameHeight / 2 - borderThickness / 2;
-    topBorder.castShadow = true;
-    topBorder.receiveShadow = true;
-    faceGroup.add(topBorder);
-
-    const bottomBorder = topBorder.clone();
-    bottomBorder.position.y = -metrics.frameHeight / 2 + borderThickness / 2;
-    faceGroup.add(bottomBorder);
-
-    const sideBorderHeight = metrics.frameHeight - borderThickness * 2;
-
-    const leftBorder = new THREE.Mesh(new THREE.BoxGeometry(borderThickness, sideBorderHeight, borderDepth), frameMaterial);
-    leftBorder.position.x = -metrics.frameWidth / 2 + borderThickness / 2;
-    leftBorder.castShadow = true;
-    leftBorder.receiveShadow = true;
-    faceGroup.add(leftBorder);
-
-    const rightBorder = leftBorder.clone();
-    rightBorder.position.x = metrics.frameWidth / 2 - borderThickness / 2;
-    faceGroup.add(rightBorder);
-
     const photo = new THREE.Mesh(new THREE.PlaneGeometry(metrics.photoWidth, metrics.photoHeight), photoMaterial);
-    photo.position.z = 0.073;
+    photo.position.z = 0.058;
     faceGroup.add(photo);
 
-    const leftFin = new THREE.Mesh(
-      new THREE.BoxGeometry(0.12, Math.max(0.82, metrics.frameHeight - 0.18), metrics.finDepth),
-      new THREE.MeshStandardMaterial({
-        color: 0x0b0d11,
-        metalness: 0.9,
-        roughness: 0.22
-      })
+    let sweatDrop = null;
+    if (entry.variant === "requisitos-sweat") {
+      const sweatMaterial = new THREE.MeshBasicMaterial({
+        map: sweatDropTexture,
+        transparent: true,
+        opacity: 0.74,
+        toneMapped: false,
+        depthWrite: false
+      });
+
+      sweatDrop = new THREE.Mesh(new THREE.PlaneGeometry(0.18, 0.28), sweatMaterial);
+      sweatDrop.position.set(metrics.photoWidth * 0.1, metrics.photoHeight * 0.2, 0.08);
+      faceGroup.add(sweatDrop);
+    }
+
+    wall.add(faceGroup);
+
+    const quaternion = new THREE.Quaternion().setFromEuler(
+      new THREE.Euler(placement.rotationX || 0, placement.rotationY, placement.rotationZ)
     );
-    leftFin.position.set(-(metrics.frameWidth / 2 + 0.05), 0, -metrics.finDepth * 0.26);
-    leftFin.rotation.y = 0.9;
-    faceGroup.add(leftFin);
-
-    const rightFin = leftFin.clone();
-    rightFin.position.x = metrics.frameWidth / 2 + 0.05;
-    rightFin.rotation.y = -0.9;
-    faceGroup.add(rightFin);
-
-    const topVisor = new THREE.Mesh(
-      new THREE.BoxGeometry(metrics.frameWidth * 0.76, 0.12, metrics.visorDepth),
-      new THREE.MeshStandardMaterial({
-        color: 0x0a0c10,
-        metalness: 0.92,
-        roughness: 0.18
-      })
-    );
-    topVisor.position.set(0, metrics.frameHeight / 2 - 0.06, -metrics.visorDepth * 0.22);
-    topVisor.rotation.x = 0.32;
-    faceGroup.add(topVisor);
-
-    const lightBar = new THREE.Mesh(
-      new THREE.BoxGeometry(metrics.frameWidth * 0.66, 0.05, 0.04),
-      new THREE.MeshStandardMaterial({
-        color: 0xffb075,
-        emissive: 0xff7a18,
-        emissiveIntensity: 1.3
-      })
-    );
-    lightBar.position.set(0, metrics.frameHeight / 2 - 0.14, 0.09);
-    faceGroup.add(lightBar);
-
-    hub.add(faceGroup);
+    const normal = new THREE.Vector3(0, 0, 1).applyQuaternion(quaternion).normalize();
+    const tangent = new THREE.Vector3(1, 0, 0).applyQuaternion(quaternion).normalize();
 
     faces.push({
-      screen: screens[index],
+      screen: entry.screen,
       group: faceGroup,
+      basePosition: placement.position.clone(),
       frameMaterial,
+      matMaterial,
       photoMaterial,
-      lightBarMaterial: lightBar.material,
+      sweatMaterial: sweatDrop?.material || null,
+      sweatDrop,
+      shadowMaterial: shadow.material,
       normal,
       tangent,
-      center,
-      metrics
+      center: placement.position.clone(),
+      metrics,
+      baseScale: placement.scale || 1,
+      baseRotationX: placement.rotationX || 0,
+      baseRotationY: placement.rotationY,
+      baseRotationZ: placement.rotationZ,
+      floatOffset: index * 0.7,
+      isPrimary: Boolean(entry.isPrimary && entry.screen)
     });
   });
 
   return faces;
+}
+
+function disposeMaterial(material) {
+  if (!material) {
+    return;
+  }
+
+  Object.values(material).forEach((value) => {
+    if (value && typeof value.dispose === "function") {
+      value.dispose();
+    }
+  });
+
+  material.dispose();
 }
 
 export async function createScene({ mount, screens }) {
@@ -536,72 +721,94 @@ export async function createScene({ mount, screens }) {
   renderer.setSize(mount.clientWidth, mount.clientHeight);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.08;
+  renderer.toneMappingExposure = 1.16;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   mount.append(renderer.domElement);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x07080b, 0.048);
-
   const camera = new THREE.PerspectiveCamera(30, mount.clientWidth / mount.clientHeight, 0.1, 100);
-  const currentLookAt = new THREE.Vector3(0, 2.2, 0);
-  const targetLookAt = new THREE.Vector3(0, 2.2, 0);
-  const targetCameraPosition = new THREE.Vector3(0, 2.42, 10.6);
+  const currentLookAt = new THREE.Vector3(0, 1.3, -7.1);
+  const targetLookAt = currentLookAt.clone();
+  const targetCameraPosition = new THREE.Vector3(0, 1.9, 6.8);
   let targetFov = 30;
 
-  const ambient = new THREE.AmbientLight(0x9f8268, 1.25);
+  const ambient = new THREE.AmbientLight(0xfff7ef, 1.6);
   scene.add(ambient);
 
-  const skyLight = new THREE.HemisphereLight(0x7ccfff, 0x221810, 0.85);
+  const skyLight = new THREE.HemisphereLight(0xd9efff, 0xe2cfb1, 1.28);
   scene.add(skyLight);
 
-  const warmPoint = new THREE.PointLight(0xff6e21, 28, 20, 2);
-  warmPoint.position.set(6.6, 2.8, 4.1);
-  scene.add(warmPoint);
+  const sunLight = new THREE.DirectionalLight(0xfff7db, 2.9);
+  sunLight.position.set(8.5, 10.2, 6.4);
+  sunLight.castShadow = true;
+  sunLight.shadow.mapSize.width = 1024;
+  sunLight.shadow.mapSize.height = 1024;
+  sunLight.shadow.camera.near = 1;
+  sunLight.shadow.camera.far = 34;
+  sunLight.shadow.camera.left = -14;
+  sunLight.shadow.camera.right = 14;
+  sunLight.shadow.camera.top = 14;
+  sunLight.shadow.camera.bottom = -14;
+  sunLight.shadow.bias = -0.00006;
+  scene.add(sunLight, sunLight.target);
 
-  const coolPoint = new THREE.PointLight(0x7bcfff, 18, 18, 2);
-  coolPoint.position.set(-7.2, 3.4, -2.6);
-  scene.add(coolPoint);
+  const fillLight = new THREE.DirectionalLight(0xd8e8ff, 1.05);
+  fillLight.position.set(-10.2, 6.5, 8.8);
+  scene.add(fillLight);
 
-  buildEnvironment(scene);
+  const rimLight = new THREE.PointLight(0xffffff, 10, 30, 2);
+  rimLight.position.set(0, 5.2, -11.8);
+  scene.add(rimLight);
 
-  const hubRoot = new THREE.Group();
-  hubRoot.position.set(0.44, -0.26, -2.18);
-  scene.add(hubRoot);
+  const environment = buildEnvironment(scene);
 
-  const textures = await loadTextures(renderer, screens);
+  const photoEntries = buildPhotoEntries(screens);
+  const textures = await loadTextures(renderer, photoEntries);
   const faceMetrics = buildFaceMetrics(textures);
-  const hubData = createHub(faceMetrics);
-  hubRoot.add(hubData.hub);
-  const faces = buildFaces({ hub: hubData.hub, screens, textures, faceRadius: hubData.faceRadius, step: hubData.step, faceMetrics });
+  const wallData = createPhotoWall(faceMetrics);
+  scene.add(wallData.root);
+  sunLight.target.position.set(0, 0.8, wallData.root.position.z + 0.2);
+
+  const faces = buildFaces({
+    wall: wallData.root,
+    entries: photoEntries,
+    textures,
+    faceMetrics,
+    layout: wallData.layout
+  });
+  const focusFaces = faces.filter((face) => face.isPrimary);
 
   function updateTargetForScreen(index) {
-    const face = faces[index];
+    const face = focusFaces[index] || focusFaces[0];
     const view = face.screen.view;
-    const restrainedDistance = Math.max(view.distance, 6.05 + face.metrics.frameWidth * 0.14);
-    const restrainedSide = THREE.MathUtils.clamp(view.side * 0.66, -0.72, 0.72);
-    const restrainedFov = THREE.MathUtils.clamp(view.fov, 29.8, 31.6);
-    const base = hubRoot.position.clone().add(face.center);
+    const base = wallData.root.position.clone().add(face.center);
+    const restrainedDistance = THREE.MathUtils.clamp(view.distance + 1.55, 6.2, 8.4);
+    const restrainedSide = THREE.MathUtils.clamp(view.side * 0.46, -1.08, 1.08);
+    const lookSide = view.lookSide * 0.34;
+    const heightOffset = (view.height - 1.6) * 0.34;
+    const lookHeightOffset = (view.lookHeight - 1.42) * 0.24;
+
     const position = base
       .clone()
       .add(face.normal.clone().multiplyScalar(restrainedDistance))
       .add(face.tangent.clone().multiplyScalar(restrainedSide));
-    position.y = view.height - 0.08;
+    position.y += heightOffset;
+    position.z += 0.12;
 
-    const lookAt = hubRoot.position
+    const lookAt = base
       .clone()
-      .add(face.center.clone().multiplyScalar(0.98))
-      .add(face.tangent.clone().multiplyScalar(view.lookSide * 0.56));
-    lookAt.y = view.lookHeight - 0.1;
+      .add(face.normal.clone().multiplyScalar(0.06))
+      .add(face.tangent.clone().multiplyScalar(lookSide));
+    lookAt.y += lookHeightOffset;
 
     targetCameraPosition.copy(position);
     targetLookAt.copy(lookAt);
-    targetFov = restrainedFov;
+    targetFov = THREE.MathUtils.clamp(view.fov, 27.5, 32.2);
   }
 
   const clock = new THREE.Clock();
-  let activeIndex = 0;
+  let activeFace = focusFaces[0];
   let frameId = 0;
 
   function resize() {
@@ -614,37 +821,61 @@ export async function createScene({ mount, screens }) {
     frameId = window.requestAnimationFrame(animate);
     const elapsed = clock.getElapsedTime();
 
-    camera.position.lerp(targetCameraPosition, 0.034);
-    currentLookAt.lerp(targetLookAt, 0.04);
-    camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov, 0.035);
+    camera.position.lerp(targetCameraPosition, 0.038);
+    currentLookAt.lerp(targetLookAt, 0.044);
+    camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov, 0.04);
     camera.updateProjectionMatrix();
     camera.lookAt(currentLookAt);
 
-    hubData.neonRing.rotation.z += 0.0018;
-
-    faces.forEach((face, index) => {
-      const isActive = index === activeIndex;
-      const targetScale = isActive ? 1.04 : 1;
-      const targetGlow = isActive ? 0.66 : 0.05;
-      const targetPhoto = isActive ? 1 : 0.9;
-      const targetBar = isActive ? 2.6 : 0.8;
-
-      face.group.scale.x = THREE.MathUtils.lerp(face.group.scale.x, targetScale, 0.09);
-      face.group.scale.y = THREE.MathUtils.lerp(face.group.scale.y, targetScale, 0.09);
-      face.group.scale.z = THREE.MathUtils.lerp(face.group.scale.z, targetScale, 0.09);
-      face.frameMaterial.emissiveIntensity = THREE.MathUtils.lerp(face.frameMaterial.emissiveIntensity, targetGlow, 0.09);
-      face.photoMaterial.opacity = THREE.MathUtils.lerp(face.photoMaterial.opacity, targetPhoto, 0.09);
-      face.lightBarMaterial.emissiveIntensity = THREE.MathUtils.lerp(face.lightBarMaterial.emissiveIntensity, targetBar, 0.09);
+    environment.cloudSprites.forEach((cloud) => {
+      cloud.position.x = cloud.userData.baseX + Math.sin(elapsed * cloud.userData.speed + cloud.userData.phase) * cloud.userData.drift;
+      cloud.position.y = cloud.userData.baseY + Math.cos(elapsed * (cloud.userData.speed * 0.75) + cloud.userData.phase) * 0.08;
+      cloud.material.opacity =
+        cloud.userData.baseOpacity + Math.sin(elapsed * (cloud.userData.speed * 1.2) + cloud.userData.phase) * 0.02;
     });
 
-    warmPoint.position.x = 6.6 + Math.sin(elapsed * 0.4) * 0.3;
-    coolPoint.position.z = -2.6 + Math.cos(elapsed * 0.35) * 0.25;
+    faces.forEach((face, index) => {
+      const isActive = face === activeFace;
+      const floatY = Math.sin(elapsed * 0.55 + face.floatOffset) * 0.04;
+      const driftPitch = Math.sin(elapsed * 0.42 + face.floatOffset) * 0.018;
+      const driftYaw = Math.cos(elapsed * 0.37 + face.floatOffset) * 0.016;
+      const driftRoll = Math.sin(elapsed * 0.48 + face.floatOffset) * 0.014;
+      const targetScale = isActive ? 1.035 : 1;
+      const targetDepth = face.basePosition.z + (isActive ? 0.16 : 0);
+      const targetLift = isActive ? 0.05 : 0;
+      const targetFrameGlow = isActive ? 0.12 : 0.02;
+      const targetMatGlow = isActive ? 0.06 : 0.01;
+      const targetPhotoOpacity = isActive ? 1 : 0.9;
+      const targetShadowOpacity = isActive ? 0.28 : 0.18;
+
+      face.group.position.y = THREE.MathUtils.lerp(face.group.position.y, face.basePosition.y + floatY + targetLift, 0.08);
+      face.group.position.z = THREE.MathUtils.lerp(face.group.position.z, targetDepth, 0.08);
+      face.group.rotation.x = THREE.MathUtils.lerp(face.group.rotation.x, face.baseRotationX + driftPitch, 0.08);
+      face.group.rotation.y = THREE.MathUtils.lerp(face.group.rotation.y, face.baseRotationY + driftYaw, 0.08);
+      face.group.rotation.z = THREE.MathUtils.lerp(face.group.rotation.z, face.baseRotationZ + driftRoll, 0.08);
+
+      const nextScale = THREE.MathUtils.lerp(face.group.scale.x, face.baseScale * targetScale, 0.08);
+      face.group.scale.setScalar(nextScale);
+
+      face.frameMaterial.emissiveIntensity = THREE.MathUtils.lerp(face.frameMaterial.emissiveIntensity, targetFrameGlow, 0.08);
+      face.matMaterial.emissiveIntensity = THREE.MathUtils.lerp(face.matMaterial.emissiveIntensity, targetMatGlow, 0.08);
+      face.photoMaterial.opacity = THREE.MathUtils.lerp(face.photoMaterial.opacity, targetPhotoOpacity, 0.08);
+      face.shadowMaterial.opacity = THREE.MathUtils.lerp(face.shadowMaterial.opacity, targetShadowOpacity, 0.08);
+
+      if (face.sweatDrop && face.sweatMaterial) {
+        const dropTravel = (Math.sin(elapsed * 1.35 + face.floatOffset) * 0.5 + 0.5) * 0.09;
+        const shimmer = 0.62 + (Math.sin(elapsed * 3.2 + face.floatOffset) * 0.5 + 0.5) * 0.24;
+        face.sweatDrop.position.y = face.metrics.photoHeight * 0.2 - dropTravel;
+        face.sweatDrop.position.x = face.metrics.photoWidth * 0.1 + Math.sin(elapsed * 1.35 + face.floatOffset) * 0.01;
+        face.sweatMaterial.opacity = shimmer;
+      }
+    });
 
     renderer.render(scene, camera);
   }
 
   function focusScreen(index) {
-    activeIndex = index;
+    activeFace = focusFaces[index] || focusFaces[0];
     updateTargetForScreen(index);
   }
 
@@ -658,6 +889,19 @@ export async function createScene({ mount, screens }) {
     dispose() {
       window.cancelAnimationFrame(frameId);
       window.removeEventListener("resize", resize);
+
+      scene.traverse((object) => {
+        if (object.geometry) {
+          object.geometry.dispose();
+        }
+
+        if (Array.isArray(object.material)) {
+          object.material.forEach(disposeMaterial);
+        } else if (object.material) {
+          disposeMaterial(object.material);
+        }
+      });
+
       renderer.dispose();
       mount.innerHTML = "";
     }
