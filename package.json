@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dsljs": "https://codeload.github.com/glauco-de-oculos/macro-oriented-javascript/tar.gz/e2bbc72cb69f89b92ab3a73dd4892ec24cc4481a",
     "firebase": "^12.11.0",
     "three": "^0.183.2"
   },

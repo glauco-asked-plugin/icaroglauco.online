@@ -1,0 +1,24 @@
+{
+  "files.associations": {
+    "*.idsl": "idsl",
+    "*.dsljs": "idsl"
+  },
+  "explorer.fileNesting.patterns": {
+    "*.idsl": "$(capture).generated.js",
+    "*.dsljs": "$(capture).generated.js"
+  },
+  "eslint.validate": [
+    "javascript",
+    "idsl"
+  ],
+  "eslint.probe": [
+    "javascript",
+    "idsl"
+  ],
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "eslint.useFlatConfig": true
+}
