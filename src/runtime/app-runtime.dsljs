@@ -1,0 +1,4207 @@
+import "../styles.css";
+import { loadScreenMarkdownContent } from "../content-loader.dsljs";
+import { screens as baseScreens } from "../screens.dsljs";
+
+type RuntimeScreen = {
+  id: string;
+  code: string;
+  label: string;
+  kicker: string;
+  headline: string;
+  blurb: string;
+  details: string;
+  bullets: string[];
+  contentTitle: string;
+  contentBody: string;
+  contentNotes?: string[];
+  quickPrompts?: string[];
+  profileHighlights?: string[];
+  reportTitle?: string;
+  reportHeading?: string;
+  reportNotice?: string;
+  profilePath?: string;
+  profileLinkLabel?: string;
+  agentPanelCopy?: string;
+  agentFormLabel?: string;
+  agentPlaceholder?: string;
+  portraitImage?: string;
+  image?: string;
+  markdownPath?: string;
+  [key: string]: unknown;
+};
+
+type GeneratedAssistantArtifact = {
+  name?: string;
+  kicker?: string;
+  tooltip?: string;
+};
+
+type GeneratedRendererSurface = {
+  renderAppShell?: (input: {
+    screens: RuntimeScreen[];
+    siteAvatar: string;
+    assistant: GeneratedAssistantArtifact;
+    currentYear: number;
+    layouts: Record<string, unknown>;
+  }) => string;
+};
+
+type RuntimeGroundArtifact = {
+  generatedPortfolioApplication: Record<string, unknown> | null;
+  generatedLayouts: Record<string, unknown>;
+  generatedAssistant: GeneratedAssistantArtifact;
+  generatedRenderers: GeneratedRendererSurface;
+  runtimeContentPath: string;
+  runtimeAgentEndpoint: string;
+  screens: RuntimeScreen[];
+  appRoot: HTMLElement | null;
+  siteAvatar: string;
+  renderAppShell: ((input: {
+    screens: RuntimeScreen[];
+    siteAvatar: string;
+    assistant: GeneratedAssistantArtifact;
+    currentYear: number;
+    layouts: Record<string, unknown>;
+  }) => string) | null;
+  appRendering: string;
+};
+
+type RuntimeShellSurface = {
+  pageShell: HTMLElement | null;
+  menuStage: HTMLElement | null;
+  contentRailStage: HTMLElement | null;
+  footerStage: HTMLElement | null;
+  contentBackdrop: HTMLElement | null;
+  contentBackdropImage: HTMLElement | null;
+  contentBackdropGallery: HTMLElement | null;
+  contentRailShell: HTMLElement | null;
+  sceneHost: HTMLElement | null;
+  loadingCard: HTMLElement | null;
+  menuButtons: HTMLElement[];
+  contentSections: HTMLElement[];
+  contentPanels: HTMLElement[];
+  detailCodeNode: HTMLElement | null;
+  titleNode: HTMLElement | null;
+  detailsNode: HTMLElement | null;
+  bulletsNode: HTMLElement | null;
+  agentMessagesNode: HTMLElement | null;
+  agentForm: HTMLFormElement | null;
+  agentInput: HTMLTextAreaElement | null;
+  agentSubmit: HTMLButtonElement | null;
+  agentStatus: HTMLElement | null;
+  agentReportNode: HTMLElement | null;
+  agentExportButton: HTMLButtonElement | null;
+  agentQuickButtons: HTMLButtonElement[];
+  companionShell: HTMLElement | null;
+  companionOutputText: HTMLElement | null;
+  companionForm: HTMLFormElement | null;
+  companionInput: HTMLTextAreaElement | null;
+  companionSubmit: HTMLButtonElement | null;
+  companionExit: HTMLButtonElement | null;
+  companionMinimize: HTMLButtonElement | null;
+  companionMaximize: HTMLButtonElement | null;
+};
+
+type AgentMemoryArtifact = {
+  busy: boolean;
+  history: unknown[];
+};
+
+type CompanionMemoryArtifact = {
+  phase: string;
+  introActive: boolean;
+  introCompleted: boolean;
+  busy: boolean;
+  streamId: number;
+  viewMode: string;
+  collapsed: boolean;
+  history: unknown[];
+};
+
+type RuntimeMovementArtifact = {
+  lockedIndex: number;
+  previewIndex: number;
+  sceneController: unknown;
+  pageScrollEndTimeout: number | null;
+  contentScrollEndTimeout: number | null;
+  pageProgrammaticTargetTop: number | null;
+  contentProgrammaticTargetLeft: number | null;
+  pageSnapIndex: number;
+  contentSnapIndex: number;
+  detailListRevealTimeout: number | null;
+};
+
+type GuidedIntakeTopic = {
+  id: string;
+  label: string;
+  keywords: string[];
+  capture: string;
+  question: string;
+};
+
+macros: {
+  $macro Ground $name
+  #(
+    const $name: RuntimeGroundArtifact = {
+      generatedPortfolioApplication: globalThis.__PORTFOLIO_APPLICATION__ || null,
+      generatedLayouts: null,
+      generatedAssistant: null,
+      generatedRenderers: globalThis.__PORTFOLIO_RENDERERS__ || {},
+      runtimeContentPath: null,
+      runtimeAgentEndpoint: import.meta.env.VITE_AGENT_ENDPOINT || "/api/agent-chat",
+      screens: null,
+      appRoot: null,
+      siteAvatar: null,
+      renderAppShell: null,
+      appRendering: null
+    };
+
+    $name.generatedLayouts = $name.generatedPortfolioApplication?.layouts?.() || {};
+    $name.generatedAssistant = $name.generatedPortfolioApplication?.assistant?.() || {};
+    $name.runtimeContentPath = $name.generatedPortfolioApplication?.contentPath || "/content/sections";
+    $name.screens = await loadScreenMarkdownContent(
+      baseScreens.map((screen) => ({
+        ...screen,
+        markdownPath: screen.markdownPath || `${$name.runtimeContentPath}/${screen.id}.md`
+      }))
+    );
+    $name.appRoot = document.querySelector("#app");
+    $name.siteAvatar = $name.screens[0]?.portraitImage || $name.screens[0]?.image || "/assets/foto-02.jpg";
+    $name.renderAppShell = $name.generatedRenderers.renderAppShell;
+
+    if (typeof $name.renderAppShell !== "function") {
+      throw new Error("[DSLJS] renderAppShell nao foi registrado antes do runtime iniciar.");
+    }
+
+    $name.appRendering = $name.renderAppShell({
+      screens: $name.screens,
+      siteAvatar: $name.siteAvatar,
+      assistant: $name.generatedAssistant,
+      currentYear: new Date().getFullYear(),
+      layouts: $name.generatedLayouts
+    });
+
+    if ($name.appRoot) {
+      $name.appRoot.innerHTML = $name.appRendering;
+    }
+
+    const generatedPortfolioApplication = $name.generatedPortfolioApplication;
+    const generatedLayouts = $name.generatedLayouts;
+    const generatedAssistant = $name.generatedAssistant;
+    const generatedRenderers = $name.generatedRenderers;
+    const runtimeContentPath = $name.runtimeContentPath;
+    const runtimeAgentEndpoint = $name.runtimeAgentEndpoint;
+    const screens = $name.screens;
+    const appRoot = $name.appRoot;
+    const siteAvatar = $name.siteAvatar;
+    const renderAppShell = $name.renderAppShell;
+    const appRendering = $name.appRendering;
+  )#
+
+  $macro Shell $name
+  #(
+    const $name: RuntimeShellSurface = {
+      pageShell: document.querySelector("[data-shell]"),
+      menuStage: document.querySelector("#menu-stage"),
+      contentRailStage: document.querySelector("#content-stage"),
+      footerStage: document.querySelector("#footer-stage"),
+      contentBackdrop: document.querySelector("[data-content-backdrop]"),
+      contentBackdropImage: document.querySelector("[data-content-backdrop-image]"),
+      contentBackdropGallery: document.querySelector("[data-content-backdrop-gallery]"),
+      contentRailShell: document.querySelector("[data-content-shell]"),
+      sceneHost: document.querySelector("[data-scene-host]"),
+      loadingCard: document.querySelector("[data-loading]"),
+      menuButtons: [...document.querySelectorAll(".menu-button")],
+      contentSections: [...document.querySelectorAll(".content-stage")],
+      contentPanels: [...document.querySelectorAll("[data-content-panel]")],
+      detailCodeNode: document.querySelector("[data-detail-code]"),
+      titleNode: document.querySelector("[data-title]"),
+      detailsNode: document.querySelector("[data-details]"),
+      bulletsNode: document.querySelector("[data-bullets]"),
+      agentMessagesNode: document.querySelector("[data-agent-messages]"),
+      agentForm: document.querySelector("[data-agent-form]"),
+      agentInput: document.querySelector("[data-agent-input]"),
+      agentSubmit: document.querySelector("[data-agent-submit]"),
+      agentStatus: document.querySelector("[data-agent-status]"),
+      agentReportNode: document.querySelector("[data-agent-report]"),
+      agentExportButton: document.querySelector("[data-agent-export]"),
+      agentQuickButtons: [...document.querySelectorAll("[data-agent-prompt]")],
+      companionShell: document.querySelector("[data-companion-shell]"),
+      companionOutputText: document.querySelector("[data-companion-output-text]"),
+      companionForm: document.querySelector("[data-companion-form]"),
+      companionInput: document.querySelector("[data-companion-input]"),
+      companionSubmit: document.querySelector("[data-companion-submit]"),
+      companionExit: document.querySelector("[data-companion-exit]"),
+      companionMinimize: document.querySelector("[data-companion-minimize]"),
+      companionMaximize: document.querySelector("[data-companion-maximize]")
+    };
+
+    const pageShell = $name.pageShell;
+    const menuStage = $name.menuStage;
+    const contentRailStage = $name.contentRailStage;
+    const footerStage = $name.footerStage;
+    const contentBackdrop = $name.contentBackdrop;
+    const contentBackdropImage = $name.contentBackdropImage;
+    const contentBackdropGallery = $name.contentBackdropGallery;
+    const contentRailShell = $name.contentRailShell;
+    const sceneHost = $name.sceneHost;
+    const loadingCard = $name.loadingCard;
+    const menuButtons = $name.menuButtons;
+    const contentSections = $name.contentSections;
+    const contentPanels = $name.contentPanels;
+    const detailCodeNode = $name.detailCodeNode;
+    const titleNode = $name.titleNode;
+    const detailsNode = $name.detailsNode;
+    const bulletsNode = $name.bulletsNode;
+    const agentMessagesNode = $name.agentMessagesNode;
+    const agentForm = $name.agentForm;
+    const agentInput = $name.agentInput;
+    const agentSubmit = $name.agentSubmit;
+    const agentStatus = $name.agentStatus;
+    const agentReportNode = $name.agentReportNode;
+    const agentExportButton = $name.agentExportButton;
+    const agentQuickButtons = $name.agentQuickButtons;
+    const companionShell = $name.companionShell;
+    const companionOutputText = $name.companionOutputText;
+    const companionForm = $name.companionForm;
+    const companionInput = $name.companionInput;
+    const companionSubmit = $name.companionSubmit;
+    const companionExit = $name.companionExit;
+    const companionMinimize = $name.companionMinimize;
+    const companionMaximize = $name.companionMaximize;
+  )#
+
+  $macro AgentMemory $name
+  #(
+    const $name: AgentMemoryArtifact = {
+      busy: false,
+      history: []
+    };
+  )#
+
+  $macro CompanionMemory $name
+  #(
+    const $name: CompanionMemoryArtifact = {
+      phase: "boot",
+      introActive: true,
+      introCompleted: false,
+      busy: false,
+      streamId: 0,
+      viewMode: "expanded",
+      collapsed: false,
+      history: []
+    };
+  )#
+
+  $macro Movement $name
+  #(
+    let lockedIndex = 0;
+    let previewIndex = 0;
+    let sceneController = null;
+    let pageScrollEndTimeout = null;
+    let contentScrollEndTimeout = null;
+    let pageProgrammaticTargetTop = null;
+    let contentProgrammaticTargetLeft = null;
+    let pageSnapIndex = 0;
+    let contentSnapIndex = 0;
+    let detailListRevealTimeout = null;
+
+    const $name: RuntimeMovementArtifact = {
+      get lockedIndex() { return lockedIndex; },
+      set lockedIndex(value) { lockedIndex = value; },
+      get previewIndex() { return previewIndex; },
+      set previewIndex(value) { previewIndex = value; },
+      get sceneController() { return sceneController; },
+      set sceneController(value) { sceneController = value; },
+      get pageScrollEndTimeout() { return pageScrollEndTimeout; },
+      set pageScrollEndTimeout(value) { pageScrollEndTimeout = value; },
+      get contentScrollEndTimeout() { return contentScrollEndTimeout; },
+      set contentScrollEndTimeout(value) { contentScrollEndTimeout = value; },
+      get pageProgrammaticTargetTop() { return pageProgrammaticTargetTop; },
+      set pageProgrammaticTargetTop(value) { pageProgrammaticTargetTop = value; },
+      get contentProgrammaticTargetLeft() { return contentProgrammaticTargetLeft; },
+      set contentProgrammaticTargetLeft(value) { contentProgrammaticTargetLeft = value; },
+      get pageSnapIndex() { return pageSnapIndex; },
+      set pageSnapIndex(value) { pageSnapIndex = value; },
+      get contentSnapIndex() { return contentSnapIndex; },
+      set contentSnapIndex(value) { contentSnapIndex = value; },
+      get detailListRevealTimeout() { return detailListRevealTimeout; },
+      set detailListRevealTimeout(value) { detailListRevealTimeout = value; }
+    };
+  )#
+
+  $macro IntakeTopics $name => {
+    $($id[
+      label: $label,
+      keywords: $keywords,
+      capture: $capture,
+      question: $question
+    ];)...
+  }
+  #(
+    export const $name: GuidedIntakeTopic[] = [
+      $({
+        id: "$id",
+        label: $label,
+        keywords: $keywords,
+        capture: $capture,
+        question: $question
+      },)...
+    ];
+  )#
+
+  $macro PreviewSurface $name
+  #(
+    Act renderBullets[
+      args: (items),
+      body: {
+        bulletsNode.innerHTML = items.map((item) => `<li>${item}</li>`).join("");
+      }
+    ]
+
+    Act renderHUD[
+      args: (index),
+      body: {
+        const screen = screens[index];
+          detailCodeNode.textContent = screen.code;
+          titleNode.textContent = screen.label;
+          detailsNode.textContent = screen.details;
+          renderBullets(screen.bullets);
+          bulletsNode.classList.remove("is-visible");
+
+          if (detailListRevealTimeout) {
+            window.clearTimeout(detailListRevealTimeout);
+          }
+
+          detailListRevealTimeout = window.setTimeout(() => {
+            bulletsNode.classList.add("is-visible");
+          }, 620);
+
+          menuButtons.forEach((button, buttonIndex) => {
+            button.classList.toggle("is-preview", buttonIndex === previewIndex);
+            button.classList.toggle("is-locked", buttonIndex === lockedIndex);
+          });
+      }
+    ]
+
+    Act applyPreview[
+      args: (index),
+      body: {
+        previewIndex = index;
+          renderHUD(index);
+          sceneController?.focusScreen(index);
+      }
+    ]
+
+    Act lockAndScroll[
+      args: (index),
+      body: {
+        lockedIndex = index;
+          applyPreview(index);
+          scrollToHashTarget(`#section-${screens[index].id}`, { updateHistory: true });
+      }
+    ]
+
+    const $name = {
+      renderBullets,
+      renderHUD,
+      applyPreview,
+      lockAndScroll
+    };
+  )#
+
+  $macro VerticalJourney $name
+  #(
+    function escapeHtml(text) {
+          return String(text)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#39;");
+        }
+
+function normalizeText(text) {
+      return String(text)
+        .toLowerCase()
+        .normalize("NFD")
+        .replaceAll(/[\u0300-\u036f]/g, "");
+    }
+
+function tokenizeText(text) {
+      return normalizeText(text)
+        .split(/[^a-z0-9]+/g)
+        .filter((token) => token.length >= 3);
+    }
+
+function wait(ms) {
+      return new Promise((resolve) => {
+        window.setTimeout(resolve, ms);
+      });
+    }
+
+function getCurrentScreen() {
+      return screens[lockedIndex] || screens[0];
+    }
+
+function buildCompanionExplainReply(screen) {
+      return `${screen.label}: ${screen.details} Em termos de proposta de valor, esta sessão mostra ${screen.contentTitle.toLowerCase()} e como isso se conecta ao restante do portfólio.`;
+    }
+
+function buildCompanionSummaryReply(screen) {
+      const bullets = screen.bullets?.slice(0, 3).join("; ") || "Sem destaques adicionais.";
+      return `Resumo de ${screen.label}: ${screen.contentBody} Destaques principais: ${bullets}.`;
+    }
+
+ActAsync streamCompanionText[
+  args: (text, { reset = true, speed = 18 } = {}),
+  body: {
+    if (!companionOutputText) return false;
+
+      const streamId = ++companionState.streamId;
+      companionOutputText.dataset.streaming = "true";
+
+      if (reset) {
+        companionOutputText.textContent = "";
+      }
+
+      for (const character of text) {
+        if (streamId !== companionState.streamId) {
+          return false;
+        }
+
+        companionOutputText.textContent += character;
+        await wait(character === " " || character === "\n" ? speed * 0.45 : speed);
+      }
+
+      if (streamId === companionState.streamId) {
+        companionOutputText.dataset.streaming = "false";
+        return true;
+      }
+
+      return false;
+  }
+]
+
+Act setCompanionPhase[
+  args: (nextPhase),
+  body: {
+    companionState.phase = nextPhase;
+      if (companionShell) {
+        companionShell.dataset.phase = nextPhase;
+      }
+  }
+]
+
+Act setCompanionViewMode[
+  args: (nextView),
+  body: {
+    const resolvedView = nextView === "docked" ? "docked" : "expanded";
+      companionState.viewMode = resolvedView;
+      if (companionShell) {
+        companionShell.dataset.view = resolvedView;
+      }
+
+      if (!pageShell) return;
+
+      if (companionState.introActive) {
+        pageShell.dataset.aiStage = "intro";
+        return;
+      }
+
+      pageShell.dataset.aiStage = resolvedView === "expanded" ? "assistant-focus" : "ready";
+  }
+]
+
+Act setCompanionCollapsed[
+  args: (nextCollapsed),
+  body: {
+    const resolvedCollapsed = Boolean(nextCollapsed);
+      companionState.collapsed = resolvedCollapsed;
+      if (companionShell) {
+        companionShell.dataset.collapsed = resolvedCollapsed ? "true" : "false";
+      }
+  }
+]
+
+Act mountCompanion[
+  args: (_location),
+  body: {
+    if (!companionShell || !(pageShell instanceof HTMLElement)) return;
+
+      if (companionShell.parentElement !== pageShell) {
+        pageShell.appendChild(companionShell);
+      }
+
+      companionShell.dataset.mount = "page";
+      if (companionState.viewMode !== "expanded") {
+        setCompanionViewMode("docked");
+      }
+  }
+]
+
+function buildCompanionLandingReply(screen) {
+      return `Você encontra isso em ${screen.label}. ${screen.blurb}`;
+    }
+
+function buildCompanionScheduleReply() {
+      return "Quando a conversa entra em cronograma, eu costumo organizar em quatro blocos: descoberta e leitura do problema, definição de escopo e semantic layer, construção das camadas de interface e implementação, e por fim validação, ajuste e publicação. Se você quiser, eu posso te ajudar a transformar um objetivo solto em fases, entregáveis e ritmo de execução.";
+    }
+
+function buildCompanionBusinessLogicReply() {
+      return "Lógica de negócio, para mim, é o conjunto de regras, eventos, restrições e consequências que faz um sistema responder de forma correta ao contexto real. Ela vem antes da tela bonita porque determina o que pode acontecer, para quem, em que ordem e sob quais condições.";
+    }
+
+function buildCompanionSemanticLayerReply() {
+      return "Semantic layer é a camada de significado do sistema: nomes, entidades, estados, relacionamentos e critérios que deixam claro o que cada coisa é de verdade. Quando ela está bem definida, interface, automação, regra e relatório passam a falar a mesma língua.";
+    }
+
+function buildCompanionApproachReply() {
+      return "Minha abordagem costuma sair de leitura para estrutura e de estrutura para proposta. Primeiro eu entendo intenção, contexto e restrição; depois organizo entidades, fluxo, regras e linguagem; por fim transformo isso em interface, implementação e material comercial mais confiável.";
+    }
+
+function buildCompanionApplicationReply() {
+      return "Aplicação, aqui, não é só implementar. É decidir onde a leitura profissional vira movimento concreto: descoberta, critérios de negócio, semantic layer, interface, componentes, copy e, quando faz sentido, relatório ou pré-proposta para apoiar a conversa comercial.";
+    }
+
+function buildCompanionCommercialReply() {
+      return "Eu consigo ajudar na camada comercial prévia: organizar briefing, clarificar escopo, separar desejo de entregável, sugerir faseamento, apontar risco e estruturar uma pré-proposta mais sólida antes de qualquer fechamento formal.";
+    }
+
+function buildCompanionProfessionalScopeReply() {
+      return "Posso responder em chave profissional sobre organização do trabalho, cronogramas, lógica de negócio, semantic layer, abordagem de projeto, aplicação técnica e preparação comercial prévia. A ideia é reduzir ruído e deixar a conversa com mais critério desde cedo.";
+    }
+
+function buildCompanionIdentityReply() {
+      return [
+        "Icaro Glauco aparece aqui como um perfil que cruza design, UX, engenharia, requisitos e pesquisa de linguagem.",
+        "O site o apresenta menos como curriculo tradicional e mais como alguem que conecta leitura de problema, direcao visual, semantica, implementacao real e software autoral.",
+        "Se quiser, eu tambem posso te levar para a secao de identidade, onde isso fica desenvolvido com mais contexto."
+      ].join(" ");
+    }
+
+function findBestScreenByMessage(message) {
+      const normalizedMessage = normalizeText(message);
+
+      const scoredScreens = screens
+        .map((screen, index) => {
+          const tokens = [
+            screen.id,
+            screen.label,
+            screen.kicker,
+            screen.headline,
+            screen.blurb,
+            screen.contentTitle,
+            ...(screen.bullets || [])
+          ].flatMap((item) => tokenizeText(item));
+
+          const score = [...new Set(tokens)].reduce((total, token) => {
+            if (!normalizedMessage.includes(token)) return total;
+            return total + (token.length >= 7 ? 2 : 1);
+          }, 0);
+
+          return { index, screen, score };
+        })
+        .sort((left, right) => right.score - left.score);
+
+      return scoredScreens[0]?.score >= 2 ? scoredScreens[0] : null;
+    }
+
+Act navigateCompanionToIndex[
+  args: (index),
+  body: {
+    const boundedIndex = Math.max(0, Math.min(screens.length - 1, index));
+      const screen = screens[boundedIndex];
+      scrollToHashTarget(`#section-${screen.id}`, { updateHistory: true });
+      return `Levei você para ${screen.label}. ${screen.blurb}`;
+  }
+]
+
+function findScreenByMessage(normalizedMessage) {
+      return screens.find((screen) => {
+        const tokens = [screen.id, screen.label, screen.kicker, screen.headline];
+        return tokens.some((token) => normalizedMessage.includes(normalizeText(token)));
+      });
+    }
+
+Act buildCompanionReply[
+  args: (message),
+  body: {
+    const normalizedMessage = normalizeText(message);
+      const referencedScreen = findScreenByMessage(normalizedMessage);
+      const scoredScreen = findBestScreenByMessage(message);
+
+      if (/sem mais perguntas|nao tenho mais perguntas|nao tenho mais duvidas|nao tenho mais questoes|isso e tudo|era isso|so isso|obrigado,? era isso|nao,? obrigado|encerrar|pode subir/.test(normalizedMessage)) {
+        return "__COMPANION_OUTRO__";
+      }
+
+      if (/quem e voce|quem voce e|sobre voce|seu perfil|trajetoria|identidade/.test(normalizedMessage)) {
+        return navigateCompanionToIndex(0);
+      }
+
+      if (/quem e icaro|quem e o icaro|sobre icaro|sobre o icaro/.test(normalizedMessage)) {
+        return buildCompanionIdentityReply();
+      }
+
+      if (/contato|email|falar com voce|conversar com voce|orcamento|proposta/.test(normalizedMessage)) {
+        const targetIndex = screens.findIndex((screen) => screen.id === "agent");
+        if (targetIndex >= 0) {
+          return `${navigateCompanionToIndex(targetIndex)} Se quiser avançar, essa é a sessão certa para transformar interesse em conversa objetiva.`;
+        }
+      }
+
+      if (/o que tem aqui|o que eu encontro|o que encontro|como este site esta organizado|como esta organizado/.test(normalizedMessage)) {
+        return "Você encontra uma leitura em camadas: identidade e base profissional, requisitos e leitura de problema, conversa guiada para contato e, nas demais sessões, recortes de linguagem, engenharia, experiência e sistema.";
+      }
+
+      if (/organizacao profissional|organizacao do trabalho|como voce organiza|metodo profissional|estrutura profissional/.test(normalizedMessage)) {
+        return buildCompanionProfessionalScopeReply();
+      }
+
+      if (/cronograma|cronogramas|faseamento|fases|marcos|timeline|prazo/.test(normalizedMessage)) {
+        return buildCompanionScheduleReply();
+      }
+
+      if (/logica de negocio|regra de negocio|business logic|regras de negocio/.test(normalizedMessage)) {
+        return buildCompanionBusinessLogicReply();
+      }
+
+      if (/semantic layer|camada semantica|semantica do sistema|modelo semantico|entidades e estados/.test(normalizedMessage)) {
+        return buildCompanionSemanticLayerReply();
+      }
+
+      if (/abordagem|metodologia|como voce aborda|como trabalha|processo/.test(normalizedMessage)) {
+        return buildCompanionApproachReply();
+      }
+
+      if (/aplicacao|como aplica|como isso entra no projeto|implementacao orientada|traduz isso/.test(normalizedMessage)) {
+        return buildCompanionApplicationReply();
+      }
+
+      if (/relatorio|pre proposta|pre-proposta|proposta inicial|comercial previa|briefing comercial/.test(normalizedMessage)) {
+        return buildCompanionCommercialReply();
+      }
+
+      if (/nao encontro|nao achei|nao vi isso|tem isso aqui|existe isso aqui/.test(normalizedMessage) && !scoredScreen) {
+        return "Não vi uma sessão dedicada exatamente a isso. O site hoje está organizado em torno de identidade, requisitos, IA aplicada, engenharia, experiência e contato. Se você me disser o tema, eu te digo se ele aparece de forma direta ou lateral.";
+      }
+
+      if (referencedScreen) {
+        return navigateCompanionToIndex(screens.findIndex((screen) => screen.id === referencedScreen.id));
+      }
+
+      if (scoredScreen) {
+        scrollToHashTarget(`#section-${scoredScreen.screen.id}`, { updateHistory: true });
+        return buildCompanionLandingReply(scoredScreen.screen);
+      }
+
+      if (/explic|detalh|destrincha/.test(normalizedMessage)) {
+        return buildCompanionExplainReply(getCurrentScreen());
+      }
+
+      if (/resum|ponto central|essencial/.test(normalizedMessage)) {
+        return buildCompanionSummaryReply(getCurrentScreen());
+      }
+
+      if (/proxim|avanc/.test(normalizedMessage)) {
+        return navigateCompanionToIndex(Math.min(screens.length - 1, lockedIndex + 1));
+      }
+
+      if (/anterior|volta|retorna/.test(normalizedMessage)) {
+        return navigateCompanionToIndex(Math.max(0, lockedIndex - 1));
+      }
+
+      return "Posso te orientar por identidade, requisitos, experiência, engenharia, IA aplicada e contato. Se me disser o que procura, eu aponto onde isso aparece no site ou te digo com franqueza quando não aparece.";
+  }
+]
+
+Act shouldUseLocalCompanionReply[
+  args: (message),
+  body: {
+    const normalizedMessage = normalizeText(message);
+
+      if (
+        /sem mais perguntas|nao tenho mais perguntas|nao tenho mais duvidas|nao tenho mais questoes|isso e tudo|era isso|so isso|obrigado,? era isso|nao,? obrigado|encerrar|pode subir/.test(
+          normalizedMessage
+        )
+      ) {
+        return true;
+      }
+
+      if (
+        /contato|email|falar com voce|conversar com voce|orcamento|proposta|o que tem aqui|o que eu encontro|o que encontro|como este site esta organizado|como esta organizado|explic|detalh|destrincha|resum|ponto central|essencial|proxim|avanc|anterior|volta|retorna/.test(
+          normalizedMessage
+        )
+      ) {
+        return true;
+      }
+
+      if (findScreenByMessage(normalizedMessage)) {
+        return true;
+      }
+
+      const scoredScreen = findBestScreenByMessage(message);
+      return Boolean(scoredScreen && /ir|leva|levar|mostrar|abre|abrir|onde fica|em que secao|qual secao|qual sessao|qual pagina/.test(normalizedMessage));
+  }
+]
+
+ActAsync fetchCompanionReply[
+  args: (message),
+  body: {
+    const response = await fetch(runtimeAgentEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          mode: "site-guide",
+          message,
+          history: companionState.history.slice(-6)
+        })
+      });
+
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(payload.error || "Falha ao consultar o guia inicial.");
+      }
+
+      const reply = String(payload.reply || "").trim();
+      if (!reply) {
+        throw new Error("O guia inicial nao retornou texto.");
+      }
+
+      return reply;
+  }
+]
+
+FlowAsync runCompanionIntroOutro[
+  args: (),
+  body: {
+    if (companionState.introCompleted) return;
+
+      companionState.streamId += 1;
+      companionState.busy = true;
+      await streamCompanionText("Perfeito. Vou sair da frente e deixar o site falar visualmente.", { speed: 9 });
+      await wait(380);
+      await streamCompanionText("Sigo pelas sessões para responder, explicar contexto e te levar ao ponto certo sempre que você quiser.", { speed: 9 });
+      await wait(380);
+
+      setCompanionPhase("outro");
+      await wait(260);
+
+      companionState.introActive = false;
+      companionState.introCompleted = true;
+      mountCompanion("page");
+      setCompanionPhase("docked");
+      companionState.busy = false;
+      setCompanionCollapsed(false);
+      setCompanionViewMode("docked");
+  }
+]
+
+FlowAsync sendCompanionMessage[
+  args: (rawMessage),
+  body: {
+    if (!companionInput || !companionSubmit) return;
+
+      const message = rawMessage.trim();
+      if (!message || companionState.busy) return;
+      companionState.streamId += 1;
+
+      companionState.busy = true;
+      companionInput.disabled = true;
+      companionSubmit.disabled = true;
+
+      try {
+        const reply = await fetchCompanionReply(message);
+        const completed = await streamCompanionText(reply);
+        if (completed) {
+          companionState.history.push({ role: "user", text: message });
+          companionState.history.push({ role: "assistant", text: reply });
+        }
+      } catch (error) {
+        const messageText =
+          error instanceof Error ? error.message : "A IA inicial nao respondeu.";
+        const completed = await streamCompanionText(
+          `A IA inicial nao conseguiu responder agora. Motivo: ${messageText}`
+        );
+        if (completed) {
+          companionState.history.push({ role: "user", text: message });
+          companionState.history.push({ role: "assistant", text: `A IA inicial nao conseguiu responder agora. Motivo: ${messageText}` });
+        }
+      } finally {
+        companionState.busy = false;
+        companionInput.disabled = false;
+        companionSubmit.disabled = false;
+        companionInput.focus();
+      }
+  }
+]
+
+FlowAsync playCompanionWelcomeSequence[
+  args: (),
+  body: {
+    if (!companionShell || companionState.busy) return;
+
+      companionState.busy = true;
+      pageShell.dataset.aiStage = "intro";
+      setCompanionPhase("intro");
+      setCompanionCollapsed(false);
+      setCompanionViewMode("expanded");
+
+      const openingMessage =
+        "Antes de abrir o portfólio por completo, eu quis receber você aqui na frente. Posso te guiar pelo que existe no site, dizer o que vale a pena ver primeiro e ser franco sobre o que ainda não está aqui. O que você veio procurar?";
+
+      const completed = await streamCompanionText(openingMessage);
+      if (!completed) {
+        companionState.busy = false;
+        return;
+      }
+
+      companionState.busy = false;
+      companionInput?.focus();
+  }
+]
+
+Flow setupCompanionPanel[
+  args: (),
+  body: {
+    if (!companionShell || !companionForm || !companionInput) return;
+
+      pageShell.dataset.styleMode = "base";
+      mountCompanion("page");
+      setCompanionCollapsed(false);
+      setCompanionViewMode("expanded");
+      if (companionOutputText) {
+        companionOutputText.textContent = "";
+        companionOutputText.dataset.streaming = "false";
+      }
+      playCompanionWelcomeSequence();
+
+      On => {
+        companionForm["submit"] = [(event) => {
+          event.preventDefault();
+          const message = companionInput.value;
+          companionInput.value = "";
+          void sendCompanionMessage(message);
+        }];
+        companionInput["keydown"] = [(event) => {
+          if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            companionForm.requestSubmit();
+          }
+        }];
+        companionExit["click"] = [() => {
+          void runCompanionIntroOutro();
+        }];
+        companionMinimize["click"] = [() => {
+          if (companionState.introActive) {
+            companionState.streamId += 1;
+            companionState.busy = false;
+            companionState.introActive = false;
+            companionState.introCompleted = true;
+            if (companionOutputText) {
+              companionOutputText.dataset.streaming = "false";
+            }
+            mountCompanion("page");
+            setCompanionPhase("docked");
+            setCompanionCollapsed(true);
+            setCompanionViewMode("docked");
+            return;
+          }
+          mountCompanion("page");
+          setCompanionPhase("docked");
+          setCompanionCollapsed(true);
+          setCompanionViewMode("docked");
+        }];
+        companionMaximize["click"] = [() => {
+          mountCompanion("page");
+          setCompanionPhase("docked");
+          setCompanionCollapsed(false);
+          setCompanionViewMode("expanded");
+          companionInput?.focus();
+        }];
+      }
+  }
+]
+
+Act setAgentStatus[
+  args: (message, isError = false),
+  body: {
+    if (!agentStatus) return;
+      agentStatus.textContent = message;
+      agentStatus.classList.toggle("is-error", isError);
+  }
+]
+
+Act scrollAgentToBottom[
+  args: (),
+  body: {
+    if (agentMessagesNode) {
+        agentMessagesNode.scrollTop = agentMessagesNode.scrollHeight;
+      }
+  }
+]
+
+Act appendAgentMessage[
+  args: (role, text),
+  body: {
+    if (!agentMessagesNode) return;
+
+      const message = writeNodeClass(makeNode("article"), `agent-message agent-message-${role}`);
+
+      const kicker = writeNodeText(
+        writeNodeClass(makeNode("span"), "agent-message-kicker"),
+        role === "assistant" ? "Agente" : "Visitante"
+      );
+
+      const bubble = writeNodeText(
+        writeNodeClass(makeNode("div"), "agent-message-bubble"),
+        text
+      );
+
+      mountNodeChildren(message, kicker, bubble);
+      mountNodeChildren(agentMessagesNode, message);
+      scrollAgentToBottom();
+  }
+]
+
+Act setAgentBusy[
+  args: (nextBusy),
+  body: {
+    agentState.busy = nextBusy;
+
+      if (agentInput) agentInput.disabled = nextBusy;
+      if (agentSubmit) agentSubmit.disabled = nextBusy;
+      agentQuickButtons.forEach((button) => {
+        button.disabled = nextBusy;
+      });
+      syncAgentExportButton();
+  }
+]
+
+function buildContactAssessment() {
+      const userMessages = agentState.history.filter((entry) => entry.role === "user").map((entry) => entry.text.trim()).filter(Boolean);
+      const assistantMessages = agentState.history
+        .filter((entry) => entry.role === "assistant")
+        .map((entry) => entry.text.trim())
+        .filter(Boolean);
+      const combinedUserText = normalizeText(userMessages.join(" "));
+      const totalChars = userMessages.join(" ").length;
+
+      const signals = guidedIntakeTopics.map((topic) => ({
+        ...topic,
+        matched: topic.keywords.some((keyword) => combinedUserText.includes(keyword))
+      }));
+
+      const matchedSignals = signals.filter((topic) => topic.matched);
+      const missingSignals = signals.filter((topic) => !topic.matched);
+      const latestUserMessage = userMessages[userMessages.length - 1] || "Interesse ainda não declarado.";
+      const latestAssistantMessage =
+        assistantMessages[assistantMessages.length - 1] ||
+        "A conversa ainda não reuniu material suficiente para uma leitura inicial de aplicabilidade.";
+      const captureList = userMessages.length
+        ? userMessages.slice(-4)
+        : ["A conversa ainda não trouxe objetivo, contexto, escopo ou motivo suficiente para uma prévia exportável."];
+
+      const clauses = [
+        signals.find((topic) => topic.id === "objective")?.matched
+          ? "Já existe uma intenção inicial clara, o que permite tratar a conversa como possibilidade concreta de trabalho."
+          : "Ainda falta um objetivo claro para transformar interesse em proposta inicial.",
+        signals.find((topic) => topic.id === "context")?.matched || signals.find((topic) => topic.id === "scope")?.matched
+          ? "Já há matéria suficiente para traduzir contexto em escopo e recorte de entrega."
+          : "Contexto e recorte de escopo ainda precisam ficar mais nítidos para sair do campo genérico.",
+        signals.find((topic) => topic.id === "fit")?.matched
+          ? "Já apareceu um motivo de encaixe entre meu perfil e o caso, o que ajuda a medir aplicabilidade com mais honestidade."
+          : "Ainda preciso entender por que meu perfil entrou na conversa e onde ele realmente faz sentido neste caso.",
+        signals.find((topic) => topic.id === "constraints")?.matched
+          ? "Limites ou ritmos iniciais já apareceram, o que ajuda a manter a proposta numa chave realista."
+          : "Prazo, faseamento ou restrições ainda precisam aparecer para a prévia ficar materialmente mais confiável."
+      ];
+
+      const isReady = matchedSignals.length >= 4 && totalChars >= 240 && (userMessages.length >= 2 || totalChars >= 420);
+      const readinessLine = isReady
+        ? "Já existe material suficiente para liberar uma prévia exportável de proposta e aplicabilidade."
+        : "A prévia continua bloqueada até a conversa trazer objetivo, contexto, escopo e sinais de encaixe com clareza.";
+      const nextQuestion =
+        missingSignals[0]?.question ||
+        "Se quiser, eu já consigo consolidar a prévia exportável e apontar o que ainda precisa ser validado antes de um acordo.";
+
+      const nextSteps = isReady
+        ? [
+            "Revisar a prévia exportada e corrigir qualquer pressuposto impreciso.",
+            "Converter a conversa em recorte inicial de proposta, entregáveis e próximos passos.",
+            "Validar prazo, limites e condições antes de tratar qualquer compromisso como fechado."
+          ]
+        : [
+            `Responder sobre ${missingSignals.map((topic) => topic.label.toLowerCase()).slice(0, 2).join(" e ") || "objetivo e escopo"}.`,
+            "Tornar o interesse mais tangível com contexto, entrega e limite inicial.",
+            "Liberar a exportação apenas quando houver base suficiente para isso."
+          ];
+
+      return {
+        latestUserMessage,
+        latestAssistantMessage,
+        captureList,
+        signals,
+        matchedSignals,
+        missingSignals,
+        clauses,
+        nextSteps,
+        nextQuestion,
+        readinessLine,
+        isReady
+      };
+    }
+
+function buildLocalInterviewReply(message) {
+      const normalizedMessage = normalizeText(message);
+      const asksNextQuestion = /proxim|seguinte|continue|avanca|avancar|aprofund/.test(normalizedMessage);
+      const assessment = buildContactAssessment();
+      const emphasizedSignal =
+        assessment.matchedSignals.find((topic) => topic.keywords.some((keyword) => normalizedMessage.includes(keyword))) ||
+        assessment.matchedSignals[assessment.matchedSignals.length - 1];
+      const leadLine = emphasizedSignal
+        ? emphasizedSignal.capture
+        : "Ainda não vou fingir clareza: por enquanto a conversa só indica interesse inicial, mas ainda não sustenta uma prévia exportável.";
+
+      if (asksNextQuestion) {
+        return [
+          leadLine,
+          "",
+          `Aplicabilidade preliminar: ${assessment.clauses.join(" ")}`,
+          "",
+          assessment.readinessLine,
+          "",
+          `Próxima pergunta guiada: ${assessment.nextQuestion}`
+        ].join("\n");
+      }
+
+      return [
+        leadLine,
+        "",
+        `Leitura preliminar: ${assessment.clauses.join(" ")}`,
+        "",
+        assessment.readinessLine,
+        "",
+        `Próxima pergunta guiada: ${assessment.nextQuestion}`
+      ].join("\n");
+    }
+
+function buildAgentReportData() {
+      const assessment = buildContactAssessment();
+
+      return {
+        objective: assessment.latestUserMessage,
+        scopeItems: assessment.captureList,
+        matchedSignals: assessment.matchedSignals,
+        missingSignals: assessment.missingSignals,
+        agentSynthesis: assessment.latestAssistantMessage,
+        clauses: assessment.clauses,
+        nextSteps: assessment.nextSteps,
+        readinessLine: assessment.readinessLine,
+        isReady: assessment.isReady,
+        nextQuestion: assessment.nextQuestion
+      };
+    }
+
+function buildAgentReportMarkdown() {
+      const data = buildAgentReportData();
+
+      if (!data.isReady) return null;
+
+      return [
+        `# ${agentScreen?.reportHeading || "Prévia de proposta e aplicabilidade"}`,
+        "",
+        "## Objetivo declarado",
+        data.objective,
+        "",
+        "## Pontos capturados na conversa",
+        ...data.scopeItems.map((item) => `- ${item}`),
+        "",
+        "## Sinais presentes",
+        ...data.matchedSignals.map((topic) => `- ${topic.label}`),
+        "",
+        "## Cláusulas provisórias de aplicabilidade",
+        ...data.clauses.map((item) => `- ${item}`),
+        "",
+        "## Pontos a validar antes de fechar proposta",
+        ...(data.missingSignals.length ? data.missingSignals.map((topic) => `- ${topic.label}`) : ["- Nada estruturalmente pendente nesta etapa inicial."]),
+        "",
+        "## Próximos passos sugeridos",
+        ...data.nextSteps.map((item) => `- ${item}`),
+        ""
+      ].join("\n");
+    }
+
+Act syncAgentExportButton[
+  args: (),
+  body: {
+    if (!agentExportButton) return;
+
+      const data = buildAgentReportData();
+      const disabled = agentState.busy || !data.isReady;
+      agentExportButton.disabled = disabled;
+      agentExportButton.textContent = data.isReady ? "Exportar prévia .md" : "Exportação bloqueada";
+      agentExportButton.title = data.isReady
+        ? "Exportar a prévia de proposta e aplicabilidade em markdown."
+        : "A exportação só libera quando a conversa trouxer material suficiente.";
+  }
+]
+
+Act renderAgentReport[
+  args: (),
+  body: {
+    if (!agentReportNode) return;
+
+      const data = buildAgentReportData();
+      agentReportNode.innerHTML = `
+        <article class="agent-report-section">
+          <p class="agent-report-label">Estado da análise</p>
+          <p>${escapeHtml(data.readinessLine)}</p>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Objetivo declarado</p>
+          <p>${escapeHtml(data.objective)}</p>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Pontos capturados</p>
+          <ul class="agent-report-list">
+            ${data.scopeItems.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Sinais presentes</p>
+          <ul class="agent-report-list">
+            ${
+              data.matchedSignals.length
+                ? data.matchedSignals.map((topic) => `<li>${escapeHtml(topic.label)}</li>`).join("")
+                : "<li>A conversa ainda não reuniu sinais suficientes.</li>"
+            }
+          </ul>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Ainda preciso entender</p>
+          <ul class="agent-report-list">
+            ${
+              data.missingSignals.length
+                ? data.missingSignals.map((topic) => `<li>${escapeHtml(topic.label)}</li>`).join("")
+                : "<li>Nenhum bloco estrutural ficou faltando nesta etapa inicial.</li>"
+            }
+          </ul>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Cláusulas provisórias</p>
+          <ul class="agent-report-list">
+            ${data.clauses.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Próximo passo guiado</p>
+          <p>${escapeHtml(data.nextQuestion)}</p>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Leitura atual do agente</p>
+          <p>${escapeHtml(data.agentSynthesis)}</p>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Próximos passos sugeridos</p>
+          <ul class="agent-report-list">
+            ${data.nextSteps.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      `;
+      syncAgentExportButton();
+  }
+]
+
+FlowAsync sendAgentMessage[
+  args: (rawMessage),
+  body: {
+    if (!agentScreen) return;
+
+      const message = rawMessage.trim();
+      if (!message || agentState.busy) return;
+
+      const requestHistory = agentState.history.slice(-8);
+      const userEntry = { role: "user", text: message };
+      agentState.history.push(userEntry);
+      appendAgentMessage("user", message);
+      renderAgentReport();
+      setAgentStatus("Lendo contexto e organizando a resposta...");
+      setAgentBusy(true);
+
+      try {
+        if (agentScreen.agentStrategy === "local-intake") {
+          await new Promise((resolve) => window.setTimeout(resolve, 220));
+          const reply = buildLocalInterviewReply(message);
+          agentState.history.push({ role: "assistant", text: reply });
+          appendAgentMessage("assistant", reply);
+          renderAgentReport();
+          setAgentStatus("Diagnóstico atualizado. Pode responder ou pedir a próxima camada de aprofundamento.");
+          return;
+        }
+
+        const response = await fetch(agentScreen.agentEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message,
+            history: requestHistory
+          })
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(payload.error || "Falha ao consultar o agente.");
+        }
+
+        const reply = String(payload.reply || "").trim();
+        if (!reply) {
+          throw new Error("O agente não retornou texto.");
+        }
+
+        agentState.history.push({ role: "assistant", text: reply });
+        appendAgentMessage("assistant", reply);
+        renderAgentReport();
+        setAgentStatus("Diagnóstico atualizado. Pode seguir com a próxima informação.");
+      } catch (error) {
+        if (agentState.history[agentState.history.length - 1] === userEntry) {
+          agentState.history.pop();
+        }
+        renderAgentReport();
+        const messageText = error instanceof Error ? error.message : "Falha ao consultar o agente.";
+        appendAgentMessage("assistant", "Não consegui responder agora. Tente novamente em alguns segundos.");
+        setAgentStatus(messageText, true);
+      } finally {
+        setAgentBusy(false);
+        if (agentInput) {
+          agentInput.focus();
+        }
+      }
+  }
+]
+
+FlowAsync sendAgentMessageViaAI[
+  args: (rawMessage),
+  body: {
+    if (!agentScreen) return;
+
+      const message = rawMessage.trim();
+      if (!message || agentState.busy) return;
+
+      const requestHistory = agentState.history.slice(-8);
+      const userEntry = { role: "user", text: message };
+      agentState.history.push(userEntry);
+      appendAgentMessage("user", message);
+      renderAgentReport();
+      setAgentStatus("Lendo contexto e organizando a resposta...");
+      setAgentBusy(true);
+
+      try {
+        const response = await fetch(runtimeAgentEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            mode: agentScreen.agentMode || "contact-intake",
+            message,
+            history: requestHistory
+          })
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(payload.error || "Falha ao consultar o agente.");
+        }
+
+        const reply = String(payload.reply || "").trim();
+        if (!reply) {
+          throw new Error("O agente nao retornou texto.");
+        }
+
+        agentState.history.push({ role: "assistant", text: reply });
+        appendAgentMessage("assistant", reply);
+        renderAgentReport();
+        setAgentStatus("Diagnostico atualizado. Pode seguir com a proxima informacao.");
+      } catch (error) {
+        if (agentState.history[agentState.history.length - 1] === userEntry) {
+          agentState.history.pop();
+        }
+        renderAgentReport();
+        const messageText = error instanceof Error ? error.message : "Falha ao consultar o agente.";
+        appendAgentMessage("assistant", `A IA de proposta nao respondeu. Motivo: ${messageText}`);
+        setAgentStatus(messageText, true);
+      } finally {
+        setAgentBusy(false);
+        if (agentInput) {
+          agentInput.focus();
+        }
+      }
+  }
+]
+
+Flow setupAgentPanel[
+  args: (),
+  body: {
+    if (!agentScreen || !agentMessagesNode) return;
+
+      appendAgentMessage("assistant", agentScreen.agentGreeting);
+      agentState.history.push({ role: "assistant", text: agentScreen.agentGreeting });
+      renderAgentReport();
+      setAgentStatus("A exportação fica bloqueada até haver material suficiente de objetivo, contexto, escopo e encaixe.");
+
+      if (agentForm && agentInput) {
+        On => {
+          agentForm["submit"] = [(event) => {
+            event.preventDefault();
+            const message = agentInput.value;
+            agentInput.value = "";
+            sendAgentMessageViaAI(message);
+          }];
+          agentInput["keydown"] = [(event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault();
+              agentForm.requestSubmit();
+            }
+          }];
+        }
+      }
+
+      agentQuickButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const prompt = queryData(button, "agentPrompt", "");
+          sendAgentMessageViaAI(prompt);
+        });
+      });
+
+      On => {
+        agentExportButton["click"] = [() => {
+          const report = buildAgentReportMarkdown();
+          if (!report) {
+            setAgentStatus("Ainda não exporto a prévia: falta base suficiente de contexto, escopo e aplicabilidade.", true);
+            return;
+          }
+          const blob = new Blob([report], { type: "text/markdown;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const link = makeNode("a");
+          link.href = url;
+          link.download = agentScreen.reportFilename || "previa-proposta-icaro-glauco.md";
+          link.click();
+          URL.revokeObjectURL(url);
+        }];
+      }
+  }
+]
+
+Flow setupHorizontalPagers[
+  args: (),
+  body: {
+    const pagers = queryNodes("[data-horizontal-pager]");
+      const panelThemes = [
+        {
+          bgTop: "#08111a",
+          bgBottom: "#03050b",
+          warm: "rgba(255, 122, 24, 0.16)",
+          cool: "rgba(122, 209, 255, 0.08)",
+          anchorA: "18% 12%",
+          anchorB: "82% 16%",
+          glowAnchor: "52% 46%",
+          lightSize: "clamp(34rem, 58vw, 66rem)",
+          overlayTop: "0.28",
+          overlayBottom: "0.9",
+          glowCore: "rgba(168, 232, 255, 0.14)",
+          glowWarm: "rgba(255, 215, 173, 0.18)",
+          glowCool: "rgba(158, 226, 255, 0.16)"
+        },
+        {
+          bgTop: "#120a0c",
+          bgBottom: "#04050a",
+          warm: "rgba(255, 109, 61, 0.18)",
+          cool: "rgba(194, 132, 255, 0.08)",
+          anchorA: "22% 18%",
+          anchorB: "76% 20%",
+          glowAnchor: "58% 42%",
+          lightSize: "clamp(36rem, 62vw, 70rem)",
+          overlayTop: "0.24",
+          overlayBottom: "0.88",
+          glowCore: "rgba(255, 177, 115, 0.14)",
+          glowWarm: "rgba(255, 147, 105, 0.2)",
+          glowCool: "rgba(179, 130, 255, 0.12)"
+        },
+        {
+          bgTop: "#071017",
+          bgBottom: "#02060a",
+          warm: "rgba(252, 190, 119, 0.12)",
+          cool: "rgba(94, 229, 255, 0.12)",
+          anchorA: "16% 14%",
+          anchorB: "80% 24%",
+          glowAnchor: "48% 50%",
+          lightSize: "clamp(33rem, 54vw, 63rem)",
+          overlayTop: "0.26",
+          overlayBottom: "0.92",
+          glowCore: "rgba(130, 219, 255, 0.15)",
+          glowWarm: "rgba(255, 224, 170, 0.16)",
+          glowCool: "rgba(92, 222, 255, 0.18)"
+        },
+        {
+          bgTop: "#0e0b14",
+          bgBottom: "#03040a",
+          warm: "rgba(255, 163, 96, 0.14)",
+          cool: "rgba(120, 160, 255, 0.12)",
+          anchorA: "24% 10%",
+          anchorB: "78% 18%",
+          glowAnchor: "55% 48%",
+          lightSize: "clamp(35rem, 60vw, 68rem)",
+          overlayTop: "0.22",
+          overlayBottom: "0.88",
+          glowCore: "rgba(184, 182, 255, 0.13)",
+          glowWarm: "rgba(255, 197, 148, 0.18)",
+          glowCool: "rgba(129, 173, 255, 0.18)"
+        },
+        {
+          bgTop: "#081512",
+          bgBottom: "#02070a",
+          warm: "rgba(255, 177, 87, 0.12)",
+          cool: "rgba(112, 255, 220, 0.1)",
+          anchorA: "18% 20%",
+          anchorB: "84% 12%",
+          glowAnchor: "50% 44%",
+          lightSize: "clamp(34rem, 57vw, 64rem)",
+          overlayTop: "0.26",
+          overlayBottom: "0.9",
+          glowCore: "rgba(143, 255, 227, 0.12)",
+          glowWarm: "rgba(255, 221, 174, 0.16)",
+          glowCool: "rgba(112, 255, 220, 0.16)"
+        }
+      ];
+
+      pagers.forEach((pager) => {
+        const track = queryNode("[data-horizontal-track]", pager);
+        const pages = queryNodes(".horizontal-page", pager);
+        const prevButton = queryNode("[data-horizontal-prev]", pager);
+        const nextButton = queryNode("[data-horizontal-next]", pager);
+        const counter = queryNode("[data-horizontal-counter]", pager);
+        const label = queryNode("[data-horizontal-label]", pager);
+        const progressDots = queryNodes(".horizontal-pager-progress-dot", pager);
+        const stage = queryClosest(pager, ".content-stage");
+
+        if (!track || !pages.length) return;
+
+        let wheelUnlockTimeout = null;
+        let wheelResetTimeout = null;
+        let accumulatedWheel = 0;
+        let accumulatedDirection = 0;
+        const wheelResistance = 180;
+
+        function clearWheelResistance() {
+          accumulatedWheel = 0;
+          accumulatedDirection = 0;
+          track.style.removeProperty("--horizontal-wheel-progress");
+        }
+
+        function applyStageTheme(index) {
+          if (!stage) return;
+          const theme = panelThemes[((index % panelThemes.length) + panelThemes.length) % panelThemes.length];
+          stage.classList.add("has-horizontal-panel-theme");
+          stage.dataset.horizontalActive = String(index);
+          stage.style.setProperty("--horizontal-bg-top", theme.bgTop);
+          stage.style.setProperty("--horizontal-bg-bottom", theme.bgBottom);
+          stage.style.setProperty("--horizontal-bg-warm", theme.warm);
+          stage.style.setProperty("--horizontal-bg-cool", theme.cool);
+          stage.style.setProperty("--horizontal-bg-anchor-a", theme.anchorA);
+          stage.style.setProperty("--horizontal-bg-anchor-b", theme.anchorB);
+          stage.style.setProperty("--horizontal-glow-anchor", theme.glowAnchor);
+          stage.style.setProperty("--horizontal-light-size", theme.lightSize);
+          stage.style.setProperty("--horizontal-overlay-top", theme.overlayTop);
+          stage.style.setProperty("--horizontal-overlay-bottom", theme.overlayBottom);
+          stage.style.setProperty("--horizontal-glow-core", theme.glowCore);
+          stage.style.setProperty("--horizontal-glow-warm", theme.glowWarm);
+          stage.style.setProperty("--horizontal-glow-cool", theme.glowCool);
+        }
+
+        function getActiveIndex() {
+          let activeIndex = 0;
+          let nearestDistance = Number.POSITIVE_INFINITY;
+
+          pages.forEach((page, index) => {
+            const distance = Math.abs(page.offsetLeft - track.scrollLeft);
+            if (distance < nearestDistance) {
+              nearestDistance = distance;
+              activeIndex = index;
+            }
+          });
+
+          return activeIndex;
+        }
+
+        function syncPager() {
+          const activeIndex = getActiveIndex();
+          const totalPages = pages.length;
+          const activePage = pages[activeIndex];
+
+          progressDots.forEach((dot, index) => {
+            dot.classList.toggle("is-active", index === activeIndex);
+          });
+
+          if (counter) {
+            counter.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(totalPages).padStart(2, "0")}`;
+          }
+
+          if (label) {
+            label.textContent = activePage?.dataset.pageLabel || "Abertura";
+          }
+
+          if (prevButton) {
+            prevButton.disabled = activeIndex <= 0;
+          }
+
+          if (nextButton) {
+            nextButton.disabled = activeIndex >= totalPages - 1;
+          }
+
+          applyStageTheme(activeIndex);
+        }
+
+        function goTo(index, behavior = "smooth") {
+          const boundedIndex = Math.max(0, Math.min(pages.length - 1, index));
+          const targetPage = pages[boundedIndex];
+          if (!targetPage) return;
+
+          applyStageTheme(boundedIndex);
+          track.scrollTo({
+            left: targetPage.offsetLeft,
+            behavior
+          });
+        }
+
+        prevButton?.addEventListener("click", () => {
+          goTo(getActiveIndex() - 1);
+        });
+
+        nextButton?.addEventListener("click", () => {
+          goTo(getActiveIndex() + 1);
+        });
+
+        progressDots.forEach((dot, index) => {
+          dot.addEventListener("click", () => {
+            goTo(index);
+          });
+        });
+
+        track.addEventListener(
+          "wheel",
+          (event) => {
+            if (event.ctrlKey || pages.length <= 1) return;
+
+            const dominantDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+            if (Math.abs(dominantDelta) < 8) return;
+
+            event.preventDefault();
+
+            if (track.dataset.wheelLocked === "true") return;
+
+            const direction = Math.sign(dominantDelta);
+            if (!direction) return;
+
+            if (accumulatedDirection && accumulatedDirection !== direction) {
+              accumulatedWheel = 0;
+            }
+
+            accumulatedDirection = direction;
+            accumulatedWheel += dominantDelta;
+            track.style.setProperty("--horizontal-wheel-progress", Math.min(1, Math.abs(accumulatedWheel) / wheelResistance).toFixed(3));
+
+            if (wheelResetTimeout) {
+              window.clearTimeout(wheelResetTimeout);
+            }
+
+            wheelResetTimeout = window.setTimeout(() => {
+              if (track.dataset.wheelLocked !== "true") {
+                clearWheelResistance();
+              }
+            }, 180);
+
+            if (Math.abs(accumulatedWheel) < wheelResistance) return;
+
+            track.dataset.wheelLocked = "true";
+            clearWheelResistance();
+            goTo(getActiveIndex() + direction);
+
+            if (wheelUnlockTimeout) {
+              window.clearTimeout(wheelUnlockTimeout);
+            }
+
+            wheelUnlockTimeout = window.setTimeout(() => {
+              track.dataset.wheelLocked = "false";
+            }, 420);
+          },
+          { passive: false }
+        );
+
+        track.addEventListener("scroll", () => {
+          window.requestAnimationFrame(syncPager);
+        });
+
+        window.addEventListener("resize", () => {
+          const activeIndex = getActiveIndex();
+          window.requestAnimationFrame(() => {
+            goTo(activeIndex, "auto");
+            syncPager();
+          });
+        });
+
+        syncPager();
+      });
+  }
+]
+
+Build createSectionObserver[
+  args: (),
+  body: {
+    return new IntersectionObserver(
+            (entries) => {
+              const visible = entries
+                .filter((entry) => entry.isIntersecting)
+                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+              if (!visible) return;
+
+              const nextIndex = Number(visible.target.dataset.screenIndex);
+              const shellIndex = getShellPanels().indexOf(visible.target);
+
+              if (shellIndex >= 0) {
+                pageSnapIndex = shellIndex;
+              }
+
+              if (!Number.isNaN(nextIndex) && nextIndex !== lockedIndex) {
+                lockedIndex = nextIndex;
+                applyPreview(nextIndex);
+              }
+
+              if (companionState.viewMode === "docked" && !companionState.collapsed && !companionState.introActive) {
+                mountCompanion("content");
+              }
+            },
+            {
+              root: pageShell,
+              threshold: [0.55, 0.72]
+            }
+          );
+  }
+]
+
+Flow setupAnchorRouting[
+  args: (),
+  body: {
+    document.addEventListener("click", (event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+
+            const link = queryClosest(target, 'a[href^="#"]');
+            if (!(link instanceof HTMLAnchorElement)) return;
+
+            const hash = link.getAttribute("href") || "";
+            if (!scrollToHashTarget(hash, { updateHistory: true })) return;
+
+            event.preventDefault();
+          });
+  }
+]
+
+Flow setupMenuButtonInteractions[
+  args: (),
+  body: {
+    menuButtons.forEach((button) => {
+            const index = Number(button.dataset.screenIndex);
+
+            On => {
+              button["mouseenter"] = [() => applyPreview(index)];
+              button["focus"] = [() => applyPreview(index)];
+              button["mouseleave"] = [() => applyPreview(lockedIndex)];
+              button["blur"] = [() => applyPreview(lockedIndex)];
+              button["click"] = [() => lockAndScroll(index)];
+            }
+          });
+  }
+]
+
+Flow setupSectionObservation[
+  args: (),
+  body: {
+    const observer = createSectionObserver();
+          contentSections.forEach((section) => observer.observe(section));
+          return observer;
+  }
+]
+
+Flow setupIntroScrollGuard[
+  args: (),
+  body: {
+    pageShell?.addEventListener(
+            "wheel",
+            (event) => {
+              if (!companionState.introActive) return;
+              const target = event.target;
+              if (target instanceof Element && companionShell?.contains(target)) return;
+              event.preventDefault();
+            },
+            { passive: false }
+          );
+  }
+]
+
+Flow setupContentRailWheelRouting[
+  args: (),
+  body: {
+    contentRailShell?.addEventListener(
+            "wheel",
+            (event) => {
+              if (event.ctrlKey) return;
+              if (contentRailShell.classList.contains("is-programmatic-scroll")) {
+                event.preventDefault();
+                return;
+              }
+
+              const dominantDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+              if (Math.abs(dominantDelta) < 2) return;
+              if (shouldIgnoreWheelNavigation(event.target, dominantDelta)) return;
+
+              const maxScrollLeft = contentRailShell.scrollWidth - contentRailShell.clientWidth;
+              const canScrollBackward = contentRailShell.scrollLeft > 2;
+              const canScrollForward = contentRailShell.scrollLeft < maxScrollLeft - 2;
+
+              if ((dominantDelta < 0 && !canScrollBackward) || (dominantDelta > 0 && !canScrollForward)) {
+                return;
+              }
+
+              event.preventDefault();
+              navigateContentRailByDirection(dominantDelta);
+            },
+            { passive: false }
+          );
+  }
+]
+
+Flow setupScrollSettleTracking[
+  args: (),
+  body: {
+    pageShell?.addEventListener("scroll", () => {
+            if (
+              pageShell.classList.contains("is-programmatic-scroll") &&
+              pageProgrammaticTargetTop !== null &&
+              Math.abs(pageShell.scrollTop - pageProgrammaticTargetTop) <= programmaticScrollEpsilon
+            ) {
+              finalizePageProgrammaticScroll();
+              return;
+            }
+
+            if (!supportsScrollEnd) {
+              schedulePageScrollSettledFallback();
+            }
+          });
+
+          contentRailShell?.addEventListener("scroll", () => {
+            if (
+              contentRailShell.classList.contains("is-programmatic-scroll") &&
+              contentProgrammaticTargetLeft !== null &&
+              Math.abs(contentRailShell.scrollLeft - contentProgrammaticTargetLeft) <= programmaticScrollEpsilon
+            ) {
+              finalizeContentProgrammaticScroll();
+              return;
+            }
+
+            if (!supportsScrollEnd) {
+              scheduleContentRailScrollSettledFallback();
+            }
+          });
+
+          if (supportsScrollEnd) {
+            pageShell?.addEventListener("scrollend", handlePageScrollSettled);
+            contentRailShell?.addEventListener("scrollend", handleContentRailScrollSettled);
+          }
+  }
+]
+
+Flow setupHashSynchronization[
+  args: (),
+  body: {
+    if (window.location.hash) {
+            window.requestAnimationFrame(() => {
+              scrollToHashTarget(window.location.hash, { instant: true });
+            });
+          }
+
+          window.addEventListener("hashchange", () => {
+            scrollToHashTarget(window.location.hash, { instant: true });
+          });
+  }
+]
+
+Group utilities[
+  members: {
+    ...documentQueries,
+    ...nodeWriting
+  }
+]
+
+Group hud[
+  members: {
+    getShellPanels,
+    renderBullets,
+    renderHUD,
+    applyPreview
+  }
+]
+
+Group navigation[
+  members: {
+    finalizePageProgrammaticScroll,
+    finalizeContentProgrammaticScroll,
+    animateShellTo,
+    resolveShellPanelIndex,
+    updateContentStageBackdrop,
+    triggerPanelScroll,
+    canElementConsumeVerticalScroll,
+    lockAndScroll,
+    shouldIgnoreWheelNavigation,
+    getContentPanelScrollLeft,
+    getNearestContentPanelIndex,
+    scrollContentRailTo,
+    navigateContentRailByDirection,
+    snapPageToThreshold,
+    snapContentRailToThreshold,
+    handlePageScrollSettled,
+    handleContentRailScrollSettled,
+    schedulePageScrollSettledFallback,
+    scheduleContentRailScrollSettledFallback,
+    scrollToHashTarget
+  }
+]
+
+Group words[
+  members: {
+    escapeHtml,
+    normalizeText,
+    tokenizeText,
+    wait
+  }
+]
+
+Group companionWork[
+  members: {
+    getCurrentScreen,
+    buildCompanionExplainReply,
+    buildCompanionSummaryReply,
+    streamCompanionText,
+    setCompanionPhase,
+    setCompanionViewMode,
+    setCompanionCollapsed,
+    mountCompanion,
+    buildCompanionLandingReply,
+    buildCompanionScheduleReply,
+    buildCompanionBusinessLogicReply,
+    buildCompanionSemanticLayerReply,
+    buildCompanionApproachReply,
+    buildCompanionApplicationReply,
+    buildCompanionCommercialReply,
+    buildCompanionProfessionalScopeReply,
+    buildCompanionIdentityReply,
+    findBestScreenByMessage,
+    navigateCompanionToIndex,
+    findScreenByMessage,
+    buildCompanionReply,
+    shouldUseLocalCompanionReply,
+    fetchCompanionReply,
+    runCompanionIntroOutro,
+    sendCompanionMessage,
+    playCompanionWelcomeSequence,
+    setupCompanionPanel
+  }
+]
+
+Group agentWork[
+  members: {
+    setAgentStatus,
+    scrollAgentToBottom,
+    appendAgentMessage,
+    setAgentBusy,
+    buildContactAssessment,
+    buildLocalInterviewReply,
+    buildAgentReportData,
+    buildAgentReportMarkdown,
+    syncAgentExportButton,
+    renderAgentReport,
+    sendAgentMessage,
+    sendAgentMessageViaAI,
+    setupAgentPanel
+  }
+]
+
+Group pages[
+  members: {
+    setupHorizontalPagers
+  }
+]
+
+Group startup[
+  members: {
+    createSectionObserver,
+    setupAnchorRouting,
+    setupMenuButtonInteractions,
+    setupSectionObservation,
+    setupIntroScrollGuard,
+    setupContentRailWheelRouting,
+    setupScrollSettleTracking,
+    setupHashSynchronization,
+  }
+]
+
+Group semantics[
+  members: {
+    ...flowThresholds,
+    guidedIntakeTopics,
+    ...utilities,
+    ...hud,
+    ...navigation,
+    ...words,
+    ...companionWork,
+    ...agentWork,
+    ...pages,
+    ...startup
+  }
+]
+
+  )#
+}
+
+export const guidedIntakeTopics = [
+      {
+        id: "objective",
+        label: "Objetivo e resultado esperado",
+        keywords: ["quero", "preciso", "projeto", "produto", "site", "landing", "pagina", "app", "sistema", "plataforma", "portal", "dashboard"],
+        capture:
+          "Já existe um objetivo claro, o que ajuda a tirar a conversa do campo abstrato.",
+        question:
+          "O que você quer colocar de pé e que resultado esse trabalho precisa gerar?"
+      },
+      {
+        id: "context",
+        label: "Contexto, dor e oportunidade",
+        keywords: ["problema", "dor", "contexto", "negocio", "cliente", "operacao", "processo", "venda", "fluxo", "oportunidade", "mercado"],
+        capture:
+          "Já há contexto suficiente para entender por que esse trabalho existe e onde ele toca a operação real.",
+        question:
+          "Qual problema, oportunidade ou situação concreta está puxando esse trabalho agora?"
+      },
+      {
+        id: "scope",
+        label: "Escopo e entregáveis",
+        keywords: ["escopo", "entrega", "entregavel", "tela", "telas", "identidade", "ux", "ui", "chat", "automacao", "dashboard", "fluxo", "conteudo"],
+        capture:
+          "Já dá para perceber algumas partes do escopo e transformar desejo em recorte de entrega.",
+        question:
+          "Quais partes precisam entrar de verdade: páginas, fluxos, automações, texto, identidade, chat ou outra camada?"
+      },
+      {
+        id: "constraints",
+        label: "Prazo, fases e restrições",
+        keywords: ["prazo", "urgencia", "semana", "mes", "orcamento", "limite", "restricao", "deadline", "fases", "faseado", "tempo"],
+        capture:
+          "Já apareceram limites ou ritmos iniciais, o que ajuda a manter a proposta em chave realista.",
+        question:
+          "Existe prazo, faseamento, limite de orçamento ou alguma restrição técnica/comercial que eu precise considerar?"
+      },
+      {
+        id: "fit",
+        label: "Por que meu perfil faz sentido",
+        keywords: ["seu perfil", "com voce", "contigo", "design", "requisitos", "agente", "agentes", "linguagem", "editorial", "autoral", "ux", "frontend"],
+        capture:
+          "Já há algum sinal de por que meu perfil entrou na conversa, o que ajuda a medir aplicabilidade com honestidade.",
+        question:
+          "Por que meu perfil entrou nessa conversa: interface, requisitos, agentes, software autoral, linguagem ou outro ponto?"
+      }
+    ];
+
+
+const scrollEndFallbackDelay = 220;
+const pageSnapThreshold = 0.38;
+const contentSnapThreshold = 0.2;
+const programmaticScrollEpsilon = 3;
+const supportsScrollEnd = "onscrollend" in window;
+    export const flowThresholds = {
+      scrollEndFallbackDelay: scrollEndFallbackDelay,
+      pageSnapThreshold: pageSnapThreshold,
+      contentSnapThreshold: contentSnapThreshold,
+      programmaticScrollEpsilon: programmaticScrollEpsilon,
+      supportsScrollEnd: supportsScrollEnd,
+    };
+
+
+function queryNode(selector, root = document) { return root.querySelector(selector); }
+function queryNodes(selector, root = document) { return [...root.querySelectorAll(selector)]; }
+function queryClosest(element, selector) { return element instanceof Element ? element.closest(selector) : null; }
+function queryData(element, key, fallback = "") { return element?.dataset?.[key] ?? fallback; }
+    export const documentQueries = {
+      queryNode: queryNode,
+      queryNodes: queryNodes,
+      queryClosest: queryClosest,
+      queryData: queryData,
+    };
+
+
+function makeNode(tagName) { return document.createElement(tagName); }
+function writeNodeClass(node, className = "") { if (node && className) { node.className = className; } return node; }
+function writeNodeText(node, text = "") { if (node) { node.textContent = text; } return node; }
+function mountNodeChildren(node, ...children) { if (node) { node.append(...children.filter(Boolean)); } return node; }
+    export const nodeWriting = {
+      makeNode: makeNode,
+      writeNodeClass: writeNodeClass,
+      writeNodeText: writeNodeText,
+      mountNodeChildren: mountNodeChildren,
+    };
+
+
+
+const base = {
+      generatedPortfolioApplication: globalThis.__PORTFOLIO_APPLICATION__ || null,
+      generatedLayouts: null,
+      generatedAssistant: null,
+      generatedRenderers: globalThis.__PORTFOLIO_RENDERERS__ || {},
+      runtimeContentPath: null,
+      runtimeAgentEndpoint: import.meta.env.VITE_AGENT_ENDPOINT || "/api/agent-chat",
+      screens: null,
+      appRoot: null,
+      siteAvatar: null,
+      renderAppShell: null,
+      appRendering: null
+    };
+
+    base.generatedLayouts = base.generatedPortfolioApplication?.layouts?.() || {};
+    base.generatedAssistant = base.generatedPortfolioApplication?.assistant?.() || {};
+    base.runtimeContentPath = base.generatedPortfolioApplication?.contentPath || "/content/sections";
+    base.screens = await loadScreenMarkdownContent(
+      baseScreens.map((screen) => ({
+        ...screen,
+        markdownPath: screen.markdownPath || `${base.runtimeContentPath}/${screen.id}.md`
+      }))
+    );
+    base.appRoot = document.querySelector("#app");
+    base.siteAvatar = base.screens[0]?.portraitImage || base.screens[0]?.image || "/assets/foto-02.jpg";
+    base.renderAppShell = base.generatedRenderers.renderAppShell;
+
+    if (typeof base.renderAppShell !== "function") {
+      throw new Error("[DSLJS] renderAppShell nao foi registrado antes do runtime iniciar.");
+    }
+
+    base.appRendering = base.renderAppShell({
+      screens: base.screens,
+      siteAvatar: base.siteAvatar,
+      assistant: base.generatedAssistant,
+      currentYear: new Date().getFullYear(),
+      layouts: base.generatedLayouts
+    });
+
+    if (base.appRoot) {
+      base.appRoot.innerHTML = base.appRendering;
+    }
+
+    const generatedPortfolioApplication = base.generatedPortfolioApplication;
+    const generatedLayouts = base.generatedLayouts;
+    const generatedAssistant = base.generatedAssistant;
+    const generatedRenderers = base.generatedRenderers;
+    const runtimeContentPath = base.runtimeContentPath;
+    const runtimeAgentEndpoint = base.runtimeAgentEndpoint;
+    const screens = base.screens;
+    const appRoot = base.appRoot;
+    const siteAvatar = base.siteAvatar;
+    const renderAppShell = base.renderAppShell;
+    const appRendering = base.appRendering;
+
+    const page = {
+          pageShell: document.querySelector("[data-shell]"),
+          menuStage: document.querySelector("#menu-stage"),
+          contentRailStage: document.querySelector("#content-stage"),
+          footerStage: document.querySelector("#footer-stage"),
+          contentBackdrop: document.querySelector("[data-content-backdrop]"),
+          contentBackdropImage: document.querySelector("[data-content-backdrop-image]"),
+          contentBackdropGallery: document.querySelector("[data-content-backdrop-gallery]"),
+          contentRailShell: document.querySelector("[data-content-shell]"),
+          sceneHost: document.querySelector("[data-scene-host]"),
+          loadingCard: document.querySelector("[data-loading]"),
+          menuButtons: [...document.querySelectorAll(".menu-button")],
+          contentSections: [...document.querySelectorAll(".content-stage")],
+          contentPanels: [...document.querySelectorAll("[data-content-panel]")],
+          detailCodeNode: document.querySelector("[data-detail-code]"),
+          titleNode: document.querySelector("[data-title]"),
+          detailsNode: document.querySelector("[data-details]"),
+          bulletsNode: document.querySelector("[data-bullets]"),
+          agentMessagesNode: document.querySelector("[data-agent-messages]"),
+          agentForm: document.querySelector("[data-agent-form]"),
+          agentInput: document.querySelector("[data-agent-input]"),
+          agentSubmit: document.querySelector("[data-agent-submit]"),
+          agentStatus: document.querySelector("[data-agent-status]"),
+          agentReportNode: document.querySelector("[data-agent-report]"),
+          agentExportButton: document.querySelector("[data-agent-export]"),
+          agentQuickButtons: [...document.querySelectorAll("[data-agent-prompt]")],
+          companionShell: document.querySelector("[data-companion-shell]"),
+          companionOutputText: document.querySelector("[data-companion-output-text]"),
+          companionForm: document.querySelector("[data-companion-form]"),
+          companionInput: document.querySelector("[data-companion-input]"),
+          companionSubmit: document.querySelector("[data-companion-submit]"),
+          companionExit: document.querySelector("[data-companion-exit]"),
+          companionMinimize: document.querySelector("[data-companion-minimize]"),
+          companionMaximize: document.querySelector("[data-companion-maximize]")
+        };
+    
+        const pageShell = page.pageShell;
+        const menuStage = page.menuStage;
+        const contentRailStage = page.contentRailStage;
+        const footerStage = page.footerStage;
+        const contentBackdrop = page.contentBackdrop;
+        const contentBackdropImage = page.contentBackdropImage;
+        const contentBackdropGallery = page.contentBackdropGallery;
+        const contentRailShell = page.contentRailShell;
+        const sceneHost = page.sceneHost;
+        const loadingCard = page.loadingCard;
+        const menuButtons = page.menuButtons;
+        const contentSections = page.contentSections;
+        const contentPanels = page.contentPanels;
+        const detailCodeNode = page.detailCodeNode;
+        const titleNode = page.titleNode;
+        const detailsNode = page.detailsNode;
+        const bulletsNode = page.bulletsNode;
+        const agentMessagesNode = page.agentMessagesNode;
+        const agentForm = page.agentForm;
+        const agentInput = page.agentInput;
+        const agentSubmit = page.agentSubmit;
+        const agentStatus = page.agentStatus;
+        const agentReportNode = page.agentReportNode;
+        const agentExportButton = page.agentExportButton;
+        const agentQuickButtons = page.agentQuickButtons;
+        const companionShell = page.companionShell;
+        const companionOutputText = page.companionOutputText;
+        const companionForm = page.companionForm;
+        const companionInput = page.companionInput;
+        const companionSubmit = page.companionSubmit;
+        const companionExit = page.companionExit;
+        const companionMinimize = page.companionMinimize;
+        const companionMaximize = page.companionMaximize;
+
+    const agentScreen = screens.find((screen) => screen.kind === "agent");
+
+
+    const presenceLayer = {
+      base,
+      page,
+      agentScreen
+    };
+
+    const agentState = {
+          busy: false,
+          history: []
+        };
+
+        const companionState = {
+              phase: "boot",
+              introActive: true,
+              introCompleted: false,
+              busy: false,
+              streamId: 0,
+              viewMode: "expanded",
+              collapsed: false,
+              history: []
+            };
+
+        setupAgentPanel();
+            setupCompanionPanel();
+        
+            const dialogue = {
+              agent: agentState,
+              companion: companionState
+            };
+
+    
+        const exchangeLayer = {
+          agent: agentState,
+          companion: companionState,
+          dialogue
+        };
+
+    let lockedIndex = 0;
+        let previewIndex = 0;
+        let sceneController = null;
+        let pageScrollEndTimeout = null;
+        let contentScrollEndTimeout = null;
+        let pageProgrammaticTargetTop = null;
+        let contentProgrammaticTargetLeft = null;
+        let pageSnapIndex = 0;
+        let contentSnapIndex = 0;
+        let detailListRevealTimeout = null;
+    
+        const movement = {
+          get lockedIndex() { return lockedIndex; },
+          set lockedIndex(value) { lockedIndex = value; },
+          get previewIndex() { return previewIndex; },
+          set previewIndex(value) { previewIndex = value; },
+          get sceneController() { return sceneController; },
+          set sceneController(value) { sceneController = value; },
+          get pageScrollEndTimeout() { return pageScrollEndTimeout; },
+          set pageScrollEndTimeout(value) { pageScrollEndTimeout = value; },
+          get contentScrollEndTimeout() { return contentScrollEndTimeout; },
+          set contentScrollEndTimeout(value) { contentScrollEndTimeout = value; },
+          get pageProgrammaticTargetTop() { return pageProgrammaticTargetTop; },
+          set pageProgrammaticTargetTop(value) { pageProgrammaticTargetTop = value; },
+          get contentProgrammaticTargetLeft() { return contentProgrammaticTargetLeft; },
+          set contentProgrammaticTargetLeft(value) { contentProgrammaticTargetLeft = value; },
+          get pageSnapIndex() { return pageSnapIndex; },
+          set pageSnapIndex(value) { pageSnapIndex = value; },
+          get contentSnapIndex() { return contentSnapIndex; },
+          set contentSnapIndex(value) { contentSnapIndex = value; },
+          get detailListRevealTimeout() { return detailListRevealTimeout; },
+          set detailListRevealTimeout(value) { detailListRevealTimeout = value; }
+        };
+
+        renderHUD(0);
+            setupHorizontalPagers();
+            setupAnchorRouting();
+            setupMenuButtonInteractions();
+            setupSectionObservation();
+            setupIntroScrollGuard();
+            setupContentRailWheelRouting();
+            setupScrollSettleTracking();
+            setupHashSynchronization();
+        
+            const gallery = {
+              currentIndex: lockedIndex,
+              panels: contentSections
+            };
+
+    
+        const journeyLayer = {
+          movement,
+          gallery
+        };
+
+    try {
+          const { createScene } = await import("../scene.generated.ts");
+          sceneController = await createScene({ mount: sceneHost, screens });
+          sceneController.focusScreen(0);
+          loadingCard?.classList.add("is-hidden");
+        } catch (error) {
+          if (loadingCard) {
+            loadingCard.innerHTML = [
+              '      <span>falha na cena</span>',
+              '      <strong>Não foi possível carregar a experiência 3D</strong>'
+            ].join("\n");
+          }
+          console.error(error);
+        }
+    
+        const world = {
+          controller: sceneController,
+          mount: sceneHost
+        };
+
+    
+        const visionLayer = {
+          world
+        };
+
+
+    const runtime = {
+      presence: presenceLayer,
+      exchange: exchangeLayer,
+      journey: journeyLayer,
+      vision: visionLayer
+    };
+
+    void appRendering;
+
+
+function getShellPanels() {
+      return [menuStage, ...contentSections, footerStage].filter(Boolean);
+    }
+
+
+function renderBullets(items) {
+      bulletsNode.innerHTML = items.map((item) => `<li>${item}</li>`).join("");
+    }
+
+
+function renderHUD(index) {
+      const screen = screens[index];
+      detailCodeNode.textContent = screen.code;
+      titleNode.textContent = screen.label;
+      detailsNode.textContent = screen.details;
+      renderBullets(screen.bullets);
+      bulletsNode.classList.remove("is-visible");
+
+      if (detailListRevealTimeout) {
+        window.clearTimeout(detailListRevealTimeout);
+      }
+
+      detailListRevealTimeout = window.setTimeout(() => {
+        bulletsNode.classList.add("is-visible");
+      }, 620);
+
+      menuButtons.forEach((button, buttonIndex) => {
+        button.classList.toggle("is-preview", buttonIndex === previewIndex);
+        button.classList.toggle("is-locked", buttonIndex === lockedIndex);
+      });
+    }
+
+
+function applyPreview(index) {
+      previewIndex = index;
+      renderHUD(index);
+      sceneController?.focusScreen(index);
+    }
+
+
+function finalizePageProgrammaticScroll() {
+      if (!pageShell) return;
+      pageProgrammaticTargetTop = null;
+      pageShell.classList.remove("is-programmatic-scroll");
+    }
+
+
+function finalizeContentProgrammaticScroll() {
+      if (!contentRailShell) return;
+      contentProgrammaticTargetLeft = null;
+      contentRailShell.classList.remove("is-programmatic-scroll");
+      updateContentStageBackdrop(contentSnapIndex);
+    }
+
+
+function animateShellTo(targetTop, { instant = false } = {}) {
+      if (!pageShell) return;
+
+      const delta = targetTop - pageShell.scrollTop;
+      pageProgrammaticTargetTop = targetTop;
+      pageShell.classList.add("is-programmatic-scroll");
+
+      if (Math.abs(delta) < 2) {
+        pageShell.scrollTop = targetTop;
+        finalizePageProgrammaticScroll();
+        return;
+      }
+
+      pageShell.scrollTo({
+        top: targetTop,
+        behavior: instant ? "auto" : "smooth"
+      });
+
+      if (instant) {
+        finalizePageProgrammaticScroll();
+      }
+    }
+
+
+function resolveShellPanelIndex(targetTop) {
+      const shellPanels = getShellPanels();
+      return shellPanels.findIndex((panel) => Math.abs(panel.offsetTop - targetTop) < 2);
+    }
+
+
+function updateContentStageBackdrop(index = lockedIndex) {
+      if (!contentRailStage) return;
+
+      const boundedIndex = Math.max(0, Math.min(screens.length - 1, index));
+      const screen = screens[boundedIndex];
+      const backdropImage = screen?.backgroundImage || screen?.image || screen?.portraitImage;
+      const useGallery = screen?.kind === "identity" && Boolean(screen?.identityDeck?.length);
+
+      if (contentBackdrop) {
+        contentBackdrop.dataset.backdropMode = useGallery ? "gallery" : "single";
+      }
+
+      if (contentBackdropImage && backdropImage) {
+        contentBackdropImage.src = backdropImage;
+        contentBackdropImage.style.objectPosition = "center center";
+      }
+    }
+
+
+function triggerPanelScroll(targetTop) {
+      const nextIndex = resolveShellPanelIndex(targetTop);
+      if (nextIndex >= 0) {
+        pageSnapIndex = nextIndex;
+      }
+      animateShellTo(targetTop);
+    }
+
+
+function canElementConsumeVerticalScroll(element, deltaY) {
+      if (!(element instanceof HTMLElement)) return false;
+
+      const style = window.getComputedStyle(element);
+      const overflowY = style.overflowY;
+      const canScrollY = /(auto|scroll|overlay)/.test(overflowY) && element.scrollHeight > element.clientHeight + 2;
+
+      if (!canScrollY) return false;
+      if (deltaY < 0) return element.scrollTop > 0;
+      if (deltaY > 0) return element.scrollTop + element.clientHeight < element.scrollHeight - 1;
+
+      return true;
+    }
+
+
+function lockAndScroll(index) {
+      lockedIndex = index;
+      applyPreview(index);
+      scrollToHashTarget(`#section-${screens[index].id}`, { updateHistory: true });
+    }
+
+
+function shouldIgnoreWheelNavigation(target, deltaY = 0) {
+      if (!(target instanceof Element)) return false;
+
+      const scrollConsumer =
+        queryClosest(target, ".agent-messages") ||
+        queryClosest(target, ".companion-messages") ||
+        queryClosest(target, "[data-horizontal-track]");
+
+      return canElementConsumeVerticalScroll(scrollConsumer, deltaY);
+    }
+
+
+function getContentPanelScrollLeft(panel) {
+      if (!(panel instanceof HTMLElement) || !contentRailShell) return 0;
+
+      const shellRect = contentRailShell.getBoundingClientRect();
+      const panelRect = panel.getBoundingClientRect();
+      return panelRect.left - shellRect.left + contentRailShell.scrollLeft;
+    }
+
+
+function getNearestContentPanelIndex() {
+      if (!contentRailShell || !contentPanels.length) return 0;
+
+      let nearestIndex = 0;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+
+      contentPanels.forEach((panel, index) => {
+        const distance = Math.abs(getContentPanelScrollLeft(panel) - contentRailShell.scrollLeft);
+
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestIndex = index;
+        }
+      });
+
+      return nearestIndex;
+    }
+
+
+function scrollContentRailTo(panel, { instant = false } = {}) {
+      if (!(panel instanceof HTMLElement) || !contentRailShell) return false;
+
+      const panelIndex = contentPanels.indexOf(panel);
+      if (panelIndex >= 0) {
+        contentSnapIndex = panelIndex;
+      }
+
+      const targetLeft = getContentPanelScrollLeft(panel);
+      contentProgrammaticTargetLeft = targetLeft;
+      contentRailShell.classList.add("is-programmatic-scroll");
+
+      if (Math.abs(targetLeft - contentRailShell.scrollLeft) < 2) {
+        contentRailShell.scrollLeft = targetLeft;
+        finalizeContentProgrammaticScroll();
+        return true;
+      }
+
+      contentRailShell.scrollTo({
+        left: targetLeft,
+        behavior: instant ? "auto" : "smooth"
+      });
+
+      if (instant) {
+        finalizeContentProgrammaticScroll();
+      }
+
+      return true;
+    }
+
+
+function navigateContentRailByDirection(direction) {
+      if (!contentRailShell || !contentPanels.length) return false;
+
+      const normalizedDirection = Math.sign(direction);
+      if (!normalizedDirection) return false;
+
+      const currentIndex = getNearestContentPanelIndex();
+      const targetIndex = Math.max(0, Math.min(contentPanels.length - 1, currentIndex + normalizedDirection));
+
+      if (targetIndex === currentIndex) return false;
+
+      return scrollContentRailTo(contentPanels[targetIndex]);
+    }
+
+
+function snapPageToThreshold() {
+      if (!pageShell) return;
+
+      const shellPanels = getShellPanels();
+      const anchorPanel = shellPanels[pageSnapIndex];
+      if (!anchorPanel) return;
+
+      const delta = pageShell.scrollTop - anchorPanel.offsetTop;
+      const thresholdPx = pageShell.clientHeight * pageSnapThreshold;
+      let targetIndex = pageSnapIndex;
+
+      if (Math.abs(delta) >= thresholdPx) {
+        targetIndex = Math.max(0, Math.min(shellPanels.length - 1, pageSnapIndex + Math.sign(delta)));
+      }
+
+      const targetPanel = shellPanels[targetIndex];
+      if (!targetPanel) return;
+
+      pageSnapIndex = targetIndex;
+      animateShellTo(targetPanel.offsetTop);
+    }
+
+
+function snapContentRailToThreshold() {
+      if (!contentRailShell) return;
+
+      const anchorPanel = contentPanels[contentSnapIndex];
+      if (!anchorPanel) return;
+
+      const anchorLeft = getContentPanelScrollLeft(anchorPanel);
+      const delta = contentRailShell.scrollLeft - anchorLeft;
+      const thresholdPx = contentRailShell.clientWidth * contentSnapThreshold;
+      let targetIndex = contentSnapIndex;
+
+      if (Math.abs(delta) >= thresholdPx) {
+        targetIndex = Math.max(0, Math.min(contentPanels.length - 1, contentSnapIndex + Math.sign(delta)));
+      }
+
+      const targetPanel = contentPanels[targetIndex];
+      if (!targetPanel) return;
+
+      scrollContentRailTo(targetPanel);
+    }
+
+
+function handlePageScrollSettled() {
+      if (!pageShell) return;
+
+      if (pageShell.classList.contains("is-programmatic-scroll")) {
+        if (pageProgrammaticTargetTop !== null && Math.abs(pageShell.scrollTop - pageProgrammaticTargetTop) > programmaticScrollEpsilon) {
+          return;
+        }
+        finalizePageProgrammaticScroll();
+        return;
+      }
+
+      snapPageToThreshold();
+    }
+
+
+function handleContentRailScrollSettled() {
+      if (!contentRailShell) return;
+
+      if (contentRailShell.classList.contains("is-programmatic-scroll")) {
+        if (
+          contentProgrammaticTargetLeft !== null &&
+          Math.abs(contentRailShell.scrollLeft - contentProgrammaticTargetLeft) > programmaticScrollEpsilon
+        ) {
+          return;
+        }
+        finalizeContentProgrammaticScroll();
+        return;
+      }
+
+      snapContentRailToThreshold();
+    }
+
+
+function schedulePageScrollSettledFallback() {
+      if (pageScrollEndTimeout) {
+        window.clearTimeout(pageScrollEndTimeout);
+      }
+
+      pageScrollEndTimeout = window.setTimeout(() => {
+        handlePageScrollSettled();
+      }, scrollEndFallbackDelay);
+    }
+
+
+function scheduleContentRailScrollSettledFallback() {
+      if (contentScrollEndTimeout) {
+        window.clearTimeout(contentScrollEndTimeout);
+      }
+
+      contentScrollEndTimeout = window.setTimeout(() => {
+        handleContentRailScrollSettled();
+      }, scrollEndFallbackDelay);
+    }
+
+
+function scrollToHashTarget(hash, { updateHistory = false, instant = false } = {}) {
+      if (!hash || hash === "#") return false;
+
+      const target = queryNode(hash);
+      if (!(target instanceof HTMLElement)) return false;
+
+      if (updateHistory) {
+        window.history.replaceState(null, "", hash);
+      }
+
+      const contentPanel = queryClosest(target, "[data-content-panel]");
+
+      if (contentPanel instanceof HTMLElement) {
+        const nextIndex = Number(queryData(contentPanel, "screenIndex", "-1"));
+        if (!Number.isNaN(nextIndex)) {
+          lockedIndex = nextIndex;
+          applyPreview(nextIndex);
+        }
+
+        if (companionState.viewMode === "docked" && !companionState.collapsed && !companionState.introActive) {
+          mountCompanion("content");
+        }
+
+        if (instant) {
+          pageShell.classList.add("is-programmatic-scroll");
+          pageShell.scrollTop = contentPanel.offsetTop;
+          pageShell.classList.remove("is-programmatic-scroll");
+          const nextPanelIndex = resolveShellPanelIndex(contentPanel.offsetTop);
+          if (nextPanelIndex >= 0) {
+            pageSnapIndex = nextPanelIndex;
+          }
+          return true;
+        }
+
+        triggerPanelScroll(contentPanel.offsetTop);
+        return true;
+      }
+
+      if (instant) {
+        pageShell.classList.add("is-programmatic-scroll");
+        pageShell.scrollTop = target.offsetTop;
+        pageShell.classList.remove("is-programmatic-scroll");
+        const nextIndex = resolveShellPanelIndex(target.offsetTop);
+        if (nextIndex >= 0) {
+          pageSnapIndex = nextIndex;
+        }
+        return true;
+      }
+
+      triggerPanelScroll(target.offsetTop);
+      return true;
+    }
+
+
+function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+
+function normalizeText(text) {
+      return String(text)
+        .toLowerCase()
+        .normalize("NFD")
+        .replaceAll(/[\u0300-\u036f]/g, "");
+    }
+
+
+function tokenizeText(text) {
+      return normalizeText(text)
+        .split(/[^a-z0-9]+/g)
+        .filter((token) => token.length >= 3);
+    }
+
+
+function wait(ms) {
+      return new Promise((resolve) => {
+        window.setTimeout(resolve, ms);
+      });
+    }
+
+
+function getCurrentScreen() {
+      return screens[lockedIndex] || screens[0];
+    }
+
+
+function buildCompanionExplainReply(screen) {
+      return `${screen.label}: ${screen.details} Em termos de proposta de valor, esta sessão mostra ${screen.contentTitle.toLowerCase()} e como isso se conecta ao restante do portfólio.`;
+    }
+
+
+function buildCompanionSummaryReply(screen) {
+      const bullets = screen.bullets?.slice(0, 3).join("; ") || "Sem destaques adicionais.";
+      return `Resumo de ${screen.label}: ${screen.contentBody} Destaques principais: ${bullets}.`;
+    }
+
+
+async function streamCompanionText(text, { reset = true, speed = 18 } = {}) {
+      if (!companionOutputText) return false;
+
+      const streamId = ++companionState.streamId;
+      companionOutputText.dataset.streaming = "true";
+
+      if (reset) {
+        companionOutputText.textContent = "";
+      }
+
+      for (const character of text) {
+        if (streamId !== companionState.streamId) {
+          return false;
+        }
+
+        companionOutputText.textContent += character;
+        await wait(character === " " || character === "\n" ? speed * 0.45 : speed);
+      }
+
+      if (streamId === companionState.streamId) {
+        companionOutputText.dataset.streaming = "false";
+        return true;
+      }
+
+      return false;
+    }
+
+
+function setCompanionPhase(nextPhase) {
+      companionState.phase = nextPhase;
+      if (companionShell) {
+        companionShell.dataset.phase = nextPhase;
+      }
+    }
+
+
+function setCompanionViewMode(nextView) {
+      const resolvedView = nextView === "docked" ? "docked" : "expanded";
+      companionState.viewMode = resolvedView;
+      if (companionShell) {
+        companionShell.dataset.view = resolvedView;
+      }
+
+      if (!pageShell) return;
+
+      if (companionState.introActive) {
+        pageShell.dataset.aiStage = "intro";
+        return;
+      }
+
+      pageShell.dataset.aiStage = resolvedView === "expanded" ? "assistant-focus" : "ready";
+    }
+
+
+function setCompanionCollapsed(nextCollapsed) {
+      const resolvedCollapsed = Boolean(nextCollapsed);
+      companionState.collapsed = resolvedCollapsed;
+      if (companionShell) {
+        companionShell.dataset.collapsed = resolvedCollapsed ? "true" : "false";
+      }
+    }
+
+
+function mountCompanion(_location) {
+      if (!companionShell || !(pageShell instanceof HTMLElement)) return;
+
+      if (companionShell.parentElement !== pageShell) {
+        pageShell.appendChild(companionShell);
+      }
+
+      companionShell.dataset.mount = "page";
+      if (companionState.viewMode !== "expanded") {
+        setCompanionViewMode("docked");
+      }
+    }
+
+
+function buildCompanionLandingReply(screen) {
+      return `Você encontra isso em ${screen.label}. ${screen.blurb}`;
+    }
+
+
+function buildCompanionScheduleReply() {
+      return "Quando a conversa entra em cronograma, eu costumo organizar em quatro blocos: descoberta e leitura do problema, definição de escopo e semantic layer, construção das camadas de interface e implementação, e por fim validação, ajuste e publicação. Se você quiser, eu posso te ajudar a transformar um objetivo solto em fases, entregáveis e ritmo de execução.";
+    }
+
+
+function buildCompanionBusinessLogicReply() {
+      return "Lógica de negócio, para mim, é o conjunto de regras, eventos, restrições e consequências que faz um sistema responder de forma correta ao contexto real. Ela vem antes da tela bonita porque determina o que pode acontecer, para quem, em que ordem e sob quais condições.";
+    }
+
+
+function buildCompanionSemanticLayerReply() {
+      return "Semantic layer é a camada de significado do sistema: nomes, entidades, estados, relacionamentos e critérios que deixam claro o que cada coisa é de verdade. Quando ela está bem definida, interface, automação, regra e relatório passam a falar a mesma língua.";
+    }
+
+
+function buildCompanionApproachReply() {
+      return "Minha abordagem costuma sair de leitura para estrutura e de estrutura para proposta. Primeiro eu entendo intenção, contexto e restrição; depois organizo entidades, fluxo, regras e linguagem; por fim transformo isso em interface, implementação e material comercial mais confiável.";
+    }
+
+
+function buildCompanionApplicationReply() {
+      return "Aplicação, aqui, não é só implementar. É decidir onde a leitura profissional vira movimento concreto: descoberta, critérios de negócio, semantic layer, interface, componentes, copy e, quando faz sentido, relatório ou pré-proposta para apoiar a conversa comercial.";
+    }
+
+
+function buildCompanionCommercialReply() {
+      return "Eu consigo ajudar na camada comercial prévia: organizar briefing, clarificar escopo, separar desejo de entregável, sugerir faseamento, apontar risco e estruturar uma pré-proposta mais sólida antes de qualquer fechamento formal.";
+    }
+
+
+function buildCompanionProfessionalScopeReply() {
+      return "Posso responder em chave profissional sobre organização do trabalho, cronogramas, lógica de negócio, semantic layer, abordagem de projeto, aplicação técnica e preparação comercial prévia. A ideia é reduzir ruído e deixar a conversa com mais critério desde cedo.";
+    }
+
+
+function buildCompanionIdentityReply() {
+      return [
+        "Icaro Glauco aparece aqui como um perfil que cruza design, UX, engenharia, requisitos e pesquisa de linguagem.",
+        "O site o apresenta menos como curriculo tradicional e mais como alguem que conecta leitura de problema, direcao visual, semantica, implementacao real e software autoral.",
+        "Se quiser, eu tambem posso te levar para a secao de identidade, onde isso fica desenvolvido com mais contexto."
+      ].join(" ");
+    }
+
+
+function findBestScreenByMessage(message) {
+      const normalizedMessage = normalizeText(message);
+
+      const scoredScreens = screens
+        .map((screen, index) => {
+          const tokens = [
+            screen.id,
+            screen.label,
+            screen.kicker,
+            screen.headline,
+            screen.blurb,
+            screen.contentTitle,
+            ...(screen.bullets || [])
+          ].flatMap((item) => tokenizeText(item));
+
+          const score = [...new Set(tokens)].reduce((total, token) => {
+            if (!normalizedMessage.includes(token)) return total;
+            return total + (token.length >= 7 ? 2 : 1);
+          }, 0);
+
+          return { index, screen, score };
+        })
+        .sort((left, right) => right.score - left.score);
+
+      return scoredScreens[0]?.score >= 2 ? scoredScreens[0] : null;
+    }
+
+
+function navigateCompanionToIndex(index) {
+      const boundedIndex = Math.max(0, Math.min(screens.length - 1, index));
+      const screen = screens[boundedIndex];
+      scrollToHashTarget(`#section-${screen.id}`, { updateHistory: true });
+      return `Levei você para ${screen.label}. ${screen.blurb}`;
+    }
+
+
+function findScreenByMessage(normalizedMessage) {
+      return screens.find((screen) => {
+        const tokens = [screen.id, screen.label, screen.kicker, screen.headline];
+        return tokens.some((token) => normalizedMessage.includes(normalizeText(token)));
+      });
+    }
+
+
+function buildCompanionReply(message) {
+      const normalizedMessage = normalizeText(message);
+      const referencedScreen = findScreenByMessage(normalizedMessage);
+      const scoredScreen = findBestScreenByMessage(message);
+
+      if (/sem mais perguntas|nao tenho mais perguntas|nao tenho mais duvidas|nao tenho mais questoes|isso e tudo|era isso|so isso|obrigado,? era isso|nao,? obrigado|encerrar|pode subir/.test(normalizedMessage)) {
+        return "__COMPANION_OUTRO__";
+      }
+
+      if (/quem e voce|quem voce e|sobre voce|seu perfil|trajetoria|identidade/.test(normalizedMessage)) {
+        return navigateCompanionToIndex(0);
+      }
+
+      if (/quem e icaro|quem e o icaro|sobre icaro|sobre o icaro/.test(normalizedMessage)) {
+        return buildCompanionIdentityReply();
+      }
+
+      if (/contato|email|falar com voce|conversar com voce|orcamento|proposta/.test(normalizedMessage)) {
+        const targetIndex = screens.findIndex((screen) => screen.id === "agent");
+        if (targetIndex >= 0) {
+          return `${navigateCompanionToIndex(targetIndex)} Se quiser avançar, essa é a sessão certa para transformar interesse em conversa objetiva.`;
+        }
+      }
+
+      if (/o que tem aqui|o que eu encontro|o que encontro|como este site esta organizado|como esta organizado/.test(normalizedMessage)) {
+        return "Você encontra uma leitura em camadas: identidade e base profissional, requisitos e leitura de problema, conversa guiada para contato e, nas demais sessões, recortes de linguagem, engenharia, experiência e sistema.";
+      }
+
+      if (/organizacao profissional|organizacao do trabalho|como voce organiza|metodo profissional|estrutura profissional/.test(normalizedMessage)) {
+        return buildCompanionProfessionalScopeReply();
+      }
+
+      if (/cronograma|cronogramas|faseamento|fases|marcos|timeline|prazo/.test(normalizedMessage)) {
+        return buildCompanionScheduleReply();
+      }
+
+      if (/logica de negocio|regra de negocio|business logic|regras de negocio/.test(normalizedMessage)) {
+        return buildCompanionBusinessLogicReply();
+      }
+
+      if (/semantic layer|camada semantica|semantica do sistema|modelo semantico|entidades e estados/.test(normalizedMessage)) {
+        return buildCompanionSemanticLayerReply();
+      }
+
+      if (/abordagem|metodologia|como voce aborda|como trabalha|processo/.test(normalizedMessage)) {
+        return buildCompanionApproachReply();
+      }
+
+      if (/aplicacao|como aplica|como isso entra no projeto|implementacao orientada|traduz isso/.test(normalizedMessage)) {
+        return buildCompanionApplicationReply();
+      }
+
+      if (/relatorio|pre proposta|pre-proposta|proposta inicial|comercial previa|briefing comercial/.test(normalizedMessage)) {
+        return buildCompanionCommercialReply();
+      }
+
+      if (/nao encontro|nao achei|nao vi isso|tem isso aqui|existe isso aqui/.test(normalizedMessage) && !scoredScreen) {
+        return "Não vi uma sessão dedicada exatamente a isso. O site hoje está organizado em torno de identidade, requisitos, IA aplicada, engenharia, experiência e contato. Se você me disser o tema, eu te digo se ele aparece de forma direta ou lateral.";
+      }
+
+      if (referencedScreen) {
+        return navigateCompanionToIndex(screens.findIndex((screen) => screen.id === referencedScreen.id));
+      }
+
+      if (scoredScreen) {
+        scrollToHashTarget(`#section-${scoredScreen.screen.id}`, { updateHistory: true });
+        return buildCompanionLandingReply(scoredScreen.screen);
+      }
+
+      if (/explic|detalh|destrincha/.test(normalizedMessage)) {
+        return buildCompanionExplainReply(getCurrentScreen());
+      }
+
+      if (/resum|ponto central|essencial/.test(normalizedMessage)) {
+        return buildCompanionSummaryReply(getCurrentScreen());
+      }
+
+      if (/proxim|avanc/.test(normalizedMessage)) {
+        return navigateCompanionToIndex(Math.min(screens.length - 1, lockedIndex + 1));
+      }
+
+      if (/anterior|volta|retorna/.test(normalizedMessage)) {
+        return navigateCompanionToIndex(Math.max(0, lockedIndex - 1));
+      }
+
+      return "Posso te orientar por identidade, requisitos, experiência, engenharia, IA aplicada e contato. Se me disser o que procura, eu aponto onde isso aparece no site ou te digo com franqueza quando não aparece.";
+    }
+
+
+function shouldUseLocalCompanionReply(message) {
+      const normalizedMessage = normalizeText(message);
+
+      if (
+        /sem mais perguntas|nao tenho mais perguntas|nao tenho mais duvidas|nao tenho mais questoes|isso e tudo|era isso|so isso|obrigado,? era isso|nao,? obrigado|encerrar|pode subir/.test(
+          normalizedMessage
+        )
+      ) {
+        return true;
+      }
+
+      if (
+        /contato|email|falar com voce|conversar com voce|orcamento|proposta|o que tem aqui|o que eu encontro|o que encontro|como este site esta organizado|como esta organizado|explic|detalh|destrincha|resum|ponto central|essencial|proxim|avanc|anterior|volta|retorna/.test(
+          normalizedMessage
+        )
+      ) {
+        return true;
+      }
+
+      if (findScreenByMessage(normalizedMessage)) {
+        return true;
+      }
+
+      const scoredScreen = findBestScreenByMessage(message);
+      return Boolean(scoredScreen && /ir|leva|levar|mostrar|abre|abrir|onde fica|em que secao|qual secao|qual sessao|qual pagina/.test(normalizedMessage));
+    }
+
+
+async function fetchCompanionReply(message) {
+      const response = await fetch(runtimeAgentEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          mode: "site-guide",
+          message,
+          history: companionState.history.slice(-6)
+        })
+      });
+
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(payload.error || "Falha ao consultar o guia inicial.");
+      }
+
+      const reply = String(payload.reply || "").trim();
+      if (!reply) {
+        throw new Error("O guia inicial nao retornou texto.");
+      }
+
+      return reply;
+    }
+
+
+async function runCompanionIntroOutro() {
+      if (companionState.introCompleted) return;
+
+      companionState.streamId += 1;
+      companionState.busy = true;
+      await streamCompanionText("Perfeito. Vou sair da frente e deixar o site falar visualmente.", { speed: 9 });
+      await wait(380);
+      await streamCompanionText("Sigo pelas sessões para responder, explicar contexto e te levar ao ponto certo sempre que você quiser.", { speed: 9 });
+      await wait(380);
+
+      setCompanionPhase("outro");
+      await wait(260);
+
+      companionState.introActive = false;
+      companionState.introCompleted = true;
+      mountCompanion("page");
+      setCompanionPhase("docked");
+      companionState.busy = false;
+      setCompanionCollapsed(false);
+      setCompanionViewMode("docked");
+    }
+
+
+async function sendCompanionMessage(rawMessage) {
+      if (!companionInput || !companionSubmit) return;
+
+      const message = rawMessage.trim();
+      if (!message || companionState.busy) return;
+      companionState.streamId += 1;
+
+      companionState.busy = true;
+      companionInput.disabled = true;
+      companionSubmit.disabled = true;
+
+      try {
+        const reply = await fetchCompanionReply(message);
+        const completed = await streamCompanionText(reply);
+        if (completed) {
+          companionState.history.push({ role: "user", text: message });
+          companionState.history.push({ role: "assistant", text: reply });
+        }
+      } catch (error) {
+        const messageText =
+          error instanceof Error ? error.message : "A IA inicial nao respondeu.";
+        const completed = await streamCompanionText(
+          `A IA inicial nao conseguiu responder agora. Motivo: ${messageText}`
+        );
+        if (completed) {
+          companionState.history.push({ role: "user", text: message });
+          companionState.history.push({ role: "assistant", text: `A IA inicial nao conseguiu responder agora. Motivo: ${messageText}` });
+        }
+      } finally {
+        companionState.busy = false;
+        companionInput.disabled = false;
+        companionSubmit.disabled = false;
+        companionInput.focus();
+      }
+    }
+
+
+async function playCompanionWelcomeSequence() {
+      if (!companionShell || companionState.busy) return;
+
+      companionState.busy = true;
+      pageShell.dataset.aiStage = "intro";
+      setCompanionPhase("intro");
+      setCompanionCollapsed(false);
+      setCompanionViewMode("expanded");
+
+      const openingMessage =
+        "Antes de abrir o portfólio por completo, eu quis receber você aqui na frente. Posso te guiar pelo que existe no site, dizer o que vale a pena ver primeiro e ser franco sobre o que ainda não está aqui. O que você veio procurar?";
+
+      const completed = await streamCompanionText(openingMessage);
+      if (!completed) {
+        companionState.busy = false;
+        return;
+      }
+
+      companionState.busy = false;
+      companionInput?.focus();
+    }
+
+
+function setupCompanionPanel() {
+      if (!companionShell || !companionForm || !companionInput) return;
+
+      pageShell.dataset.styleMode = "base";
+      mountCompanion("page");
+      setCompanionCollapsed(false);
+      setCompanionViewMode("expanded");
+      if (companionOutputText) {
+        companionOutputText.textContent = "";
+        companionOutputText.dataset.streaming = "false";
+      }
+      playCompanionWelcomeSequence();
+
+      companionForm?.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const message = companionInput.value;
+                companionInput.value = "";
+                void sendCompanionMessage(message);
+              });
+      companionInput?.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  companionForm.requestSubmit();
+                }
+              });
+      companionExit?.addEventListener("click", () => {
+                void runCompanionIntroOutro();
+              });
+      companionMinimize?.addEventListener("click", () => {
+                if (companionState.introActive) {
+                  companionState.streamId += 1;
+                  companionState.busy = false;
+                  companionState.introActive = false;
+                  companionState.introCompleted = true;
+                  if (companionOutputText) {
+                    companionOutputText.dataset.streaming = "false";
+                  }
+                  mountCompanion("page");
+                  setCompanionPhase("docked");
+                  setCompanionCollapsed(true);
+                  setCompanionViewMode("docked");
+                  return;
+                }
+                mountCompanion("page");
+                setCompanionPhase("docked");
+                setCompanionCollapsed(true);
+                setCompanionViewMode("docked");
+              });
+      companionMaximize?.addEventListener("click", () => {
+                mountCompanion("page");
+                setCompanionPhase("docked");
+                setCompanionCollapsed(false);
+                setCompanionViewMode("expanded");
+                companionInput?.focus();
+              });
+
+    }
+
+
+function setAgentStatus(message, isError = false) {
+      if (!agentStatus) return;
+      agentStatus.textContent = message;
+      agentStatus.classList.toggle("is-error", isError);
+    }
+
+
+function scrollAgentToBottom() {
+      if (agentMessagesNode) {
+        agentMessagesNode.scrollTop = agentMessagesNode.scrollHeight;
+      }
+    }
+
+
+function appendAgentMessage(role, text) {
+      if (!agentMessagesNode) return;
+
+      const message = writeNodeClass(makeNode("article"), `agent-message agent-message-${role}`);
+
+      const kicker = writeNodeText(
+        writeNodeClass(makeNode("span"), "agent-message-kicker"),
+        role === "assistant" ? "Agente" : "Visitante"
+      );
+
+      const bubble = writeNodeText(
+        writeNodeClass(makeNode("div"), "agent-message-bubble"),
+        text
+      );
+
+      mountNodeChildren(message, kicker, bubble);
+      mountNodeChildren(agentMessagesNode, message);
+      scrollAgentToBottom();
+    }
+
+
+function setAgentBusy(nextBusy) {
+      agentState.busy = nextBusy;
+
+      if (agentInput) agentInput.disabled = nextBusy;
+      if (agentSubmit) agentSubmit.disabled = nextBusy;
+      agentQuickButtons.forEach((button) => {
+        button.disabled = nextBusy;
+      });
+      syncAgentExportButton();
+    }
+
+
+function buildContactAssessment() {
+      const userMessages = agentState.history.filter((entry) => entry.role === "user").map((entry) => entry.text.trim()).filter(Boolean);
+      const assistantMessages = agentState.history
+        .filter((entry) => entry.role === "assistant")
+        .map((entry) => entry.text.trim())
+        .filter(Boolean);
+      const combinedUserText = normalizeText(userMessages.join(" "));
+      const totalChars = userMessages.join(" ").length;
+
+      const signals = guidedIntakeTopics.map((topic) => ({
+        ...topic,
+        matched: topic.keywords.some((keyword) => combinedUserText.includes(keyword))
+      }));
+
+      const matchedSignals = signals.filter((topic) => topic.matched);
+      const missingSignals = signals.filter((topic) => !topic.matched);
+      const latestUserMessage = userMessages[userMessages.length - 1] || "Interesse ainda não declarado.";
+      const latestAssistantMessage =
+        assistantMessages[assistantMessages.length - 1] ||
+        "A conversa ainda não reuniu material suficiente para uma leitura inicial de aplicabilidade.";
+      const captureList = userMessages.length
+        ? userMessages.slice(-4)
+        : ["A conversa ainda não trouxe objetivo, contexto, escopo ou motivo suficiente para uma prévia exportável."];
+
+      const clauses = [
+        signals.find((topic) => topic.id === "objective")?.matched
+          ? "Já existe uma intenção inicial clara, o que permite tratar a conversa como possibilidade concreta de trabalho."
+          : "Ainda falta um objetivo claro para transformar interesse em proposta inicial.",
+        signals.find((topic) => topic.id === "context")?.matched || signals.find((topic) => topic.id === "scope")?.matched
+          ? "Já há matéria suficiente para traduzir contexto em escopo e recorte de entrega."
+          : "Contexto e recorte de escopo ainda precisam ficar mais nítidos para sair do campo genérico.",
+        signals.find((topic) => topic.id === "fit")?.matched
+          ? "Já apareceu um motivo de encaixe entre meu perfil e o caso, o que ajuda a medir aplicabilidade com mais honestidade."
+          : "Ainda preciso entender por que meu perfil entrou na conversa e onde ele realmente faz sentido neste caso.",
+        signals.find((topic) => topic.id === "constraints")?.matched
+          ? "Limites ou ritmos iniciais já apareceram, o que ajuda a manter a proposta numa chave realista."
+          : "Prazo, faseamento ou restrições ainda precisam aparecer para a prévia ficar materialmente mais confiável."
+      ];
+
+      const isReady = matchedSignals.length >= 4 && totalChars >= 240 && (userMessages.length >= 2 || totalChars >= 420);
+      const readinessLine = isReady
+        ? "Já existe material suficiente para liberar uma prévia exportável de proposta e aplicabilidade."
+        : "A prévia continua bloqueada até a conversa trazer objetivo, contexto, escopo e sinais de encaixe com clareza.";
+      const nextQuestion =
+        missingSignals[0]?.question ||
+        "Se quiser, eu já consigo consolidar a prévia exportável e apontar o que ainda precisa ser validado antes de um acordo.";
+
+      const nextSteps = isReady
+        ? [
+            "Revisar a prévia exportada e corrigir qualquer pressuposto impreciso.",
+            "Converter a conversa em recorte inicial de proposta, entregáveis e próximos passos.",
+            "Validar prazo, limites e condições antes de tratar qualquer compromisso como fechado."
+          ]
+        : [
+            `Responder sobre ${missingSignals.map((topic) => topic.label.toLowerCase()).slice(0, 2).join(" e ") || "objetivo e escopo"}.`,
+            "Tornar o interesse mais tangível com contexto, entrega e limite inicial.",
+            "Liberar a exportação apenas quando houver base suficiente para isso."
+          ];
+
+      return {
+        latestUserMessage,
+        latestAssistantMessage,
+        captureList,
+        signals,
+        matchedSignals,
+        missingSignals,
+        clauses,
+        nextSteps,
+        nextQuestion,
+        readinessLine,
+        isReady
+      };
+    }
+
+
+function buildLocalInterviewReply(message) {
+      const normalizedMessage = normalizeText(message);
+      const asksNextQuestion = /proxim|seguinte|continue|avanca|avancar|aprofund/.test(normalizedMessage);
+      const assessment = buildContactAssessment();
+      const emphasizedSignal =
+        assessment.matchedSignals.find((topic) => topic.keywords.some((keyword) => normalizedMessage.includes(keyword))) ||
+        assessment.matchedSignals[assessment.matchedSignals.length - 1];
+      const leadLine = emphasizedSignal
+        ? emphasizedSignal.capture
+        : "Ainda não vou fingir clareza: por enquanto a conversa só indica interesse inicial, mas ainda não sustenta uma prévia exportável.";
+
+      if (asksNextQuestion) {
+        return [
+          leadLine,
+          "",
+          `Aplicabilidade preliminar: ${assessment.clauses.join(" ")}`,
+          "",
+          assessment.readinessLine,
+          "",
+          `Próxima pergunta guiada: ${assessment.nextQuestion}`
+        ].join("\n");
+      }
+
+      return [
+        leadLine,
+        "",
+        `Leitura preliminar: ${assessment.clauses.join(" ")}`,
+        "",
+        assessment.readinessLine,
+        "",
+        `Próxima pergunta guiada: ${assessment.nextQuestion}`
+      ].join("\n");
+    }
+
+
+function buildAgentReportData() {
+      const assessment = buildContactAssessment();
+
+      return {
+        objective: assessment.latestUserMessage,
+        scopeItems: assessment.captureList,
+        matchedSignals: assessment.matchedSignals,
+        missingSignals: assessment.missingSignals,
+        agentSynthesis: assessment.latestAssistantMessage,
+        clauses: assessment.clauses,
+        nextSteps: assessment.nextSteps,
+        readinessLine: assessment.readinessLine,
+        isReady: assessment.isReady,
+        nextQuestion: assessment.nextQuestion
+      };
+    }
+
+
+function buildAgentReportMarkdown() {
+      const data = buildAgentReportData();
+
+      if (!data.isReady) return null;
+
+      return [
+        `# ${agentScreen?.reportHeading || "Prévia de proposta e aplicabilidade"}`,
+        "",
+        "## Objetivo declarado",
+        data.objective,
+        "",
+        "## Pontos capturados na conversa",
+        ...data.scopeItems.map((item) => `- ${item}`),
+        "",
+        "## Sinais presentes",
+        ...data.matchedSignals.map((topic) => `- ${topic.label}`),
+        "",
+        "## Cláusulas provisórias de aplicabilidade",
+        ...data.clauses.map((item) => `- ${item}`),
+        "",
+        "## Pontos a validar antes de fechar proposta",
+        ...(data.missingSignals.length ? data.missingSignals.map((topic) => `- ${topic.label}`) : ["- Nada estruturalmente pendente nesta etapa inicial."]),
+        "",
+        "## Próximos passos sugeridos",
+        ...data.nextSteps.map((item) => `- ${item}`),
+        ""
+      ].join("\n");
+    }
+
+
+function syncAgentExportButton() {
+      if (!agentExportButton) return;
+
+      const data = buildAgentReportData();
+      const disabled = agentState.busy || !data.isReady;
+      agentExportButton.disabled = disabled;
+      agentExportButton.textContent = data.isReady ? "Exportar prévia .md" : "Exportação bloqueada";
+      agentExportButton.title = data.isReady
+        ? "Exportar a prévia de proposta e aplicabilidade em markdown."
+        : "A exportação só libera quando a conversa trouxer material suficiente.";
+    }
+
+
+function renderAgentReport() {
+      if (!agentReportNode) return;
+
+      const data = buildAgentReportData();
+      agentReportNode.innerHTML = `
+        <article class="agent-report-section">
+          <p class="agent-report-label">Estado da análise</p>
+          <p>${escapeHtml(data.readinessLine)}</p>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Objetivo declarado</p>
+          <p>${escapeHtml(data.objective)}</p>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Pontos capturados</p>
+          <ul class="agent-report-list">
+            ${data.scopeItems.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Sinais presentes</p>
+          <ul class="agent-report-list">
+            ${
+              data.matchedSignals.length
+                ? data.matchedSignals.map((topic) => `<li>${escapeHtml(topic.label)}</li>`).join("")
+                : "<li>A conversa ainda não reuniu sinais suficientes.</li>"
+            }
+          </ul>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Ainda preciso entender</p>
+          <ul class="agent-report-list">
+            ${
+              data.missingSignals.length
+                ? data.missingSignals.map((topic) => `<li>${escapeHtml(topic.label)}</li>`).join("")
+                : "<li>Nenhum bloco estrutural ficou faltando nesta etapa inicial.</li>"
+            }
+          </ul>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Cláusulas provisórias</p>
+          <ul class="agent-report-list">
+            ${data.clauses.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Próximo passo guiado</p>
+          <p>${escapeHtml(data.nextQuestion)}</p>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Leitura atual do agente</p>
+          <p>${escapeHtml(data.agentSynthesis)}</p>
+        </article>
+        <article class="agent-report-section">
+          <p class="agent-report-label">Próximos passos sugeridos</p>
+          <ul class="agent-report-list">
+            ${data.nextSteps.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+          </ul>
+        </article>
+      `;
+      syncAgentExportButton();
+    }
+
+
+async function sendAgentMessage(rawMessage) {
+      if (!agentScreen) return;
+
+      const message = rawMessage.trim();
+      if (!message || agentState.busy) return;
+
+      const requestHistory = agentState.history.slice(-8);
+      const userEntry = { role: "user", text: message };
+      agentState.history.push(userEntry);
+      appendAgentMessage("user", message);
+      renderAgentReport();
+      setAgentStatus("Lendo contexto e organizando a resposta...");
+      setAgentBusy(true);
+
+      try {
+        if (agentScreen.agentStrategy === "local-intake") {
+          await new Promise((resolve) => window.setTimeout(resolve, 220));
+          const reply = buildLocalInterviewReply(message);
+          agentState.history.push({ role: "assistant", text: reply });
+          appendAgentMessage("assistant", reply);
+          renderAgentReport();
+          setAgentStatus("Diagnóstico atualizado. Pode responder ou pedir a próxima camada de aprofundamento.");
+          return;
+        }
+
+        const response = await fetch(agentScreen.agentEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message,
+            history: requestHistory
+          })
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(payload.error || "Falha ao consultar o agente.");
+        }
+
+        const reply = String(payload.reply || "").trim();
+        if (!reply) {
+          throw new Error("O agente não retornou texto.");
+        }
+
+        agentState.history.push({ role: "assistant", text: reply });
+        appendAgentMessage("assistant", reply);
+        renderAgentReport();
+        setAgentStatus("Diagnóstico atualizado. Pode seguir com a próxima informação.");
+      } catch (error) {
+        if (agentState.history[agentState.history.length - 1] === userEntry) {
+          agentState.history.pop();
+        }
+        renderAgentReport();
+        const messageText = error instanceof Error ? error.message : "Falha ao consultar o agente.";
+        appendAgentMessage("assistant", "Não consegui responder agora. Tente novamente em alguns segundos.");
+        setAgentStatus(messageText, true);
+      } finally {
+        setAgentBusy(false);
+        if (agentInput) {
+          agentInput.focus();
+        }
+      }
+    }
+
+
+async function sendAgentMessageViaAI(rawMessage) {
+      if (!agentScreen) return;
+
+      const message = rawMessage.trim();
+      if (!message || agentState.busy) return;
+
+      const requestHistory = agentState.history.slice(-8);
+      const userEntry = { role: "user", text: message };
+      agentState.history.push(userEntry);
+      appendAgentMessage("user", message);
+      renderAgentReport();
+      setAgentStatus("Lendo contexto e organizando a resposta...");
+      setAgentBusy(true);
+
+      try {
+        const response = await fetch(runtimeAgentEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            mode: agentScreen.agentMode || "contact-intake",
+            message,
+            history: requestHistory
+          })
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(payload.error || "Falha ao consultar o agente.");
+        }
+
+        const reply = String(payload.reply || "").trim();
+        if (!reply) {
+          throw new Error("O agente nao retornou texto.");
+        }
+
+        agentState.history.push({ role: "assistant", text: reply });
+        appendAgentMessage("assistant", reply);
+        renderAgentReport();
+        setAgentStatus("Diagnostico atualizado. Pode seguir com a proxima informacao.");
+      } catch (error) {
+        if (agentState.history[agentState.history.length - 1] === userEntry) {
+          agentState.history.pop();
+        }
+        renderAgentReport();
+        const messageText = error instanceof Error ? error.message : "Falha ao consultar o agente.";
+        appendAgentMessage("assistant", `A IA de proposta nao respondeu. Motivo: ${messageText}`);
+        setAgentStatus(messageText, true);
+      } finally {
+        setAgentBusy(false);
+        if (agentInput) {
+          agentInput.focus();
+        }
+      }
+    }
+
+
+function setupAgentPanel() {
+      if (!agentScreen || !agentMessagesNode) return;
+
+      appendAgentMessage("assistant", agentScreen.agentGreeting);
+      agentState.history.push({ role: "assistant", text: agentScreen.agentGreeting });
+      renderAgentReport();
+      setAgentStatus("A exportação fica bloqueada até haver material suficiente de objetivo, contexto, escopo e encaixe.");
+
+      if (agentForm && agentInput) {
+        agentForm?.addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    const message = agentInput.value;
+                    agentInput.value = "";
+                    sendAgentMessageViaAI(message);
+                  });
+        agentInput?.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter" && !event.shiftKey) {
+                      event.preventDefault();
+                      agentForm.requestSubmit();
+                    }
+                  });
+
+      }
+
+      agentQuickButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const prompt = queryData(button, "agentPrompt", "");
+          sendAgentMessageViaAI(prompt);
+        });
+      });
+
+      agentExportButton?.addEventListener("click", () => {
+                const report = buildAgentReportMarkdown();
+                if (!report) {
+                  setAgentStatus("Ainda não exporto a prévia: falta base suficiente de contexto, escopo e aplicabilidade.", true);
+                  return;
+                }
+                const blob = new Blob([report], { type: "text/markdown;charset=utf-8" });
+                const url = URL.createObjectURL(blob);
+                const link = makeNode("a");
+                link.href = url;
+                link.download = agentScreen.reportFilename || "previa-proposta-icaro-glauco.md";
+                link.click();
+                URL.revokeObjectURL(url);
+              });
+
+    }
+
+
+function setupHorizontalPagers() {
+      const pagers = queryNodes("[data-horizontal-pager]");
+      const panelThemes = [
+        {
+          bgTop: "#08111a",
+          bgBottom: "#03050b",
+          warm: "rgba(255, 122, 24, 0.16)",
+          cool: "rgba(122, 209, 255, 0.08)",
+          anchorA: "18% 12%",
+          anchorB: "82% 16%",
+          glowAnchor: "52% 46%",
+          lightSize: "clamp(34rem, 58vw, 66rem)",
+          overlayTop: "0.28",
+          overlayBottom: "0.9",
+          glowCore: "rgba(168, 232, 255, 0.14)",
+          glowWarm: "rgba(255, 215, 173, 0.18)",
+          glowCool: "rgba(158, 226, 255, 0.16)"
+        },
+        {
+          bgTop: "#120a0c",
+          bgBottom: "#04050a",
+          warm: "rgba(255, 109, 61, 0.18)",
+          cool: "rgba(194, 132, 255, 0.08)",
+          anchorA: "22% 18%",
+          anchorB: "76% 20%",
+          glowAnchor: "58% 42%",
+          lightSize: "clamp(36rem, 62vw, 70rem)",
+          overlayTop: "0.24",
+          overlayBottom: "0.88",
+          glowCore: "rgba(255, 177, 115, 0.14)",
+          glowWarm: "rgba(255, 147, 105, 0.2)",
+          glowCool: "rgba(179, 130, 255, 0.12)"
+        },
+        {
+          bgTop: "#071017",
+          bgBottom: "#02060a",
+          warm: "rgba(252, 190, 119, 0.12)",
+          cool: "rgba(94, 229, 255, 0.12)",
+          anchorA: "16% 14%",
+          anchorB: "80% 24%",
+          glowAnchor: "48% 50%",
+          lightSize: "clamp(33rem, 54vw, 63rem)",
+          overlayTop: "0.26",
+          overlayBottom: "0.92",
+          glowCore: "rgba(130, 219, 255, 0.15)",
+          glowWarm: "rgba(255, 224, 170, 0.16)",
+          glowCool: "rgba(92, 222, 255, 0.18)"
+        },
+        {
+          bgTop: "#0e0b14",
+          bgBottom: "#03040a",
+          warm: "rgba(255, 163, 96, 0.14)",
+          cool: "rgba(120, 160, 255, 0.12)",
+          anchorA: "24% 10%",
+          anchorB: "78% 18%",
+          glowAnchor: "55% 48%",
+          lightSize: "clamp(35rem, 60vw, 68rem)",
+          overlayTop: "0.22",
+          overlayBottom: "0.88",
+          glowCore: "rgba(184, 182, 255, 0.13)",
+          glowWarm: "rgba(255, 197, 148, 0.18)",
+          glowCool: "rgba(129, 173, 255, 0.18)"
+        },
+        {
+          bgTop: "#081512",
+          bgBottom: "#02070a",
+          warm: "rgba(255, 177, 87, 0.12)",
+          cool: "rgba(112, 255, 220, 0.1)",
+          anchorA: "18% 20%",
+          anchorB: "84% 12%",
+          glowAnchor: "50% 44%",
+          lightSize: "clamp(34rem, 57vw, 64rem)",
+          overlayTop: "0.26",
+          overlayBottom: "0.9",
+          glowCore: "rgba(143, 255, 227, 0.12)",
+          glowWarm: "rgba(255, 221, 174, 0.16)",
+          glowCool: "rgba(112, 255, 220, 0.16)"
+        }
+      ];
+
+      pagers.forEach((pager) => {
+        const track = queryNode("[data-horizontal-track]", pager);
+        const pages = queryNodes(".horizontal-page", pager);
+        const prevButton = queryNode("[data-horizontal-prev]", pager);
+        const nextButton = queryNode("[data-horizontal-next]", pager);
+        const counter = queryNode("[data-horizontal-counter]", pager);
+        const label = queryNode("[data-horizontal-label]", pager);
+        const progressDots = queryNodes(".horizontal-pager-progress-dot", pager);
+        const stage = queryClosest(pager, ".content-stage");
+
+        if (!track || !pages.length) return;
+
+        let wheelUnlockTimeout = null;
+        let wheelResetTimeout = null;
+        let accumulatedWheel = 0;
+        let accumulatedDirection = 0;
+        const wheelResistance = 180;
+
+        function clearWheelResistance() {
+          accumulatedWheel = 0;
+          accumulatedDirection = 0;
+          track.style.removeProperty("--horizontal-wheel-progress");
+        }
+
+        function applyStageTheme(index) {
+          if (!stage) return;
+          const theme = panelThemes[((index % panelThemes.length) + panelThemes.length) % panelThemes.length];
+          stage.classList.add("has-horizontal-panel-theme");
+          stage.dataset.horizontalActive = String(index);
+          stage.style.setProperty("--horizontal-bg-top", theme.bgTop);
+          stage.style.setProperty("--horizontal-bg-bottom", theme.bgBottom);
+          stage.style.setProperty("--horizontal-bg-warm", theme.warm);
+          stage.style.setProperty("--horizontal-bg-cool", theme.cool);
+          stage.style.setProperty("--horizontal-bg-anchor-a", theme.anchorA);
+          stage.style.setProperty("--horizontal-bg-anchor-b", theme.anchorB);
+          stage.style.setProperty("--horizontal-glow-anchor", theme.glowAnchor);
+          stage.style.setProperty("--horizontal-light-size", theme.lightSize);
+          stage.style.setProperty("--horizontal-overlay-top", theme.overlayTop);
+          stage.style.setProperty("--horizontal-overlay-bottom", theme.overlayBottom);
+          stage.style.setProperty("--horizontal-glow-core", theme.glowCore);
+          stage.style.setProperty("--horizontal-glow-warm", theme.glowWarm);
+          stage.style.setProperty("--horizontal-glow-cool", theme.glowCool);
+        }
+
+        function getActiveIndex() {
+          let activeIndex = 0;
+          let nearestDistance = Number.POSITIVE_INFINITY;
+
+          pages.forEach((page, index) => {
+            const distance = Math.abs(page.offsetLeft - track.scrollLeft);
+            if (distance < nearestDistance) {
+              nearestDistance = distance;
+              activeIndex = index;
+            }
+          });
+
+          return activeIndex;
+        }
+
+        function syncPager() {
+          const activeIndex = getActiveIndex();
+          const totalPages = pages.length;
+          const activePage = pages[activeIndex];
+
+          progressDots.forEach((dot, index) => {
+            dot.classList.toggle("is-active", index === activeIndex);
+          });
+
+          if (counter) {
+            counter.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(totalPages).padStart(2, "0")}`;
+          }
+
+          if (label) {
+            label.textContent = activePage?.dataset.pageLabel || "Abertura";
+          }
+
+          if (prevButton) {
+            prevButton.disabled = activeIndex <= 0;
+          }
+
+          if (nextButton) {
+            nextButton.disabled = activeIndex >= totalPages - 1;
+          }
+
+          applyStageTheme(activeIndex);
+        }
+
+        function goTo(index, behavior = "smooth") {
+          const boundedIndex = Math.max(0, Math.min(pages.length - 1, index));
+          const targetPage = pages[boundedIndex];
+          if (!targetPage) return;
+
+          applyStageTheme(boundedIndex);
+          track.scrollTo({
+            left: targetPage.offsetLeft,
+            behavior
+          });
+        }
+
+        prevButton?.addEventListener("click", () => {
+          goTo(getActiveIndex() - 1);
+        });
+
+        nextButton?.addEventListener("click", () => {
+          goTo(getActiveIndex() + 1);
+        });
+
+        progressDots.forEach((dot, index) => {
+          dot.addEventListener("click", () => {
+            goTo(index);
+          });
+        });
+
+        track.addEventListener(
+          "wheel",
+          (event) => {
+            if (event.ctrlKey || pages.length <= 1) return;
+
+            const dominantDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+            if (Math.abs(dominantDelta) < 8) return;
+
+            event.preventDefault();
+
+            if (track.dataset.wheelLocked === "true") return;
+
+            const direction = Math.sign(dominantDelta);
+            if (!direction) return;
+
+            if (accumulatedDirection && accumulatedDirection !== direction) {
+              accumulatedWheel = 0;
+            }
+
+            accumulatedDirection = direction;
+            accumulatedWheel += dominantDelta;
+            track.style.setProperty("--horizontal-wheel-progress", Math.min(1, Math.abs(accumulatedWheel) / wheelResistance).toFixed(3));
+
+            if (wheelResetTimeout) {
+              window.clearTimeout(wheelResetTimeout);
+            }
+
+            wheelResetTimeout = window.setTimeout(() => {
+              if (track.dataset.wheelLocked !== "true") {
+                clearWheelResistance();
+              }
+            }, 180);
+
+            if (Math.abs(accumulatedWheel) < wheelResistance) return;
+
+            track.dataset.wheelLocked = "true";
+            clearWheelResistance();
+            goTo(getActiveIndex() + direction);
+
+            if (wheelUnlockTimeout) {
+              window.clearTimeout(wheelUnlockTimeout);
+            }
+
+            wheelUnlockTimeout = window.setTimeout(() => {
+              track.dataset.wheelLocked = "false";
+            }, 420);
+          },
+          { passive: false }
+        );
+
+        track.addEventListener("scroll", () => {
+          window.requestAnimationFrame(syncPager);
+        });
+
+        window.addEventListener("resize", () => {
+          const activeIndex = getActiveIndex();
+          window.requestAnimationFrame(() => {
+            goTo(activeIndex, "auto");
+            syncPager();
+          });
+        });
+
+        syncPager();
+      });
+    }
+
+
+function createSectionObserver() {
+      return new IntersectionObserver(
+            (entries) => {
+              const visible = entries
+                .filter((entry) => entry.isIntersecting)
+                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+              if (!visible) return;
+
+              const nextIndex = Number(visible.target.dataset.screenIndex);
+              const shellIndex = getShellPanels().indexOf(visible.target);
+
+              if (shellIndex >= 0) {
+                pageSnapIndex = shellIndex;
+              }
+
+              if (!Number.isNaN(nextIndex) && nextIndex !== lockedIndex) {
+                lockedIndex = nextIndex;
+                applyPreview(nextIndex);
+              }
+
+              if (companionState.viewMode === "docked" && !companionState.collapsed && !companionState.introActive) {
+                mountCompanion("content");
+              }
+            },
+            {
+              root: pageShell,
+              threshold: [0.55, 0.72]
+            }
+          );
+    }
+
+
+function setupAnchorRouting() {
+      document.addEventListener("click", (event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+
+            const link = queryClosest(target, 'a[href^="#"]');
+            if (!(link instanceof HTMLAnchorElement)) return;
+
+            const hash = link.getAttribute("href") || "";
+            if (!scrollToHashTarget(hash, { updateHistory: true })) return;
+
+            event.preventDefault();
+          });
+    }
+
+
+function setupMenuButtonInteractions() {
+      menuButtons.forEach((button) => {
+            const index = Number(button.dataset.screenIndex);
+
+            button?.addEventListener("mouseenter", () => applyPreview(index));
+            button?.addEventListener("focus", () => applyPreview(index));
+            button?.addEventListener("mouseleave", () => applyPreview(lockedIndex));
+            button?.addEventListener("blur", () => applyPreview(lockedIndex));
+            button?.addEventListener("click", () => lockAndScroll(index));
+
+          });
+    }
+
+
+function setupSectionObservation() {
+      const observer = createSectionObserver();
+          contentSections.forEach((section) => observer.observe(section));
+          return observer;
+    }
+
+
+function setupIntroScrollGuard() {
+      pageShell?.addEventListener(
+            "wheel",
+            (event) => {
+              if (!companionState.introActive) return;
+              const target = event.target;
+              if (target instanceof Element && companionShell?.contains(target)) return;
+              event.preventDefault();
+            },
+            { passive: false }
+          );
+    }
+
+
+function setupContentRailWheelRouting() {
+      contentRailShell?.addEventListener(
+            "wheel",
+            (event) => {
+              if (event.ctrlKey) return;
+              if (contentRailShell.classList.contains("is-programmatic-scroll")) {
+                event.preventDefault();
+                return;
+              }
+
+              const dominantDelta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+              if (Math.abs(dominantDelta) < 2) return;
+              if (shouldIgnoreWheelNavigation(event.target, dominantDelta)) return;
+
+              const maxScrollLeft = contentRailShell.scrollWidth - contentRailShell.clientWidth;
+              const canScrollBackward = contentRailShell.scrollLeft > 2;
+              const canScrollForward = contentRailShell.scrollLeft < maxScrollLeft - 2;
+
+              if ((dominantDelta < 0 && !canScrollBackward) || (dominantDelta > 0 && !canScrollForward)) {
+                return;
+              }
+
+              event.preventDefault();
+              navigateContentRailByDirection(dominantDelta);
+            },
+            { passive: false }
+          );
+    }
+
+
+function setupScrollSettleTracking() {
+      pageShell?.addEventListener("scroll", () => {
+            if (
+              pageShell.classList.contains("is-programmatic-scroll") &&
+              pageProgrammaticTargetTop !== null &&
+              Math.abs(pageShell.scrollTop - pageProgrammaticTargetTop) <= programmaticScrollEpsilon
+            ) {
+              finalizePageProgrammaticScroll();
+              return;
+            }
+
+            if (!supportsScrollEnd) {
+              schedulePageScrollSettledFallback();
+            }
+          });
+
+          contentRailShell?.addEventListener("scroll", () => {
+            if (
+              contentRailShell.classList.contains("is-programmatic-scroll") &&
+              contentProgrammaticTargetLeft !== null &&
+              Math.abs(contentRailShell.scrollLeft - contentProgrammaticTargetLeft) <= programmaticScrollEpsilon
+            ) {
+              finalizeContentProgrammaticScroll();
+              return;
+            }
+
+            if (!supportsScrollEnd) {
+              scheduleContentRailScrollSettledFallback();
+            }
+          });
+
+          if (supportsScrollEnd) {
+            pageShell?.addEventListener("scrollend", handlePageScrollSettled);
+            contentRailShell?.addEventListener("scrollend", handleContentRailScrollSettled);
+          }
+    }
+
+
+function setupHashSynchronization() {
+      if (window.location.hash) {
+            window.requestAnimationFrame(() => {
+              scrollToHashTarget(window.location.hash, { instant: true });
+            });
+          }
+
+          window.addEventListener("hashchange", () => {
+            scrollToHashTarget(window.location.hash, { instant: true });
+          });
+    }
+
+
+export const utilities = {
+      ...documentQueries,
+    ...nodeWriting
+    };
+
+
+export const hud = {
+      getShellPanels,
+    renderBullets,
+    renderHUD,
+    applyPreview
+    };
+
+
+export const navigation = {
+      finalizePageProgrammaticScroll,
+    finalizeContentProgrammaticScroll,
+    animateShellTo,
+    resolveShellPanelIndex,
+    updateContentStageBackdrop,
+    triggerPanelScroll,
+    canElementConsumeVerticalScroll,
+    lockAndScroll,
+    shouldIgnoreWheelNavigation,
+    getContentPanelScrollLeft,
+    getNearestContentPanelIndex,
+    scrollContentRailTo,
+    navigateContentRailByDirection,
+    snapPageToThreshold,
+    snapContentRailToThreshold,
+    handlePageScrollSettled,
+    handleContentRailScrollSettled,
+    schedulePageScrollSettledFallback,
+    scheduleContentRailScrollSettledFallback,
+    scrollToHashTarget
+    };
+
+
+export const words = {
+      escapeHtml,
+    normalizeText,
+    tokenizeText,
+    wait
+    };
+
+
+export const companionWork = {
+      getCurrentScreen,
+    buildCompanionExplainReply,
+    buildCompanionSummaryReply,
+    streamCompanionText,
+    setCompanionPhase,
+    setCompanionViewMode,
+    setCompanionCollapsed,
+    mountCompanion,
+    buildCompanionLandingReply,
+    buildCompanionScheduleReply,
+    buildCompanionBusinessLogicReply,
+    buildCompanionSemanticLayerReply,
+    buildCompanionApproachReply,
+    buildCompanionApplicationReply,
+    buildCompanionCommercialReply,
+    buildCompanionProfessionalScopeReply,
+    buildCompanionIdentityReply,
+    findBestScreenByMessage,
+    navigateCompanionToIndex,
+    findScreenByMessage,
+    buildCompanionReply,
+    shouldUseLocalCompanionReply,
+    fetchCompanionReply,
+    runCompanionIntroOutro,
+    sendCompanionMessage,
+    playCompanionWelcomeSequence,
+    setupCompanionPanel
+    };
+
+
+export const agentWork = {
+      setAgentStatus,
+    scrollAgentToBottom,
+    appendAgentMessage,
+    setAgentBusy,
+    buildContactAssessment,
+    buildLocalInterviewReply,
+    buildAgentReportData,
+    buildAgentReportMarkdown,
+    syncAgentExportButton,
+    renderAgentReport,
+    sendAgentMessage,
+    sendAgentMessageViaAI,
+    setupAgentPanel
+    };
+
+
+export const pages = {
+      setupHorizontalPagers
+    };
+
+
+export const startup = {
+      createSectionObserver,
+    setupAnchorRouting,
+    setupMenuButtonInteractions,
+    setupSectionObservation,
+    setupIntroScrollGuard,
+    setupContentRailWheelRouting,
+    setupScrollSettleTracking,
+    setupHashSynchronization,
+    };
+
+
+export const semantics = {
+      ...flowThresholds,
+    guidedIntakeTopics,
+    ...utilities,
+    ...hud,
+    ...navigation,
+    ...words,
+    ...companionWork,
+    ...agentWork,
+    ...pages,
+    ...startup
+    };

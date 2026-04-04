@@ -4,16 +4,18 @@
     "*.dsljs": "idsl"
   },
   "explorer.fileNesting.patterns": {
-    "*.idsl": "$(capture).generated.js",
-    "*.dsljs": "$(capture).generated.js"
+    "*.idsl": "$(capture).generated.ts",
+    "*.dsljs": "$(capture).generated.ts"
   },
   "eslint.validate": [
     "javascript",
-    "idsl"
+    "idsl",
+    "typescript"
   ],
   "eslint.probe": [
     "javascript",
-    "idsl"
+    "idsl",
+    "typescript"
   ],
   "eslint.workingDirectories": [
     {

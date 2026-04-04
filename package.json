@@ -6,13 +6,16 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && npx firebase-tools deploy --project icaroglaucoonline"
+    "deploy": "npm run build && npx firebase-tools deploy --project icaroglaucoonline",
+    "generate:dsl": "node scripts/generate-dsljs.mjs",
+    "predev": "npm run generate:dsl",
+    "prebuild": "npm run generate:dsl"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dsljs": "https://codeload.github.com/glauco-de-oculos/macro-oriented-javascript/tar.gz/e2bbc72cb69f89b92ab3a73dd4892ec24cc4481a",
+    "dsljs": "file:../macro-oriented-javascript",
     "firebase": "^12.11.0",
     "three": "^0.183.2"
   },

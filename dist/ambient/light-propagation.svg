@@ -1,0 +1,19 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="halo" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(800 450) rotate(90) scale(320 520)">
+      <stop offset="0" stop-color="#CDEEFF" stop-opacity="0.55"/>
+      <stop offset="0.28" stop-color="#8AD9FF" stop-opacity="0.18"/>
+      <stop offset="0.62" stop-color="#4E94B8" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#102330" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soften" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#soften)">
+    <ellipse cx="800" cy="450" rx="520" ry="320" fill="url(#halo)"/>
+    <ellipse cx="800" cy="450" rx="350" ry="210" stroke="#F2D7A0" stroke-opacity="0.18" stroke-width="2"/>
+    <ellipse cx="800" cy="450" rx="250" ry="150" stroke="#BFE7FF" stroke-opacity="0.2" stroke-width="1.5"/>
+  </g>
+</svg>

@@ -1,4 +1,89 @@
-export const screens = [
+export type ScreenBullet = string;
+
+export type ScreenDeepDive = {
+  kicker: string;
+  title: string;
+  body: string;
+  list?: string[];
+};
+
+export type IdentityDeckEntry = {
+  src: string;
+  alt: string;
+  caption: string;
+};
+
+export type IdentityMilestone = {
+  year: string;
+  title: string;
+  body: string;
+};
+
+export type ScreenSlide = {
+  title: string;
+  body: string;
+  label?: string;
+  intro?: string;
+  support?: string;
+  chips?: string[];
+  list?: string[];
+};
+
+export type ScreenView = {
+  distance: number;
+  side: number;
+  height: number;
+  lookHeight: number;
+  lookSide: number;
+  fov: number;
+};
+
+export type PortfolioScreen = {
+  id: string;
+  code: string;
+  label: string;
+  kicker: string;
+  headline: string;
+  blurb: string;
+  details: string;
+  bullets: ScreenBullet[];
+  contentTitle: string;
+  contentBody: string;
+  contentNotes?: string[];
+  deepDives?: ScreenDeepDive[];
+  kind?: string;
+  image?: string;
+  backgroundImage?: string;
+  backgroundPosition?: string;
+  portraitImage?: string;
+  portraitCaption?: string;
+  identityLead?: string;
+  identityHighlights?: string[];
+  identityMilestones?: IdentityMilestone[];
+  identityDeck?: IdentityDeckEntry[];
+  identityPagerTitle?: string;
+  identityPagerIntro?: string;
+  identityPagerSlides?: ScreenSlide[];
+  profilePath?: string;
+  profileLinkLabel?: string;
+  agentEndpoint?: string;
+  agentStrategy?: string;
+  agentMode?: string;
+  profileSummary?: string;
+  profileHighlights?: string[];
+  quickPrompts?: string[];
+  agentGreeting?: string;
+  agentPanelCopy?: string;
+  agentFormLabel?: string;
+  agentPlaceholder?: string;
+  reportTitle?: string;
+  reportHeading?: string;
+  reportFilename?: string;
+  reportNotice?: string;
+  view: ScreenView;
+};
+
+export const screens: PortfolioScreen[] = [
   {
     id: "overview",
     code: "01 / FUNDAMENTO",

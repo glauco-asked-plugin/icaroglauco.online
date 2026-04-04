@@ -1,14 +1,6 @@
 macros: {
-  
 
-  $macro component $name($params) => [
-    $template
-  ]
-  #(
-    const $name = ($params) => $template;
-  )#
-
-  $macro struct algebra app $name[
+  $macro Application $name[
     name: $appName,
     layouts: $layouts,
     assistant: $assistant
@@ -16,7 +8,7 @@ macros: {
     $($prop = $value;)...
   }
   #(
-    const $name = function () {
+    export const $name = function () {
       const appName = $appName;
       const layouts = { $layouts };
       const assistant = { $assistant };
@@ -27,114 +19,19 @@ macros: {
         assistant: () => assistant,
         $($prop: $value,)...
       };
-    }
+    };
   )#
 
 }
 
+import { createPortfolioStructuralKit } from "./dsl/app-construct.dsljs";
 
-component renderStructuralMenuButton(screen, index) => [
+const portfolioStructuralKit = createPortfolioStructuralKit();
 
-  `
-    <button class="menu-button" data-screen-index="${index}" type="button">
-      <span class="menu-index">${String(index + 1).padStart(2, "0")}</span>
-      <span class="menu-copy">
-        <strong>${screen.label}</strong>
-        <small>${screen.kicker}</small>
-      </span>
-      <span class="menu-arrow"></span>
-    </button>
-  `
-]
+export const renderAppShell = portfolioStructuralKit.renderers.renderAppShell;
+export const createApplicationShellComponent = portfolioStructuralKit.structuralComponents.createApplicationShellComponent;
 
-component renderStructuralSiteFooter(currentYear, navigationMarkup) => [
-  `
-    <section class="footer-stage snap-panel" id="footer-stage">
-      <footer class="site-footer" id="site-footer">
-        <div class="site-footer-grid">
-          <section class="site-footer-card">
-            <p class="site-footer-kicker">Responsabilidade</p>
-            <h2>Porta de entrada para conversas sérias de projeto</h2>
-            <p>
-              Este site apresenta modo de trabalho, critério e áreas de atuação. Qualquer prévia exportada pela conversa de contato é preliminar: depende de contexto suficiente, validação mútua, recorte real de escopo e alinhamento posterior.
-            </p>
-          </section>
-
-          <section class="site-footer-card">
-            <p class="site-footer-kicker">Navegação</p>
-            <nav class="site-footer-nav" aria-label="Navegação do rodapé">
-              ${navigationMarkup}
-            </nav>
-          </section>
-
-          <section class="site-footer-card">
-            <p class="site-footer-kicker">Contato e referência</p>
-            <div class="site-footer-contact-list">
-              <a href="#section-agent">Abrir conversa guiada</a>
-              <a href="mailto:icaroglaucooliveira@gmail.com">icaroglaucooliveira@gmail.com</a>
-              <a href="https://github.com/glauco-asked-plugin/icaroglauco.online" target="_blank" rel="noreferrer">Repositório desta versão</a>
-            </div>
-          </section>
-        </div>
-
-        <p class="site-footer-copy">Copyright ${currentYear} Icaro Glauco. Todos os direitos reservados.</p>
-      </footer>
-    </section>
-  `
-]
-
-component renderStructuralCompanionPanel(assistantName, assistantKicker, assistantTooltip) => [
-  `
-    <aside class="companion-shell" data-companion-shell data-phase="boot" data-mount="page" data-view="expanded" aria-label="Converse comigo">
-      <section class="companion-panel">
-        <header class="companion-head">
-          <div class="companion-titlebox">
-            <p class="companion-kicker">${assistantKicker}</p>
-            <div class="companion-title-row">
-              <h3>${assistantName}</h3>
-              <div class="companion-tooltip">
-                <button class="companion-tooltip-trigger" type="button" aria-label="Sobre o ${assistantName}">?</button>
-                <div class="companion-tooltip-bubble" role="note">
-                  ${assistantTooltip}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="companion-controls">
-            <button class="companion-control" data-companion-minimize type="button" aria-label="Minimizar conversa">_</button>
-            <button class="companion-control" data-companion-maximize type="button" aria-label="Maximizar conversa">[]</button>
-            <button class="companion-control companion-control-exit" data-companion-exit type="button" aria-label="Sair da interface inicial">x</button>
-          </div>
-        </header>
-
-        <section class="companion-screen companion-screen-output" aria-live="polite">
-          <p class="companion-screen-label">IA</p>
-          <div class="companion-output">
-            <p class="companion-output-text" data-companion-output-text></p>
-          </div>
-        </section>
-
-        <form class="companion-form" data-companion-form>
-          <div class="companion-screen companion-screen-input">
-            <p class="companion-screen-label">Entrada</p>
-            <div class="companion-form-row">
-              <textarea
-                id="companion-input"
-                class="companion-input"
-                data-companion-input
-                rows="2"
-                placeholder="Ex.: preciso entender escopo, semantic layer, cronograma ou proposta."
-              ></textarea>
-              <button class="companion-submit" data-companion-submit type="submit">Enviar</button>
-            </div>
-          </div>
-        </form>
-      </section>
-    </aside>
-  `
-]
-
-struct algebra app portfolioApplication[
+Application portfolioApplication[
   name: "Icaro Glauco Portfolio",
   layouts: {
     overview: "identity-editorial",
@@ -154,15 +51,21 @@ struct algebra app portfolioApplication[
       "Carrego a intenção profissional, a leitura estrutural e o repertório comercial do meu autor para orientar conversas, esclarecer contexto e preparar relatórios ou pré-propostas iniciais."
   }
 ] => {
-  version = "0.3.0";
-  mode = "macro-structural";
+  version = "0.6.0";
+  mode = "macro-tree-structural";
+  contentSource = "markdown-public";
+  contentPath = "/content/sections";
+  entry = "main.dsljs";
+  structureModel = "element-tree-to-app-concepts";
 }
 
 globalThis.__PORTFOLIO_APPLICATION__ = portfolioApplication();
-globalThis.__PORTFOLIO_COMPONENTS__ = {
-  renderMenuButton: renderStructuralMenuButton,
-  renderSiteFooter: renderStructuralSiteFooter,
-  renderCompanionPanel: renderStructuralCompanionPanel
-};
+globalThis.__PORTFOLIO_ELEMENTS__ = portfolioStructuralKit.elements;
+globalThis.__PORTFOLIO_CONCEPTS__ = portfolioStructuralKit.concepts;
+globalThis.__PORTFOLIO_SCENE_SEMANTICS__ = portfolioStructuralKit.sceneSemantics;
+globalThis.__PORTFOLIO_STRUCTURAL_COMPONENTS__ = portfolioStructuralKit.structuralComponents;
+globalThis.__PORTFOLIO_COMPONENTS__ = portfolioStructuralKit.renderers;
+globalThis.__PORTFOLIO_RENDERERS__ = portfolioStructuralKit.renderers;
+globalThis.__PORTFOLIO_SLIDES__ = portfolioStructuralKit.slideBuilders;
 
-import "./main.js";
+await import("/src/runtime/app-runtime.dsljs");

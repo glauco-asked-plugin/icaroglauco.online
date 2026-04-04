@@ -2452,3 +2452,75 @@ https://console.firebase.google.com/project/icaroglaucoonline-f1c88/usage/detail
 [debug] [2026-03-27T06:11:30.850Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/icaroglaucoonline-f1c88/channels/live/releases versionName=projects%2F918102798804%2Fsites%2Ficaroglaucoonline-f1c88%2Fversions%2Fac1ef27fa3f78c83
 [debug] [2026-03-27T06:11:30.850Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/icaroglaucoonline-f1c88/channels/live/releases {}
 [debug] [2026-03-27T06:11:31.808Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/icaroglaucoonline-f1c88/channels/live/releases 200
+[debug] [2026-04-04T17:15:50.738Z] ----------------------------------------------------------------------
+[debug] [2026-04-04T17:15:50.741Z] Command:       /home/usuario/.nvm/versions/node/v24.14.1/bin/node /home/usuario/dev/icaroglauco.online/node_modules/.bin/firebase functions:secrets:set GEMINI_API_KEY --project icaroglaucoonline --data-file=- --force
+[debug] [2026-04-04T17:15:50.741Z] CLI Version:   15.11.0
+[debug] [2026-04-04T17:15:50.742Z] Platform:      linux
+[debug] [2026-04-04T17:15:50.742Z] Node Version:  v24.14.1
+[debug] [2026-04-04T17:15:50.742Z] Time:          Sat Apr 04 2026 14:15:50 GMT-0300 (Brasilia Standard Time)
+[debug] [2026-04-04T17:15:50.742Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-04-04T17:15:50.744Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-04-04T17:15:50.926Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-04-04T17:15:50.927Z] > authorizing via signed-in user (icaroglaucooliveira@gmail.com)
+[debug] [2026-04-04T17:15:50.928Z] Checked if tokens are valid: false, expires at: 1774793053518
+[debug] [2026-04-04T17:15:50.928Z] Checked if tokens are valid: false, expires at: 1774793053518
+[debug] [2026-04-04T17:15:50.928Z] > refreshing access token with scopes: []
+[debug] [2026-04-04T17:15:50.929Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-04-04T17:15:50.929Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-04-04T17:15:51.168Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-04-04T17:15:51.168Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-04-04T17:15:51.173Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/icaroglaucoonline/services/secretmanager.googleapis.com [none]
+[debug] [2026-04-04T17:15:51.174Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/icaroglaucoonline/services/secretmanager.googleapis.com  x-goog-user-project=icaroglaucoonline
+[debug] [2026-04-04T17:15:51.328Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-04-04T17:15:51.329Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2026-04-04T17:15:52.307Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/icaroglaucoonline/services/secretmanager.googleapis.com 200
+[debug] [2026-04-04T17:15:52.307Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/icaroglaucoonline/services/secretmanager.googleapis.com [omitted]
+[debug] [2026-04-04T17:15:52.308Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:15:52.308Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:15:52.308Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/icaroglaucoonline/services/secretmanager.googleapis.com:enable [none]
+[debug] [2026-04-04T17:15:52.308Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/icaroglaucoonline/services/secretmanager.googleapis.com:enable  x-goog-user-project=icaroglaucoonline
+[debug] [2026-04-04T17:15:53.083Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/icaroglaucoonline/services/secretmanager.googleapis.com:enable 200
+[debug] [2026-04-04T17:15:53.083Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/icaroglaucoonline/services/secretmanager.googleapis.com:enable [omitted]
+[debug] [2026-04-04T17:16:03.091Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-04-04T17:16:03.092Z] > authorizing via signed-in user (icaroglaucooliveira@gmail.com)
+[debug] [2026-04-04T17:16:03.093Z] [iam] checking project icaroglaucoonline for permissions ["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.update","secretmanager.versions.add"]
+[debug] [2026-04-04T17:16:03.093Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:03.093Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:03.093Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/icaroglaucoonline:testIamPermissions [none]
+[debug] [2026-04-04T17:16:03.094Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/icaroglaucoonline:testIamPermissions  x-goog-user-project=icaroglaucoonline
+[debug] [2026-04-04T17:16:03.094Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/icaroglaucoonline:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2026-04-04T17:16:04.098Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/icaroglaucoonline:testIamPermissions 200
+[debug] [2026-04-04T17:16:04.098Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/icaroglaucoonline:testIamPermissions {"permissions":["firebase.projects.get","secretmanager.secrets.create","secretmanager.secrets.get","secretmanager.secrets.update","secretmanager.versions.add"]}
+[debug] [2026-04-04T17:16:04.099Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:04.099Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:04.099Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/icaroglaucoonline [none]
+[debug] [2026-04-04T17:16:04.311Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/icaroglaucoonline 200
+[debug] [2026-04-04T17:16:04.311Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/icaroglaucoonline {"projectNumber":"113487263464","projectId":"icaroglaucoonline","lifecycleState":"ACTIVE","name":"icaroglaucoonline","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2025-12-19T14:11:10.542669Z"}
+[debug] [2026-04-04T17:16:04.311Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:04.311Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:04.311Z] >>> [apiv2][query] GET https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets/GEMINI_API_KEY [none]
+[debug] [2026-04-04T17:16:04.775Z] <<< [apiv2][status] GET https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets/GEMINI_API_KEY 404
+[debug] [2026-04-04T17:16:04.775Z] <<< [apiv2][body] GET https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets/GEMINI_API_KEY {"error":{"code":404,"message":"Secret [projects/113487263464/secrets/GEMINI_API_KEY] not found.","status":"NOT_FOUND"}}
+[debug] [2026-04-04T17:16:04.776Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:04.776Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:04.776Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets secretId=GEMINI_API_KEY
+[debug] [2026-04-04T17:16:04.776Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets {"name":"GEMINI_API_KEY","replication":{"automatic":{}},"labels":{"firebase-managed":"functions"}}
+[debug] [2026-04-04T17:16:06.355Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets 200
+[debug] [2026-04-04T17:16:06.356Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets {"name":"projects/113487263464/secrets/GEMINI_API_KEY","replication":{"automatic":{}},"createTime":"2026-04-04T17:16:04.917870Z","labels":{"firebase-managed":"functions"},"etag":"\"164ea596c3b3f3\""}
+[debug] [2026-04-04T17:16:06.356Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:06.357Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:06.357Z] >>> [apiv2][query] POST https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets/GEMINI_API_KEY:addVersion [none]
+[debug] [2026-04-04T17:16:06.357Z] >>> [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets/GEMINI_API_KEY:addVersion {"payload":{"data":"QUl6YVN5RFBXeW9sNnNLR0lZVFFPa2N1a1RjME1kSE4za3p4UzFF"}}
+[debug] [2026-04-04T17:16:09.256Z] <<< [apiv2][status] POST https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets/GEMINI_API_KEY:addVersion 200
+[debug] [2026-04-04T17:16:09.256Z] <<< [apiv2][body] POST https://secretmanager.googleapis.com/v1/projects/icaroglaucoonline/secrets/GEMINI_API_KEY:addVersion {"name":"projects/113487263464/secrets/GEMINI_API_KEY/versions/1","createTime":"2026-04-04T17:16:09.112635Z","state":"ENABLED","replicationStatus":{"automatic":{}},"etag":"\"164ea596ef803b\""}
+[info] ✔  Created a new secret version projects/113487263464/secrets/GEMINI_API_KEY/versions/1 
+[debug] [2026-04-04T17:16:09.257Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:09.258Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:09.258Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/icaroglaucoonline/locations/-/functions [none]
+[debug] [2026-04-04T17:16:15.297Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/icaroglaucoonline/locations/-/functions 200
+[debug] [2026-04-04T17:16:15.297Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/icaroglaucoonline/locations/-/functions {}
+[debug] [2026-04-04T17:16:15.298Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:15.298Z] Checked if tokens are valid: true, expires at: 1775326550169
+[debug] [2026-04-04T17:16:15.298Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/icaroglaucoonline/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2026-04-04T17:16:16.686Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/icaroglaucoonline/locations/-/functions 200
