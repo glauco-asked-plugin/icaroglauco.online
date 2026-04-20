@@ -3143,6 +3143,8 @@ body {
 }
 
 .companion-shell {
+  --companion-landing-limit: 100svh;
+  --companion-shell-height: 0px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -4348,6 +4350,12 @@ body {
 .companion-shell[data-collapsed="true"][data-view="docked"][data-mount="content"][data-phase="docked"] {
   right: clamp(1rem, 3vw, 2rem);
   bottom: clamp(1rem, 3vh, 2rem);
+}
+
+.companion-shell[data-view="docked"][data-phase="docked"][data-landing="true"] {
+  right: clamp(1rem, 5vw, 4.5rem);
+  top: calc(var(--companion-landing-limit) + clamp(1rem, 3vh, 2rem));
+  bottom: auto;
 }
 
 .companion-shell[data-collapsed="true"][data-view="docked"] .companion-panel {

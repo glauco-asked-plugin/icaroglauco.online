@@ -872,6 +872,7 @@ Flow setupCompanionPanel[
       mountCompanion("page");
       setCompanionCollapsed(false);
       setCompanionViewMode("expanded");
+      updateCompanionDockBounds();
       if (companionOutputText) {
         companionOutputText.textContent = "";
         companionOutputText.dataset.streaming = "false";
@@ -1790,6 +1791,7 @@ Flow setupScrollSettleTracking[
   args: (),
   body: {
     pageShell?.addEventListener("scroll", () => {
+            updateCompanionDockBounds();
             if (
               pageShell.classList.contains("is-programmatic-scroll") &&
               pageProgrammaticTargetTop !== null &&
@@ -1823,6 +1825,8 @@ Flow setupScrollSettleTracking[
             pageShell?.addEventListener("scrollend", handlePageScrollSettled);
             contentRailShell?.addEventListener("scrollend", handleContentRailScrollSettled);
           }
+
+          window.addEventListener("resize", updateCompanionDockBounds);
   }
 ]
 
@@ -2728,6 +2732,18 @@ function wait(ms) {
       });
     }
 
+function updateCompanionDockBounds() {
+      if (!companionShell || !pageShell || !menuStage) return;
+
+      const landingLimit = menuStage.offsetTop + menuStage.offsetHeight;
+      const isLandingStage = pageShell.scrollTop < Math.max(1, landingLimit - 2);
+      const shellHeight = Math.ceil(companionShell.getBoundingClientRect().height);
+
+      companionShell.dataset.landing = isLandingStage ? "true" : "false";
+      companionShell.style.setProperty("--companion-landing-limit", `${landingLimit}px`);
+      companionShell.style.setProperty("--companion-shell-height", `${shellHeight}px`);
+    }
+
 
 function getCurrentScreen() {
       return screens[lockedIndex] || screens[0];
@@ -2788,6 +2804,8 @@ function setCompanionViewMode(nextView) {
         companionShell.dataset.view = resolvedView;
       }
 
+      window.requestAnimationFrame(updateCompanionDockBounds);
+
       if (!pageShell) return;
 
       if (companionState.introActive) {
@@ -2805,6 +2823,8 @@ function setCompanionCollapsed(nextCollapsed) {
       if (companionShell) {
         companionShell.dataset.collapsed = resolvedCollapsed ? "true" : "false";
       }
+
+      window.requestAnimationFrame(updateCompanionDockBounds);
     }
 
 
@@ -2819,6 +2839,8 @@ function mountCompanion(_location) {
       if (companionState.viewMode !== "expanded") {
         setCompanionViewMode("docked");
       }
+
+      window.requestAnimationFrame(updateCompanionDockBounds);
     }
 
 

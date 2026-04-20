@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dsljs": "file:../macro-oriented-javascript",
+    "@icaroglauco/idsljs": "file:../macro-oriented-javascript",
     "firebase": "^12.11.0",
     "three": "^0.183.2"
   },
