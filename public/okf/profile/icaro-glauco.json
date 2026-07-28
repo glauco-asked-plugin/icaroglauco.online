@@ -1,0 +1,91 @@
+{
+  "okf": "0.2",
+  "id": "profile/icaro-glauco",
+  "kind": "professional-profile",
+  "name": "Icaro Glauco",
+  "displayTitle": "Wizard of Transformation",
+  "professionalTitle": "Independent product architect and applied-AI software builder",
+  "location": "Bahia, Brazil",
+  "availability": "Selected product partnerships and specialised software projects",
+  "headline": "I turn complex knowledge, rules and real operations into software that can be understood, used and evolved.",
+  "thesis": "My work begins before the interface and continues beyond it: I identify the domain, name its entities and decisions, compose the interaction model and implement the product that carries the operation.",
+  "wizardMeaning": "Wizard is the name I give to a transformation practice. I work where the request is still diffuse, where knowledge is distributed across people and documents, and where the final software must preserve the meaning of the operation instead of reducing it to a collection of screens.",
+  "currentFocus": [
+    "Cognoscere / Lumira as the flagship educational and knowledge platform",
+    "Isocon Licitações Inteligentes as local procurement and documentary intelligence",
+    "MacroObras as an office-to-field construction operations platform"
+  ],
+  "portfolioShape": {
+    "flagshipProjects": 1,
+    "activeVerticalSystems": 2,
+    "domains": ["Education", "Public procurement", "Construction operations"],
+    "sharedFoundation": "OKF, domain modelling, interface architecture and governed AI"
+  },
+  "transformationPractice": [
+    {
+      "stage": "Perceive",
+      "description": "Read the situation, actors, language, documents, constraints and desired result before deciding what the software is."
+    },
+    {
+      "stage": "Name",
+      "description": "Turn diffuse knowledge into entities, relations, rules, evidence, permissions and decisions."
+    },
+    {
+      "stage": "Compose",
+      "description": "Design the product surface, workflow, knowledge boundaries and human-AI responsibilities as one structure."
+    },
+    {
+      "stage": "Materialise",
+      "description": "Implement the interface, services, local tools and operational feedback that make the model executable."
+    },
+    {
+      "stage": "Refine",
+      "description": "Validate the product in use, preserve provenance and deepen the system without losing conceptual integrity."
+    }
+  ],
+  "capabilityDomains": [
+    {
+      "name": "Product and domain architecture",
+      "description": "Defining what a specialised product is, which actors and entities participate and how value moves through it."
+    },
+    {
+      "name": "Requirements and operational modelling",
+      "description": "Translating business language, documents and routines into explicit flows, restrictions and decisions."
+    },
+    {
+      "name": "Interface engineering",
+      "description": "Designing web, desktop and mobile surfaces whose structure reflects the real operation."
+    },
+    {
+      "name": "Applied and local AI",
+      "description": "Using models for knowledge retrieval, document analysis, structured generation and guided action under explicit boundaries."
+    },
+    {
+      "name": "Knowledge systems and OKF",
+      "description": "Keeping concepts, sources, provenance, public projections and protected intelligence connected and versioned."
+    },
+    {
+      "name": "Language and runtime research",
+      "description": "Investigating frameworks, DSLs and local runtimes when conventional layers create unnecessary distance from the product."
+    }
+  ],
+  "workingPrinciples": [
+    "The interface and domain model should explain the same system.",
+    "AI accelerates interpretation and implementation while human responsibility remains explicit.",
+    "Public knowledge, protected intelligence and operational credentials must have separate boundaries.",
+    "A specialised product should preserve the vocabulary and evidence of its domain.",
+    "The strongest work joins discovery, product direction and implementation instead of splitting them into disconnected handoffs."
+  ],
+  "projectFit": [
+    "Knowledge or educational platforms",
+    "Document and decision intelligence",
+    "Operational management systems",
+    "AI agents connected to company tools",
+    "Customer or employee portals with guided workflows",
+    "Products whose correct shape is still unclear"
+  ],
+  "links": {
+    "github": "https://github.com/glaucodeveloper",
+    "site": "https://icaroglauco.online"
+  }
+}

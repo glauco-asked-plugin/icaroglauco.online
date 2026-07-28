@@ -1,0 +1,71 @@
+{
+  "okf": "0.2",
+  "id": "projects/isocon-licitacoes",
+  "kind": "vertical-intelligence-product",
+  "name": "Isocon Licitações Inteligentes",
+  "monogram": "IS",
+  "status": "Active development",
+  "currentPhase": "Local intelligence, edital ingestion and documentary compliance workflows",
+  "domain": "Public procurement",
+  "portfolioRole": "A medium vertical product showing local AI and document intelligence inside a concrete commercial decision process.",
+  "headline": "An installable procurement workspace that turns edital documents into requirements, risks and documentary actions.",
+  "challenge": "A bidder repeatedly discovers opportunities, reads long edital documents, identifies mandatory conditions and searches distributed company records to prove compliance.",
+  "productResponse": "Isocon synchronises the opportunity catalogue, extracts PDF text, analyses selected editais locally and materialises the result as requirements, risks, recommended actions and a requirement-to-document matrix.",
+  "actors": [
+    {"name": "Bid analyst", "responsibility": "Select opportunities, inspect requirements and coordinate readiness."},
+    {"name": "Company administrator", "responsibility": "Maintain corporate, CNAE and documentary information."},
+    {"name": "Local intelligence", "responsibility": "Interpret edital content under configurable criteria on the user's device."}
+  ],
+  "productLayers": [
+    {"name": "Catalogue", "description": "Synchronised editais with search, selection, organisation, estimated value, date and locality."},
+    {"name": "Company base", "description": "Corporate identity, CNPJ, size, municipality, activity and CNAE used for fit analysis."},
+    {"name": "Document base", "description": "Company records prepared for requirement correlation."},
+    {"name": "Analysis", "description": "PDF extraction, local-model interpretation, requirements, risks and bidder actions."},
+    {"name": "Compliance matrix", "description": "Visible relation between each requirement, supporting document and current state."},
+    {"name": "Local runtime", "description": "PWA, SQL database, model cache and CPU/WebAssembly execution."}
+  ],
+  "implemented": [
+    "Installable Vite PWA surface",
+    "Catalogue synchronisation and local database",
+    "PDF text extraction",
+    "Company and document registration surfaces",
+    "Requirement, risk and recommended-action cards",
+    "Documentary compliance matrix",
+    "Configurable analysis prompts",
+    "Local Gemma model preparation in browser CPU/WebAssembly"
+  ],
+  "localIntelligence": {
+    "modelFamily": "Gemma",
+    "execution": "Browser CPU/WebAssembly",
+    "storage": "Persistent browser cache",
+    "dataBoundary": "The model runs locally and the repository access credential is not sent to it."
+  },
+  "architectureFlow": [
+    "Scheduled catalogue collection",
+    "Published manifest and archive",
+    "Browser synchronisation",
+    "Local SQL database",
+    "Selected edital and PDF extraction",
+    "Local AI interpretation",
+    "Requirements, risks and actions",
+    "Document correlation",
+    "Bid readiness decision"
+  ],
+  "evidence": [
+    "The interface already exposes editais, company data, documents, analysis criteria, intelligence status and compliance matrix as connected operational pages.",
+    "The local model is prepared and cached separately from the procurement catalogue.",
+    "Requirement records include category, mandatory state, risk and recommended action.",
+    "The browser consumes a published catalogue instead of scraping the procurement portal during user interaction."
+  ],
+  "roadmap": [
+    "Deepen edital sectioning and traceable source references",
+    "Expand company-to-requirement compatibility analysis",
+    "Improve documentary lifecycle and expiry controls",
+    "Add reviewed strategic summaries and follow-up states",
+    "Package production access and update policies"
+  ],
+  "technologies": ["Vite", "PWA", "PDF.js", "SQL.js", "Transformers.js", "ONNX", "WebAssembly"],
+  "links": {
+    "repository": "https://github.com/glaucodeveloper/isocon-licitacoes-inteligentes"
+  }
+}

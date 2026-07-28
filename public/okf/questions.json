@@ -1,0 +1,69 @@
+{
+  "okf": "0.2",
+  "id": "questions",
+  "items": [
+    {
+      "id": "profile",
+      "group": "Identity",
+      "label": "Who is Icaro as a builder?",
+      "prompt": "Build a deep professional profile of Icaro Glauco: identity, transformation practice, current focus, capabilities, working principles and suitable project relationships.",
+      "project": "profile/icaro-glauco"
+    },
+    {
+      "id": "wizard",
+      "group": "Identity",
+      "label": "Why Wizard of Transformation?",
+      "prompt": "Explain why Icaro Glauco uses the title Wizard of Transformation. Treat it as a professional method and connect perception, naming, composition, materialisation and refinement to his software practice.",
+      "project": "profile/icaro-glauco"
+    },
+    {
+      "id": "method",
+      "group": "Practice",
+      "label": "How does a vague idea become software?",
+      "prompt": "Explain Icaro's transformation method from an ambiguous business or knowledge situation to an explicit domain, product architecture, governed AI responsibility, implementation and evidence.",
+      "project": "practice/transformation-method"
+    },
+    {
+      "id": "cognoscere",
+      "group": "Projects",
+      "label": "Profile Cognoscere / Lumira",
+      "prompt": "Present Cognoscere and Lumira as a complete flagship-project profile. Explain their relationship, actors, independent domains, product layers, knowledge flow, implemented evidence, boundaries and roadmap.",
+      "project": "projects/cognoscere-lumira"
+    },
+    {
+      "id": "isocon",
+      "group": "Projects",
+      "label": "Profile Isocon Licitações",
+      "prompt": "Present Isocon Licitações Inteligentes as a complete project profile, focusing on local AI, edital ingestion, company knowledge, requirements, risks, documentary compliance and the current product boundary.",
+      "project": "projects/isocon-licitacoes"
+    },
+    {
+      "id": "macroobras",
+      "group": "Projects",
+      "label": "Profile MacroObras",
+      "prompt": "Present MacroObras as a complete project profile, showing how administration, collaborators, field routines, camera evidence, construction diaries and measurement comparison form one operational chain.",
+      "project": "projects/macroobras"
+    },
+    {
+      "id": "compare",
+      "group": "Portfolio",
+      "label": "Compare the three active products",
+      "prompt": "Compare Cognoscere/Lumira, Isocon Licitações Inteligentes and MacroObras by domain, actors, knowledge model, operational flow, intelligence boundary, evidence and current phase.",
+      "project": "all"
+    },
+    {
+      "id": "okf",
+      "group": "Practice",
+      "label": "What does OKF do here?",
+      "prompt": "Explain the role of OKF across Icaro's work: domain vocabulary, relations, provenance, public projections, protected intelligence and operational continuity. Use project evidence where available.",
+      "project": "all"
+    },
+    {
+      "id": "hire",
+      "group": "Collaboration",
+      "label": "What can I hire Icaro to build?",
+      "prompt": "Based only on the profile, method and active projects, describe the specialised software work Icaro is prepared to design and build, the best-fit situations and the engagement path.",
+      "project": "all"
+    }
+  ]
+}

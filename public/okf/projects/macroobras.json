@@ -1,0 +1,80 @@
+{
+  "okf": "0.2",
+  "id": "projects/macroobras",
+  "kind": "operational-platform",
+  "name": "MacroObras",
+  "monogram": "MO",
+  "status": "Active development",
+  "currentPhase": "Administrative and field-operation integration",
+  "domain": "Construction operations",
+  "portfolioRole": "A medium operational platform showing how software connects planning, people, physical execution and evidence.",
+  "headline": "A hybrid construction platform connecting the administrative plan to field routines, camera evidence and measurement progression.",
+  "challenge": "Construction progress is fragmented between office planning, measurement sheets, collaborators, daily routines and proof captured in the field.",
+  "productResponse": "MacroObras creates a continuous operational chain from project and measurement configuration to authorised routines, construction diaries, photographic confirmation and comparison of performed work against the imported measurement base.",
+  "actors": [
+    {"name": "Administrative operator", "responsibility": "Register projects, import measurements, define elements and allocate work."},
+    {"name": "Authorised collaborator", "responsibility": "Open assigned projects, perform routines and submit field evidence."},
+    {"name": "Measurement process", "responsibility": "Relate execution and evidence to expected quantities and progress."},
+    {"name": "Local services", "responsibility": "Provide collaborator access, archive, OKF scaffold and local model endpoint."}
+  ],
+  "productLayers": [
+    {"name": "Installer", "description": "Prepares a single installation folder, Archive, OKF references, collaborator endpoint and local Llama configuration."},
+    {"name": "Administrative station", "description": "Projects, measurement imports, elements, materials, dependencies, collaborators, schedules and comparison."},
+    {"name": "Field application", "description": "Authorised project access, daily routines, expandable schedule cards and construction diary."},
+    {"name": "Evidence", "description": "Camera confirmation and proof records related to the service performed."},
+    {"name": "Progress", "description": "Field diary submission feeds the measurement progression and comparison process."},
+    {"name": "Knowledge and local runtime", "description": "OKF entities, Archive, collaborator server and local intelligence endpoint."}
+  ],
+  "implemented": [
+    "Modular Nim backend separated by configuration, admin, installer, OKF and collaborator services",
+    "Frontend divided into installer, administration and mobile field screens",
+    "Project, measurement, element and collaborator administration",
+    "Field routine, daily schedule and construction diary surfaces",
+    "Camera-evidence relationship to performed services",
+    "OKF scaffold for the core construction entities",
+    "Playwright UI validation and technical report generation"
+  ],
+  "okfEntities": [
+    "Project",
+    "Construction element",
+    "Measurement item",
+    "Service",
+    "Routine",
+    "Schedule",
+    "Construction diary",
+    "Service confirmation",
+    "Measurement",
+    "Measurement comparison",
+    "Collaborator",
+    "Archive",
+    "Local intelligence"
+  ],
+  "architectureFlow": [
+    "Administrative project and measurement base",
+    "Construction elements and dependencies",
+    "Authorised collaborator",
+    "Daily allocation",
+    "Applied field routine",
+    "Camera evidence",
+    "Construction diary",
+    "Progress submission",
+    "Measurement comparison"
+  ],
+  "evidence": [
+    "Backend responsibilities were explicitly decoupled into specialised modules.",
+    "The frontend has distinct installer, administrative and mobile surfaces with shared UI infrastructure.",
+    "Sixteen UI routines were validated through Playwright in the documented cycle.",
+    "The OKF scaffold names the relations required to connect the administrative and physical operation."
+  ],
+  "roadmap": [
+    "Deepen measurement import and comparison semantics",
+    "Consolidate collaborator authorisation and network access",
+    "Improve field evidence review and exception handling",
+    "Connect local intelligence to archive and operational knowledge",
+    "Package desktop and mobile deployment paths"
+  ],
+  "technologies": ["Nim", "JavaScript", "Playwright", "OKF", "Local Llama", "Hybrid desktop/web runtime"],
+  "links": {
+    "repository": "https://github.com/glaucodeveloper/macroobras"
+  }
+}

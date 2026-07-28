@@ -1,0 +1,55 @@
+{
+  "okf": "0.2",
+  "id": "practice/transformation-method",
+  "kind": "professional-practice",
+  "name": "Transformation Method",
+  "summary": "A continuous path from ambiguous situation to explicit domain, product surface, executable system and validated operational result.",
+  "stages": [
+    {
+      "order": 1,
+      "name": "Situation reading",
+      "question": "What is happening now, who participates and why must it change?",
+      "outputs": ["Actors", "Current tools", "Pain and opportunity", "Desired result"]
+    },
+    {
+      "order": 2,
+      "name": "Domain composition",
+      "question": "Which entities, relations, rules, permissions and evidence give the operation its meaning?",
+      "outputs": ["Domain vocabulary", "Entity relations", "Rules", "Decision points", "Knowledge boundaries"]
+    },
+    {
+      "order": 3,
+      "name": "Product architecture",
+      "question": "Which surfaces and journeys let each actor perform the operation correctly?",
+      "outputs": ["Modules", "User journeys", "Navigation", "States", "Integration boundaries"]
+    },
+    {
+      "order": 4,
+      "name": "AI responsibility",
+      "question": "Where can a model interpret, retrieve, generate or recommend without becoming the unverified final authority?",
+      "outputs": ["Grounding", "Tools", "Human confirmation", "Auditability", "Fallback behaviour"]
+    },
+    {
+      "order": 5,
+      "name": "Implementation and evidence",
+      "question": "How does the product record that a real action occurred and provide the next useful state?",
+      "outputs": ["Working interface", "Services", "Documents", "Operational evidence", "Validation"]
+    }
+  ],
+  "engagementModel": [
+    "Initial business and domain interview",
+    "Requirements and product map",
+    "Interface direction and staged scope",
+    "Module-by-module implementation",
+    "Operational validation and next-phase planning"
+  ],
+  "aiPattern": [
+    "Request or event",
+    "Relevant public or authorised knowledge",
+    "Model interpretation",
+    "Constrained structured output",
+    "Tool or interface action",
+    "Human confirmation when risk requires it",
+    "Evidence and next state"
+  ]
+}

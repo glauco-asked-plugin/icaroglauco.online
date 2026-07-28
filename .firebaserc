@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "icaroglaucoonline"
-  }
+    "website": "icaroglaucoonline"
+  },
+  "targets": {},
+  "etags": {}
 }

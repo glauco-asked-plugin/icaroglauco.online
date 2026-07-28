@@ -1,8 +1,0 @@
-import macros from "./framework/macro-frontend/core.idsl";
-
-import { createPortfolioApplicationKit } from "./app/bootstrap.ts";
-
-Frontend.Runtime portfolio [
-  factory: createPortfolioApplicationKit,
-  runtime: "/src/runtime/run-portfolio-app.ts"
-]

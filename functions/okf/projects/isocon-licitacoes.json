@@ -1,0 +1,49 @@
+{
+  "okf": "0.1",
+  "id": "projects/isocon-licitacoes",
+  "kind": "vertical-intelligence-product",
+  "name": "Isocon Licitações Inteligentes",
+  "status": "Active development",
+  "currentPhase": "Local intelligence, edital ingestion and documentary compliance workflows",
+  "domain": "Public procurement",
+  "problem": "Companies must repeatedly discover opportunities, read long edital documents, identify mandatory requirements and prove compliance with distributed company records.",
+  "solution": "An installable procurement application that synchronises edital catalogues, extracts PDF content, identifies requirements and connects them to the company's documentary base using local AI.",
+  "capabilities": [
+    "Automatic procurement catalogue synchronisation",
+    "Search and selection of editais",
+    "PDF text extraction",
+    "Company profile and CNAE data",
+    "Requirement extraction and risk notes",
+    "Recommended bidder actions",
+    "Document repository",
+    "Requirement-to-document compliance matrix",
+    "Configurable analysis criteria",
+    "Installable PWA",
+    "Local model execution in CPU/WebAssembly"
+  ],
+  "localIntelligence": {
+    "modelFamily": "Gemma",
+    "execution": "Browser CPU/WebAssembly",
+    "storage": "Persistent browser cache",
+    "privacy": "The access credential is not sent to the local model."
+  },
+  "architectureFlow": [
+    "Scheduled catalogue build",
+    "Published manifest and archive",
+    "Browser synchronisation",
+    "Local SQL database",
+    "PDF extraction",
+    "Local AI analysis",
+    "Requirements",
+    "Documentary compliance matrix"
+  ],
+  "commercialValue": [
+    "Faster opportunity qualification",
+    "Visible documentary gaps",
+    "Reduced repeated edital reading",
+    "Private analysis on the user's device"
+  ],
+  "links": {
+    "repository": "https://github.com/glaucodeveloper/isocon-licitacoes-inteligentes"
+  }
+}

@@ -1,8 +1,0 @@
-import macros from "./macros/portfolio-frontend.idsl";
-
-import { portfolioComposition, portfolioFrontend } from "./index.ts";
-
-portfolioRuntime icaroglaucoOnline [
-  framework: portfolioFrontend,
-  composition: portfolioComposition
-]

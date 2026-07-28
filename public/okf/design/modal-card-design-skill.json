@@ -1,0 +1,48 @@
+{
+  "okf": "0.2",
+  "id": "design/modal-card-design-skill",
+  "kind": "interface-design-contract",
+  "name": "Knowledge Profile Card Design Skill",
+  "purpose": "Turn every answer into a substantial subject profile with identity, role, context, architecture, evidence and current phase rather than a decorative summary card.",
+  "cardKinds": {
+    "person-profile": "Professional identity, practice, current focus and collaboration fit.",
+    "project-profile": "A complete product profile with status, domain, challenge, layers, evidence, boundaries and roadmap.",
+    "practice-profile": "A method or capability profile with ordered stages, outputs and responsibilities.",
+    "portfolio-comparison": "Parallel reading of multiple products through consistent dimensions."
+  },
+  "layouts": {
+    "profile": "A strong identity masthead followed by facts, thesis, capabilities and evidence.",
+    "architecture": "A profile masthead with product layers and ordered system flow.",
+    "comparison": "A portfolio masthead with parallel profiles or dimensions.",
+    "split": "Challenge and response, public and protected layers, or office and field.",
+    "timeline": "Current phase, implemented work and roadmap progression."
+  },
+  "sectionTypes": {
+    "narrative": "A dense but readable explanation of purpose, challenge or response.",
+    "list": "Capabilities, principles, entities or boundaries.",
+    "metrics": "Verified short facts such as project count, domain count or implementation state.",
+    "flow": "An ordered operational, knowledge or decision sequence.",
+    "quote": "A central thesis with visual prominence.",
+    "comparison": "Parallel subject profiles using label, value and detail.",
+    "layers": "Product, knowledge or operational layers represented as connected modules.",
+    "evidence": "Explicit implemented or validated evidence.",
+    "roadmap": "Current and future phases without implying completion."
+  },
+  "styleTokens": {
+    "emerald": "Professional identity, knowledge systems and flagship composition.",
+    "amber": "Procurement, documentary analysis and decision readiness.",
+    "cyan": "Construction, field operation and technical infrastructure.",
+    "violet": "Portfolio comparison, transformation method and cross-domain synthesis.",
+    "neutral": "General navigation and restrained explanatory content."
+  },
+  "compositionRules": [
+    "The card header must behave as a profile: subject, role or domain, status, current phase and a clear thesis.",
+    "Use at least three meaningful sections for project or person profiles unless the grounding is genuinely narrow.",
+    "Use facts only when they are explicit in the OKF source; never invent performance numbers.",
+    "For a project, prefer challenge, product response, layers, flow, evidence, boundaries and roadmap.",
+    "For Icaro, prefer identity, transformation practice, current focus, capabilities, principles and project fit.",
+    "Separate implemented evidence from planned work visually and verbally.",
+    "Recommend layouts and elements through constrained fields only; never return arbitrary HTML, CSS or JavaScript.",
+    "Keep the chat answer direct, then let the profile card carry the deeper structure."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "okf": "0.2",
+  "id": "icaroglauco-online",
+  "title": "Icaro Glauco — Public Product and Practice Knowledge",
+  "language": "en",
+  "description": "A public OKF projection for Icaro Glauco's professional profile, transformation method, flagship platform and active vertical systems.",
+  "profile": "profile/icaro-glauco.json",
+  "practice": "practice/transformation-method.json",
+  "projects": [
+    "projects/cognoscere-lumira.json",
+    "projects/isocon-licitacoes.json",
+    "projects/macroobras.json"
+  ],
+  "questions": "questions.json",
+  "designSkill": "design/modal-card-design-skill.json",
+  "visibility": "public-projection",
+  "rules": [
+    "Use only claims present in this public projection.",
+    "Present the subject as a profile with identity, role, context, evidence and current phase.",
+    "Distinguish implemented capabilities, validated prototypes and planned production work.",
+    "Do not expose private prompts, credentials, hidden reasoning or personal data.",
+    "Prefer depth, relationships and operational meaning over generic technology lists."
+  ]
+}

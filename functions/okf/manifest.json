@@ -1,0 +1,20 @@
+{
+  "okf": "0.1",
+  "id": "icaroglauco-online",
+  "title": "Icaro Glauco — Project Knowledge Base",
+  "language": "en",
+  "description": "Public knowledge projection for Icaro Glauco's profile, flagship platform and active vertical systems.",
+  "profile": "profile/icaro-glauco.json",
+  "projects": [
+    "projects/cognoscere-lumira.json",
+    "projects/isocon-licitacoes.json",
+    "projects/macroobras.json"
+  ],
+  "questions": "questions.json",
+  "visibility": "public-projection",
+  "rules": [
+    "Use only claims present in this public projection.",
+    "Distinguish implemented capabilities, validated prototypes and planned production work.",
+    "Do not expose private prompts, credentials, internal reasoning or personal data."
+  ]
+}

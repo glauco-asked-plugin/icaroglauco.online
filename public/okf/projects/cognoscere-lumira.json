@@ -1,0 +1,79 @@
+{
+  "okf": "0.2",
+  "id": "projects/cognoscere-lumira",
+  "kind": "flagship-platform",
+  "name": "Cognoscere / Lumira",
+  "monogram": "CL",
+  "status": "Flagship development",
+  "currentPhase": "Product validation, OKF contracts and authenticated service architecture",
+  "domain": "Education, knowledge and community",
+  "portfolioRole": "The major product: a broad platform where knowledge modelling, pedagogy, social systems and governed intelligence meet.",
+  "headline": "A competency-oriented learning environment whose content, evidence and social activity keep their own meaning.",
+  "relationship": {
+    "cognoscere": "The educational intelligence, pedagogical knowledge and competency structure.",
+    "lumira": "The social and educational web platform through which students, teachers and schools interact with Cognoscere."
+  },
+  "challenge": "Learning platforms can collapse content, scores, social activity and competition into interchangeable points. That weakens pedagogical meaning and makes evidence difficult to trace.",
+  "productResponse": "Cognoscere/Lumira separates competency progression, social reputation and competition while connecting courses, BNCC skills, materials, open activities, communities, schools and teacher-mediated evidence.",
+  "actors": [
+    {"name": "Student", "responsibility": "Enrol, study, answer, participate, submit and build a visible learning profile."},
+    {"name": "Approved teacher", "responsibility": "Create pedagogical contexts, evaluate evidence, moderate and produce authorised reports."},
+    {"name": "School administration", "responsibility": "Manage teachers, classes, communities, competitions and institutional visibility."},
+    {"name": "Platform administration", "responsibility": "Govern BNCC domains, schools, plans, moderation and audit."}
+  ],
+  "independentDomains": [
+    {"name": "Competency progression", "rule": "Changes through quizzes and pedagogical evidence. Social votes and leaderboards do not directly alter competency."},
+    {"name": "Social reputation", "rule": "Represents contributions in communities and profiles while remaining distinct from learning level."},
+    {"name": "School competition", "rule": "Represents performance within a challenge. Teacher-confirmed evidence may separately affect competency."}
+  ],
+  "productLayers": [
+    {"name": "Public entry", "description": "Proposition, areas, courses, competitions, profiles, plans and enrolment."},
+    {"name": "Personal campus", "description": "Progress, next actions, course discovery, quizzes and social presence."},
+    {"name": "Learning path", "description": "Course, cycles, axes, continuous material, open activity, evidence and progression."},
+    {"name": "Community", "description": "Forums, posts, comments, votes, reputation, school and group contexts."},
+    {"name": "School challenges", "description": "Brief, deadline, submission, rubric, teacher evaluation and leaderboard."},
+    {"name": "Knowledge infrastructure", "description": "Technical OKF, editorial review, public projection, provenance and protected intelligence."}
+  ],
+  "implemented": [
+    "Static Vite SPA prototype with public landing and responsive campus",
+    "Public OKF manifest and client for course, skill, material, activity and provenance",
+    "Catalogue, course, axis and continuous material navigation",
+    "Local demonstrative pre-analysis of open responses",
+    "Forum, competition, profile, school and account surfaces",
+    "Desktop full-width campus and mobile social drawer validation"
+  ],
+  "boundaries": [
+    "The public projection does not include private rubrics, reference answers, administrative prompts or identifiable student data.",
+    "The current browser pre-analysis is demonstrative and does not replace teacher or pedagogical confirmation.",
+    "Authentication, persistence, moderation and production payment remain future service layers."
+  ],
+  "architectureFlow": [
+    "Sources and BNCC skill",
+    "Ruby exporter and canonical technical prompts",
+    "Versioned technical OKF",
+    "Editorial and pedagogical review",
+    "Public OKF projection",
+    "Lumira client",
+    "Course, material and activity",
+    "Protected analysis service",
+    "Human confirmation and evidence"
+  ],
+  "evidence": [
+    "Course catalogue resolves a public OKF manifest rather than silently hardcoding curriculum fallback.",
+    "Desktop and mobile journeys were reviewed across public entry, enrolment, quiz, course, forum, competition, profile and account surfaces.",
+    "The product explicitly separates competence, reputation and leaderboard semantics.",
+    "Public and protected intelligence boundaries are described in the product and repository contracts."
+  ],
+  "roadmap": [
+    "Authentication and role-based authorisation",
+    "Student response, evidence and progression persistence",
+    "Protected model analysis with teacher confirmation",
+    "Moderation, reporting, blocking, rate limits and audit trails",
+    "Production subscription and payment provider adapter"
+  ],
+  "technologies": ["Vite", "JavaScript", "OKF", "Ruby/JRuby export tooling", "JSON public projection"],
+  "links": {
+    "repository": "https://github.com/glaucodeveloper/cognoscere",
+    "prototype": "https://glaucodeveloper.github.io/cognoscere/"
+  }
+}

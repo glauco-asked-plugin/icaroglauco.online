@@ -1,0 +1,80 @@
+{
+  "okf": "0.1",
+  "id": "projects/cognoscere-lumira",
+  "kind": "flagship-platform",
+  "name": "Cognoscere / Lumira",
+  "status": "Flagship development",
+  "currentPhase": "Product validation, OKF contracts and future authenticated service architecture",
+  "domain": "Education, knowledge and community",
+  "relationship": {
+    "cognoscere": "The educational intelligence, pedagogical knowledge and competency structure.",
+    "lumira": "The social and educational web platform through which students, teachers and schools interact with Cognoscere."
+  },
+  "problem": "Learning platforms often mix content, scores, social activity and competition without preserving the meaning or provenance of each domain.",
+  "solution": "A competency-oriented educational platform connecting courses, BNCC skills, traceable materials, open activities, communities, schools and competitions while separating public content from protected pedagogical intelligence.",
+  "actors": [
+    "Student",
+    "Approved teacher",
+    "School administration",
+    "Platform administration"
+  ],
+  "domains": [
+    {
+      "name": "Competency progression",
+      "rule": "Changes through quizzes and pedagogical evidence; social reputation and leaderboards do not directly alter competency."
+    },
+    {
+      "name": "Social reputation",
+      "rule": "Represents contributions in communities and profiles; it remains distinct from learning level."
+    },
+    {
+      "name": "School competition",
+      "rule": "Represents performance within a specific challenge; teacher-confirmed evidence may separately affect competency."
+    }
+  ],
+  "capabilities": [
+    "Public product landing and enrolment journey",
+    "Personalised campus",
+    "Courses, cycles, axes and continuous learning materials",
+    "Open Knowledge Format public projection",
+    "BNCC provenance and visible source relationships",
+    "Quizzes and open activities",
+    "Forum, communities and reputation",
+    "School challenges, submissions, rubrics and leaderboards",
+    "Responsive desktop and mobile social surfaces"
+  ],
+  "implemented": [
+    "Static Vite SPA prototype",
+    "Public OKF manifest and artifact client",
+    "Catalogue, course, axis and material navigation",
+    "Local demonstrative pre-analysis of open responses",
+    "Responsive campus, profile, forum, competition and account surfaces"
+  ],
+  "planned": [
+    "Authentication and role-based authorisation",
+    "Student response and evidence persistence",
+    "Protected model analysis with human confirmation",
+    "Moderation, reporting, blocking and audit trails",
+    "Production subscriptions and payment adapter"
+  ],
+  "architectureFlow": [
+    "Sources and BNCC skill",
+    "Ruby exporter and technical prompts",
+    "Versioned technical OKF",
+    "Editorial and pedagogical review",
+    "Public OKF projection",
+    "Lumira client",
+    "Course and activity",
+    "Protected service and human confirmation"
+  ],
+  "evidence": [
+    "Validated full-width desktop campus",
+    "Validated mobile navigation and social drawer",
+    "Explicit public/private intelligence boundary",
+    "Traceable course, material, skill and provenance relationships"
+  ],
+  "links": {
+    "repository": "https://github.com/glaucodeveloper/cognoscere",
+    "prototype": "https://glaucodeveloper.github.io/cognoscere/"
+  }
+}

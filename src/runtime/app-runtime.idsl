@@ -1,5 +1,0 @@
-import macros from "../framework/macro-frontend/core.idsl";
-
-Frontend.RuntimeEngine portfolioRuntime [
-  engine: "./portfolio-runtime-engine.ts"
-]

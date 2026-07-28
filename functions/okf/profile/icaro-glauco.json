@@ -1,0 +1,38 @@
+{
+  "okf": "0.1",
+  "id": "profile/icaro-glauco",
+  "kind": "professional-profile",
+  "name": "Icaro Glauco",
+  "displayTitle": "Wizard of Transformation",
+  "professionalTitle": "Software architect, product engineer and applied-AI builder",
+  "thesis": "I transform ambiguous domains, operational knowledge and complex rules into coherent software.",
+  "wizardMeaning": "Wizard is a working metaphor for transformation: reading what is diffuse, naming its parts, composing a model and turning it into an interface, an agent or an operational product.",
+  "capabilities": [
+    "Product and domain architecture",
+    "Requirements and operational modelling",
+    "Web, desktop and mobile interface engineering",
+    "Applied AI agents and local intelligence",
+    "Knowledge structures, provenance and OKF",
+    "Specialised business software"
+  ],
+  "signature": [
+    "Strong interface and structural authorship",
+    "Direct movement from discovery to implementation",
+    "Interest in languages, runtimes and tools",
+    "Human responsibility over AI-generated output"
+  ],
+  "availability": {
+    "mode": "Selected projects and product partnerships",
+    "preferredWork": [
+      "Knowledge or educational platforms",
+      "Document and decision intelligence",
+      "Operational management platforms",
+      "AI agents connected to business tools",
+      "Specialised software whose shape is still unclear"
+    ]
+  },
+  "links": {
+    "github": "https://github.com/glaucodeveloper",
+    "site": "https://icaroglauco.online"
+  }
+}

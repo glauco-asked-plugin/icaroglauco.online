@@ -1,0 +1,80 @@
+{
+  "okf": "0.1",
+  "id": "projects/macroobras",
+  "kind": "operational-platform",
+  "name": "MacroObras",
+  "status": "Active development",
+  "currentPhase": "Administrative and field-operation integration",
+  "domain": "Construction operations",
+  "problem": "Construction progress is fragmented between office planning, measurement sheets, workers, daily routines and evidence captured in the field.",
+  "solution": "A hybrid platform connecting administrative planning, authorised collaborators, daily field routines, photographic proof and measurement progression.",
+  "surfaces": [
+    {
+      "name": "Administrative station",
+      "capabilities": [
+        "Project registration",
+        "Measurement-sheet import",
+        "Construction elements, materials and dependencies",
+        "Collaborator assignment",
+        "Schedules and administrative allocation",
+        "Measurement comparison"
+      ]
+    },
+    {
+      "name": "Field measurement application",
+      "capabilities": [
+        "Access by email and CPF",
+        "Authorised project selection",
+        "Daily routines",
+        "Construction diary",
+        "Camera confirmation of completed work",
+        "Evidence linked to performed service",
+        "Progress submission"
+      ]
+    },
+    {
+      "name": "Local services",
+      "capabilities": [
+        "Collaborator server",
+        "Archive",
+        "OKF scaffold",
+        "Local Llama endpoint",
+        "Optional network exposure"
+      ]
+    }
+  ],
+  "okfEntities": [
+    "Project",
+    "Construction element",
+    "Measurement item",
+    "Service",
+    "Routine",
+    "Schedule",
+    "Construction diary",
+    "Service confirmation",
+    "Measurement",
+    "Measurement comparison",
+    "Collaborator",
+    "Archive",
+    "Local intelligence"
+  ],
+  "architectureFlow": [
+    "Administrative plan",
+    "Authorised collaborator",
+    "Daily schedule",
+    "Applied field routine",
+    "Camera evidence",
+    "Construction diary",
+    "Progress submission",
+    "Measurement comparison"
+  ],
+  "evidence": [
+    "Modular Nim backend responsibilities",
+    "Separated frontend screens and shared UI",
+    "Playwright UI validation",
+    "Field-to-office domain model"
+  ],
+  "links": {
+    "repository": "https://github.com/glaucodeveloper/macroobras"
+  }
+}

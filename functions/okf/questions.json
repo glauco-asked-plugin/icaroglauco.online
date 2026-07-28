@@ -1,0 +1,72 @@
+{
+  "okf": "0.1",
+  "id": "questions",
+  "items": [
+    {
+      "id": "wizard",
+      "label": "Why do you call yourself a wizard?",
+      "prompt": "Explain why Icaro Glauco uses the title Wizard of Transformation and connect the metaphor to his actual software practice.",
+      "project": "profile/icaro-glauco",
+      "fallback": {
+        "answer": "Wizard is a working metaphor for transformation: Icaro reads diffuse requirements, names the parts, composes a model and turns it into an interface, an agent or an operational product.",
+        "card": {
+          "eyebrow": "Professional identity",
+          "title": "Wizard of Transformation",
+          "summary": "The title describes a method, not a costume.",
+          "tone": "emerald",
+          "layout": "editorial",
+          "badges": [
+            "Requirements",
+            "Architecture",
+            "Applied AI"
+          ],
+          "sections": [
+            {
+              "type": "list",
+              "heading": "The transformation",
+              "items": [
+                "Ambiguity becomes a domain model.",
+                "Operational knowledge becomes a workflow.",
+                "A workflow becomes an interface and executable software."
+              ]
+            }
+          ],
+          "actions": []
+        },
+        "sources": [
+          "okf://profile/icaro-glauco"
+        ]
+      }
+    },
+    {
+      "id": "cognoscere",
+      "label": "Show me Cognoscere / Lumira",
+      "prompt": "Present Cognoscere and Lumira as the flagship project. Explain their relationship, core domains and the most important current implementation boundary.",
+      "project": "projects/cognoscere-lumira"
+    },
+    {
+      "id": "isocon",
+      "label": "How does Isocon use local AI?",
+      "prompt": "Explain the Isocon Licitações Inteligentes workflow, focusing on local AI, edital analysis and documentary compliance.",
+      "project": "projects/isocon-licitacoes"
+    },
+    {
+      "id": "macroobras",
+      "label": "How does MacroObras connect field and office?",
+      "prompt": "Explain how MacroObras connects administrative planning, field routines, camera evidence and measurement progression.",
+      "project": "projects/macroobras"
+    },
+    {
+      "id": "compare",
+      "label": "Compare the three projects",
+      "prompt": "Compare Cognoscere/Lumira, Isocon Licitações Inteligentes and MacroObras by domain, knowledge model, operational flow and demonstrated capability.",
+      "project": "all"
+    },
+    {
+      "id": "hire",
+      "label": "What can I hire you to build?",
+      "prompt": "Based only on the profile and projects, describe the categories of specialised software Icaro is prepared to design and build.",
+      "project": "all"
+    }
+  ]
+}

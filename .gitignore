@@ -1,4 +1,9 @@
-node_modules
+node_modules/
+dist/
+.vercel/
+.env
 .env.local
-.vite-blog-dev*.log
-.codex/
+.env.*.local
+*.log
+.DS_Store
+.remake-backups/
